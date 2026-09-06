@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Crea tu cuenta en FaunaScan Perú.">
+  <title>Registrarse — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/register.css?v=3">
+</head>
+<body>
+
+  <div class="auth-split">
+
+    <aside class="auth-split__left">
+      <a href="index.html" class="auth-split__logo">
+        <img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="auth-split__logo-img">
+        <span class="auth-split__logo-text">FaunaScan</span>
+      </a>
+      <div class="auth-split__content">
+        <h1 class="auth-split__headline">Únete a<br><span>FaunaScan</span></h1>
+        <p class="auth-split__desc">Registra avistamientos, identifica especies con IA y contribuye a la conservación de la fauna silvestre del Perú.</p>
+        <div class="auth-split__features">
+          <div class="auth-split__feature">
+            <span class="auth-split__feature-icon">🔍</span>
+            <span>Identificación de especies con IA en tiempo real</span>
+          </div>
+          <div class="auth-split__feature">
+            <span class="auth-split__feature-icon">📡</span>
+            <span>Modo offline para zonas remotas sin internet</span>
+          </div>
+          <div class="auth-split__feature">
+            <span class="auth-split__feature-icon">🗺️</span>
+            <span>Mapas dinámicos con geolocalización de alta precisión</span>
+          </div>
+          <div class="auth-split__feature">
+            <span class="auth-split__feature-icon">🔔</span>
+            <span>Alertas inmediatas sobre especies vulnerables</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="auth-split__right">
+      <div class="auth-card">
+        <h2 class="auth-card__title">Crear cuenta</h2>
+        <p class="auth-card__subtitle">Completa los datos para comenzar a monitorear la fauna</p>
+
+        <form class="auth-card__form" id="registerForm" novalidate>
+
+          <div class="form-group">
+            <label class="form-label">Tipo de usuario</label>
+            <div class="role-selector">
+              <label class="role-card selected" for="roleInvestigador">
+                <input type="radio" id="roleInvestigador" name="role" value="investigador" checked style="display:none;">
+                <span class="role-card__icon">🔬</span>
+                <span class="role-card__title">Investigador</span>
+                <span class="role-card__sub">Científico o académico</span>
+              </label>
+              <label class="role-card" for="roleVoluntario">
+                <input type="radio" id="roleVoluntario" name="role" value="voluntario" style="display:none;">
+                <span class="role-card__icon">🌿</span>
+                <span class="role-card__title">Voluntario</span>
+                <span class="role-card__sub">Ciudadano colaborador</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="regNombre">Nombre</label>
+              <input class="form-input" type="text" id="regNombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regApellido">Apellido</label>
+              <input class="form-input" type="text" id="regApellido" placeholder="Tu apellido" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Correo electrónico</label>
+            <input class="form-input" type="email" id="regEmail" placeholder="ejemplo@tucorreo.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Contraseña</label>
+            <input class="form-input" type="password" id="regPassword" placeholder="Mínimo 8 caracteres" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regConfirm">Confirmar contraseña</label>
+            <input class="form-input" type="password" id="regConfirm" placeholder="Repite tu contraseña" required>
+          </div>
+
+          <label class="form-check">
+            <input type="checkbox" id="regTerms" name="terms">
+            <span class="form-check__label">
+              Acepto los <a href="#">Términos y condiciones</a> y la <a href="#">Política de privacidad</a>
+            </span>
+          </label>
+
+          <button type="submit" class="btn btn-primary btn-full btn-lg">Crear cuenta</button>
+        </form>
+
+        <p class="auth-card__footer">
+          ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+        </p>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="assets/scripts/register.js?v=3" defer></script>
+</body>
+</html>

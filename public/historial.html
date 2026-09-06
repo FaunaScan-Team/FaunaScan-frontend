@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/historial.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">        
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Historial de registros</h1>
+      </div>
+
+      <div class="historial-layout">
+        <aside class="historial-filters card">
+          <h3 class="card__title">Filtros</h3>
+          <div class="form-group">
+            <label class="form-label">Animal</label>
+            <input class="form-input" type="text" id="filtroAnimal" placeholder="Nombre de especie...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Período</label>
+            <select class="form-input" id="filtroPeriodo">
+              <option value="">Este mes</option>
+              <option value="trimestre">Último trimestre</option>
+              <option value="anio">Este año</option>
+              <option value="personalizado">Personalizado</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Desde</label>
+              <input class="form-input" type="date" id="filtroDesde">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Hasta</label>
+              <input class="form-input" type="date" id="filtroHasta">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estado</label>
+            <select class="form-input" id="filtroEstadoHistorial">
+              <option value="">Todos</option>
+              <option value="validado">Validado</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="no-validado">No validado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Zona</label>
+            <input class="form-input" type="text" id="filtroZona" placeholder="Nombre de zona...">
+          </div>
+          <button class="btn btn-primary btn-full" id="btnAplicarFiltros">Aplicar filtros</button>
+        </aside>
+
+        <div class="historial-main">
+          <div class="card">
+            <table class="historial-table">
+              <thead>
+                <tr><th></th><th>Especie</th><th>Zona</th><th>Fecha</th><th>Estado</th></tr>
+              </thead>
+              <tbody>
+                <tr class="historial-row" data-especie="Oso de anteojos" data-cientifico="Tremarctos ornatus" data-emoji="🐻" data-zona="Bosque El Olivar" data-estado="No Validado" data-imagen="assets/images/OsoDeAnteojosDetalle.png">
+                  <td><button class="fav-btn">☆</button></td>
+                  <td><span class="especie-emoji">🐻</span> Oso de anteojos</td>
+                  <td>Bosque El Olivar</td>
+                  <td>09/05/2026</td>
+                  <td><span class="badge badge-gray">NO VALIDADO</span></td>
+                </tr>
+                <tr class="historial-row" data-especie="Cóndor andino" data-cientifico="Vultur gryphus" data-emoji="🦅" data-zona="Bosque de Zárate" data-estado="Pendiente" data-imagen="assets/images/CondorDetalle.png">
+                  <td><button class="fav-btn">★</button></td>
+                  <td><span class="especie-emoji">🦅</span> Cóndor andino</td>
+                  <td>Bosque de Zárate</td>
+                  <td>08/05/2026</td>
+                  <td><span class="badge badge-yellow">PENDIENTE</span></td>
+                </tr>
+                <tr class="historial-row" data-especie="Jaguar" data-cientifico="Panthera onca" data-emoji="🐆" data-zona="Reserva Amazónica" data-estado="No Validado" data-imagen="assets/images/JaguarDetalle.png">
+                  <td><button class="fav-btn">☆</button></td>
+                  <td><span class="especie-emoji">🐆</span> Jaguar</td>
+                  <td>Reserva Amazónica</td>
+                  <td>07/05/2026</td>
+                  <td><span class="badge badge-gray">NO VALIDADO</span></td>
+                </tr>
+                <tr class="historial-row" data-especie="Guacamayo rojo" data-cientifico="Ara macao" data-emoji="🦜" data-zona="Parque Nacional Tingo" data-estado="Validado" data-imagen="assets/images/GuacamayoRojoDetalle.png">
+                  <td><button class="fav-btn">☆</button></td>
+                  <td><span class="especie-emoji">🦜</span> Guacamayo rojo</td>
+                  <td>Parque Nacional Tingo</td>
+                  <td>06/05/2026</td>
+                  <td><span class="badge badge-green">VALIDADO</span></td>
+                </tr>
+                <tr class="historial-row" data-especie="Anaconda verde" data-cientifico="Eunectes murinus" data-emoji="🐍" data-zona="Bosque El Olivar" data-estado="Validado" data-imagen="assets/images/AnacondaDetalle.png">
+                  <td><button class="fav-btn">☆</button></td>
+                  <td><span class="especie-emoji">🐍</span> Anaconda verde</td>
+                  <td>Bosque El Olivar</td>
+                  <td>05/05/2026</td>
+                  <td><span class="badge badge-green">VALIDADO</span></td>
+                </tr>
+                <tr class="historial-row" data-especie="Llama andina" data-cientifico="Lama glama" data-emoji="🦙" data-zona="Puno — Altiplano" data-estado="Pendiente" data-imagen="assets/images/LlamaDetalle.png">
+                  <td><button class="fav-btn">★</button></td>
+                  <td><span class="especie-emoji">🦙</span> Llama andina</td>
+                  <td>Puno — Altiplano</td>
+                  <td>04/05/2026</td>
+                  <td><span class="badge badge-yellow">PENDIENTE</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card mt-6">
+            <h3 class="card__title">Favoritos</h3>
+            <div id="favoritosList" class="favoritos-list">
+              <p class="favoritos-empty" id="favoritosEmpty">Aún no marcaste avistamientos como favoritos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/historial.js?v=3" defer></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seleccionar especie — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/seleccionar-especie.css?v=3">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link active">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Seleccionar especie</h1>
+      </div>
+
+      <div class="buscar-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="buscarEspecieInput" placeholder="Buscar especie">
+      </div>
+      <p class="buscar-sugerencia">Mostrando sugerencia para "<span id="buscarTermino"></span>"</p>
+      <p class="resultado-label">RESULTADO DEL CATÁLOGO</p>
+
+      <div class="resultado-list" id="resultadoList">
+        <button class="resultado-item" data-nombre="Oso de Anteojos" data-cientifico="Tremarctos ornatus" data-estado="VULNERABLE" data-estado-class="badge-yellow" data-emoji="🐻">
+          <span class="resultado-item__emoji">🐻</span>
+          <div class="resultado-item__info"><p class="resultado-item__nombre">Oso de Anteojos</p><p class="resultado-item__cientifico">Tremarctos ornatus</p><span class="badge badge-yellow">VULNERABLE</span></div>
+        </button>
+        <button class="resultado-item" data-nombre="Cóndor Andino" data-cientifico="Vultur gryphus" data-estado="VULNERABLE" data-estado-class="badge-yellow" data-emoji="🦅">
+          <span class="resultado-item__emoji">🦅</span>
+          <div class="resultado-item__info"><p class="resultado-item__nombre">Cóndor Andino</p><p class="resultado-item__cientifico">Vultur gryphus</p><span class="badge badge-yellow">VULNERABLE</span></div>
+        </button>
+        <button class="resultado-item" data-nombre="Guacamayo Rojo" data-cientifico="Ara macao" data-estado="VULNERABLE" data-estado-class="badge-yellow" data-emoji="🦜">
+          <span class="resultado-item__emoji">🦜</span>
+          <div class="resultado-item__info"><p class="resultado-item__nombre">Guacamayo Rojo</p><p class="resultado-item__cientifico">Ara macao</p><span class="badge badge-yellow">VULNERABLE</span></div>
+        </button>
+        <button class="resultado-item" data-nombre="Anaconda Verde" data-cientifico="Eunectes murinus" data-estado="NO VULNERABLE" data-estado-class="badge-green-dark" data-emoji="🐍">
+          <span class="resultado-item__emoji">🐍</span>
+          <div class="resultado-item__info"><p class="resultado-item__nombre">Anaconda Verde</p><p class="resultado-item__cientifico">Eunectes murinus</p><span class="badge badge-green-dark">NO VULNERABLE</span></div>
+        </button>
+        <button class="resultado-item" data-nombre="Jaguar" data-cientifico="Panthera onca" data-estado="EN PELIGRO CRÍTICO" data-estado-class="badge-red" data-emoji="🐆">
+          <span class="resultado-item__emoji">🐆</span>
+          <div class="resultado-item__info"><p class="resultado-item__nombre">Jaguar</p><p class="resultado-item__cientifico">Panthera onca</p><span class="badge badge-red">EN PELIGRO CRÍTICO</span></div>
+        </button>
+      </div>
+
+      <button class="btn btn-primary btn-confirmar" id="btnConfirmarEspecieManual" disabled>Confirmar especie</button>
+    </main>
+  </div>
+  <script src="assets/scripts/seleccionar-especie.js?v=3" defer></script>
+</body>
+</html>

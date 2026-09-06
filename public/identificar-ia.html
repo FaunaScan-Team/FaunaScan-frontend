@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Identificación por IA — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/identificar-ia.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link active">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Identificación por IA</h1>
+      </div>
+
+      <div class="identificar-layout">
+        <div class="identificar-foto">
+          <img id="identificarFoto" src="" alt="Foto del avistamiento">
+        </div>
+
+        <div class="identificar-resultado">
+          <h3 class="card__title">Análisis completado</h3>
+          <div class="card resultado-principal">
+            <p class="resultado-principal__label">Resultado principal</p>
+            <h2 class="resultado-principal__nombre" id="resPrincipalNombre">Oso de Anteojos</h2>
+            <p class="resultado-principal__cientifico" id="resPrincipalCientifico">Tremarctos ornatus</p>
+            <div class="confianza-bar"><div class="confianza-bar__fill confianza-bar__fill--92"></div></div>
+            <p class="confianza-label">92% de confianza</p>
+            <div class="resultado-acciones">
+              <button class="btn btn-primary" id="btnConfirmarEspecie">Confirmar</button>
+              <button class="btn btn-outline" id="btnCambiarEspecie">Cambiar</button>
+            </div>
+          </div>
+
+          <h4 class="alternativas-titulo">Alternativas</h4>
+          <div class="alternativas-grid" id="alternativasGrid">
+            <button class="alternativa-card" data-nombre="Oso negro americano" data-cientifico="Ursus americanus">
+              <span class="alternativa-card__emoji">🐻</span>
+              <span class="alternativa-card__nombre">Oso negro americano</span>
+              <span class="alternativa-card__pct">12% probabilidad</span>
+            </button>
+            <button class="alternativa-card" data-nombre="Oso panda" data-cientifico="Ailuropoda melanoleuca">
+              <span class="alternativa-card__emoji">🐼</span>
+              <span class="alternativa-card__nombre">Oso panda</span>
+              <span class="alternativa-card__pct">4% probabilidad</span>
+            </button>
+          </div>
+          <div class="manual-box">
+            <p class="manual-box__text">¿Ninguna coincide? Selecciona manualmente.</p>
+            <a href="seleccionar-especie.html" class="manual-box__link">Seleccionar de especie →</a>
+          </div>
+
+          <div class="card mt-5">
+            <h4 class="detalle-subtitulo">Ubicación</h4>
+            <div class="detalle-mapa"><span class="detalle-mapa__pin">📍 Bosque El Olivar</span></div>
+            <div class="detalle-coords"><span>Lat: -12.0464</span><span>Lng: -77.0428</span></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/identificar-ia.js?v=3" defer></script>
+</body>
+</html>

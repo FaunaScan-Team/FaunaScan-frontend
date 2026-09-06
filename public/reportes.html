@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/reportes.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link active">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Reportes de biodiversidad</h1>
+      </div>
+
+      <div class="reportes-layout">
+        <div class="reportes-params card">
+          <h3 class="card__title">Parámetros del reporte</h3>
+          <div class="form-group">
+            <label class="form-label">Área protegida</label>
+            <input class="form-input" type="text" id="reporteArea" placeholder="Ej: Bosque El Olivar">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Desde</label>
+              <input class="form-input" type="date" id="reporteDesde">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Hasta</label>
+              <input class="form-input" type="date" id="reporteHasta">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo de reporte</label>
+            <select class="form-input" id="reporteTipo">
+              <option value="biodiversidad">Biodiversidad general</option>
+              <option value="amenazadas">Especies amenazadas</option>
+              <option value="avistamientos">Avistamientos por zona</option>
+              <option value="tendencias">Tendencias temporales</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-full" id="btnGenerar">Generar reporte</button>
+          <div class="chart-area">
+            <canvas id="chartReporte"></canvas>
+          </div>
+        </div>
+
+        <div class="reportes-results">
+          <div class="reporte-banner card">
+            <h3 class="reporte-banner__title">Top especies registradas — Mayo 2026</h3>
+            <p class="reporte-banner__sub">Bosque El Olivar · 01/05 al 09/05/2026</p>
+          </div>
+          <div class="card">
+            <table class="reporte-table">
+              <thead>
+                <tr><th>Especie</th><th>Registros</th><th>Estado</th><th>Tendencia</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cóndor andino</td><td>24</td>
+                  <td><span class="badge badge-yellow">Vulnerable</span></td>
+                  <td><div class="trend-bar"><div class="trend-fill trend-fill--up w-80"></div></div></td>
+                </tr>
+                <tr>
+                  <td>Oso de anteojos</td><td>18</td>
+                  <td><span class="badge badge-yellow">Vulnerable</span></td>
+                  <td><div class="trend-bar"><div class="trend-fill trend-fill--up w-60"></div></div></td>
+                </tr>
+                <tr>
+                  <td>Guacamayo rojo</td><td>31</td>
+                  <td><span class="badge badge-green">Menor</span></td>
+                  <td><div class="trend-bar"><div class="trend-fill trend-fill--up w-100"></div></div></td>
+                </tr>
+                <tr>
+                  <td>Jaguar</td><td>5</td>
+                  <td><span class="badge badge-red">Crítico</span></td>
+                  <td><div class="trend-bar"><div class="trend-fill trend-fill--down w-20"></div></div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="reporte-actions">
+              <button class="btn btn-outline btn-sm" id="btnGuardarReporte">Guardar reporte</button>
+              <a href="resumen.html" class="btn btn-primary btn-sm">Ver resumen mensual</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/reportes.js?v=3" defer></script>
+</body>
+</html>

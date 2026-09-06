@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar avistamiento — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/registrar.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link active">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Nuevo avistamiento</h1>
+      </div>
+
+      <div class="registrar-layout">
+        <div class="registrar-left">
+          <div class="card">
+            <div class="upload-area" id="uploadArea">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <p class="upload-area__text">Arrastra una foto o <span>haz clic para subir</span></p>
+              <input type="file" id="fotoInput" accept="image/*" style="display:none">
+            </div>
+            <div class="ia-toggle">
+              <label class="toggle-label">
+                <input type="checkbox" id="iaToggle" checked>
+                <span class="toggle-switch"></span>
+                <span>Identificar especie con IA</span>
+              </label>
+            </div>
+            <a href="adjuntar-foto.html" class="btn btn-outline btn-sm link-adjuntar-foto" id="linkAdjuntarFoto">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              Elegir desde galería avanzada
+            </a>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title">Especie detectada</h3>
+            <div class="especies-chips" id="especiesChips">
+              <button class="chip chip--active">🐻 Oso de anteojos</button>
+              <button class="chip">🦅 Cóndor andino</button>
+              <button class="chip">🐆 Jaguar</button>
+              <button class="chip">🦜 Guacamayo</button>
+              <a href="seleccionar-especie.html" class="chip" id="chipOtraEspecie">Otra especie</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title">Observaciones detalladas</h3>
+            <p class="upload-area__text mb-3">Registra condiciones climáticas, temperatura, individuos y notas del observador.</p>
+            <a href="observaciones.html" class="btn btn-outline btn-sm btn-full">📝 Agregar observaciones detalladas</a>
+          </div>
+        </div>
+
+        <div class="registrar-right">
+          <div class="card">
+            <h3 class="card__title">Detalles del avistamiento</h3>
+            <div class="form-group">
+              <label class="form-label">Observaciones</label>
+              <textarea class="form-input" rows="3" placeholder="Descripción del avistamiento, comportamiento observado..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fecha y hora</label>
+              <input class="form-input" type="datetime-local" id="fechaAvistamiento">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Área protegida</label>
+              <input class="form-input" type="text" placeholder="Ej: Bosque El Olivar">
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title">Ubicación</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Latitud</label>
+                <input class="form-input" type="number" id="latInput" placeholder="-12.0464" step="0.0001">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Longitud</label>
+                <input class="form-input" type="number" id="lngInput" placeholder="-77.0428" step="0.0001">
+              </div>
+            </div>
+            <button class="btn btn-outline btn-sm" id="btnGeolocate">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+              Usar mi ubicación actual
+            </button>
+            <button class="btn btn-primary btn-full mt-4" id="btnGuardar">Guardar avistamiento</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/registrar.js?v=3" defer></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="assets/styles/login.css?v=3">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inicia sesión en FaunaScan Perú para continuar monitoreando la biodiversidad.">
+  <title>Iniciar sesión — FaunaScan</title>
+</head>
+<body>
+
+  <div class="auth-split">
+
+    <!-- LEFT PANEL -->
+    <aside class="auth-split__left" aria-label="Información de FaunaScan">
+      <a href="index.html" class="auth-split__logo">
+        <img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="auth-split__logo-img">
+        <span class="auth-split__logo-text">FaunaScan</span>
+      </a>
+
+      <div>
+        <h1 class="auth-split__headline">
+          Bienvenido a<br><span>FaunaScan</span>
+        </h1>
+        <p class="auth-split__desc">Tu historial, alertas y registros de avistamientos te están esperando. Inicia sesión para continuar protegiendo la biodiversidad.</p>
+
+        <div class="auth-split__stats">
+          <div>
+            <p class="auth-split__stat-value">12,400+</p>
+            <p class="auth-split__stat-label">Avistamientos registrados</p>
+          </div>
+          <div>
+            <p class="auth-split__stat-value">847</p>
+            <p class="auth-split__stat-label">Especies identificadas</p>
+          </div>
+          <div>
+            <p class="auth-split__stat-value">320</p>
+            <p class="auth-split__stat-label">Usuarios activos</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL -->
+    <main class="auth-split__right">
+      <div class="auth-card">
+        <h2 class="auth-card__title">Iniciar sesión</h2>
+        <p class="auth-card__subtitle">Ingresa tus credenciales para acceder a tu cuenta</p>
+
+        <div class="auth-card__alert" role="status" aria-live="polite">
+          <svg class="auth-card__alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <p><strong>Cuenta verificada.</strong> El sistema validará tus credenciales y te redirigirá al panel principal.</p>
+        </div>
+
+        <form class="auth-card__form" id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Correo electrónico</label>
+            <input
+              class="form-input"
+              type="email"
+              id="loginEmail"
+              name="email"
+              placeholder="ejemplo@tucorreo.com"
+              autocomplete="email"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Contraseña</label>
+            <input
+              class="form-input"
+              type="password"
+              id="loginPassword"
+              name="password"
+              placeholder="••••••••••"
+              autocomplete="current-password"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="auth-card__forgot">
+            <a href="recover.html">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full btn-lg">Iniciar sesión</button>
+        </form>
+
+        <p class="auth-card__footer">
+          ¿No tienes cuenta? <a href="register.html">Regístrate gratis</a>
+        </p>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="assets/scripts/login.js?v=3" defer></script>
+</body>
+</html>

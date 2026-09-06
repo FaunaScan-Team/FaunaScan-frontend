@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Verifica tu credencial institucional como investigador en FaunaScan Perú.">
+  <title>Verificación de investigador — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/verificacion-investigador.css?v=4">
+</head>
+<body>
+
+  <div class="auth-split">
+
+    <aside class="auth-split__left">
+      <a href="index.html" class="auth-split__logo">
+        <img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="auth-split__logo-img">
+        <span class="auth-split__logo-text">FaunaScan</span>
+      </a>
+      <div>
+        <h1 class="auth-split__headline">Monitorea la fauna del<br><span>Perú</span> desde cualquier lugar</h1>
+        <p class="auth-split__desc">Registra avistamientos, identifica especies con IA y contribuye a la conservación de la biodiversidad peruana, incluso sin conexión a internet.</p>
+        <div class="auth-split__features">
+          <div class="auth-split__feature"><span class="auth-split__feature-icon">📡</span><span>Funciona sin conexión — sincroniza al recuperar señal</span></div>
+          <div class="auth-split__feature"><span class="auth-split__feature-icon">🤖</span><span>Identificación automática de especies por IA</span></div>
+          <div class="auth-split__feature"><span class="auth-split__feature-icon">🗺️</span><span>Mapas interactivos con avistamientos geolocalizados</span></div>
+          <div class="auth-split__feature"><span class="auth-split__feature-icon">🔔</span><span>Alertas inmediatas sobre especies vulnerables</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="auth-split__right">
+      <div class="auth-card">
+        <h2 class="auth-card__title auth-card__title--left-lg">Verificación de investigador</h2>
+        <p class="auth-card__subtitle auth-card__subtitle--left">Sube tu credencial institucional para habilitar permisos avanzados de investigación.</p>
+
+        <div class="rol-box">
+          <p class="rol-box__title">Rol seleccionado: Investigador</p>
+          <p class="rol-box__sub">Requiere validación de credencial institucional</p>
+        </div>
+
+        <div class="upload-box" id="uploadBox">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+          <p class="upload-box__text">Cargar aquí tu credencial</p>
+          <input type="file" id="credencialInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+        </div>
+
+        <div class="credencial-info" id="credencialInfo" style="display:none;">
+          <p class="credencial-info__file" id="credencialNombre">credencial_UPC_2026.pdf</p>
+          <p class="credencial-info__sub">📄 Documento cargado correctamente</p>
+        </div>
+
+        <div class="check-list" id="checkList" style="display:none;">
+          <p class="check-list__title">✓ Credencial validada automáticamente</p>
+          <p class="check-list__item">✓ Validar tipo de documento</p>
+          <p class="check-list__item">✓ Acceso a datos científicos avanzados</p>
+          <p class="check-list__item">✓ Generación de reportes institucionales</p>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-full btn-lg" id="btnContinuar" disabled>Continuar</button>
+        <button type="button" class="btn btn-outline btn-full btn-lg mt-2" id="btnNuevaCredencial">Subir nueva credencial</button>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="assets/scripts/verificacion-investigador.js?v=3" defer></script>
+</body>
+</html>
