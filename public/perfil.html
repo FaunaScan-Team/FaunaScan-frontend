@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi perfil — FaunaScan</title>
-  <link rel="stylesheet" href="assets/styles/perfil.css?v=4">
+  <link rel="stylesheet" href="assets/styles/perfil.css?v=5">
 </head>
 <body>
   <div class="app-layout">
@@ -39,7 +39,7 @@
         <div class="perfil-card card">
           <div class="perfil-avatar" id="perfilAvatar">U</div>
           <h2 class="perfil-name" id="perfilName">Usuario</h2>
-          <span class="badge badge-green perfil-role" id="perfilRole">Investigador</span>
+          <span class="badge badge-blue perfil-role" id="perfilRole">—</span>
           <p class="perfil-email" id="perfilEmail">usuario@email.com</p>
 
           <div class="perfil-stats">
@@ -116,10 +116,21 @@
             </form>
           </div>
 
+          <div class="card" id="cardVerificacion" style="display:none;">
+            <h3 class="card__title">Verificación de investigador</h3>
+            <div id="verificacionVerificada" style="display:none;">
+              <p class="verificacion-status verificacion-status--ok">✓ Tu credencial institucional está verificada. Tienes acceso a validación de registros y reportes institucionales.</p>
+            </div>
+            <div id="verificacionPendiente" style="display:none;">
+              <p class="verificacion-status">Aún no has verificado tu credencial institucional. Súbela para habilitar la validación de avistamientos y la generación de reportes institucionales.</p>
+              <a href="verificacion-investigador.html" class="btn btn-outline">Verificar credencial</a>
+            </div>
+          </div>
+
           <div class="card">
             <h3 class="card__title">Logros obtenidos</h3>
-            <div class="achievements-list">
-              <span class="badge badge-green">investigador</span>
+            <div class="achievements-list" id="achievementsList">
+              <span class="badge badge-green" id="achievementRoleTag">investigador</span>
               <span class="badge badge-green">100 registros</span>
               <span class="badge badge-green">5 zonas</span>
               <span class="badge badge-green">IA explorador</span>
@@ -148,6 +159,6 @@
     </div>
   </div>
 
-  <script src="assets/scripts/perfil.js?v=3" defer></script>
+  <script src="assets/scripts/perfil.js?v=4" defer></script>
 </body>
 </html>

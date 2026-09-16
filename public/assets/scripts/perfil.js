@@ -21,19 +21,53 @@ document.addEventListener('DOMContentLoaded', function () {
   const user = JSON.parse(localStorage.getItem('faunaUser') || 'null');
   const initials = user ? (((user.nombre || '')[0] || '') + ((user.apellido || '')[0] || '')).toUpperCase() : '?';
   if (user) {
+    const esInvestigador = user.rol === 'investigador';
+    const credencialVerificada = esInvestigador && user.credencialVerificada === true;
+
     const avatar = document.getElementById('perfilAvatar');
     const nameEl = document.getElementById('perfilName');
     const emailEl = document.getElementById('perfilEmail');
+    const roleEl = document.getElementById('perfilRole');
     if (avatar) avatar.textContent = initials || '?';
     if (nameEl) nameEl.textContent = (user.nombre || '') + ' ' + (user.apellido || '');
     if (emailEl) emailEl.textContent = user.email || '';
+    if (roleEl) {
+      roleEl.textContent = esInvestigador ? 'Investigador' : 'Voluntario';
+      roleEl.classList.remove('badge-blue', 'badge-yellow');
+      roleEl.classList.add(esInvestigador ? 'badge-blue' : 'badge-yellow');
+    }
 
     const fullNameEl = document.getElementById('perfilFullName');
     const emailInfoEl = document.getElementById('perfilEmailInfo');
     const roleInfoEl = document.getElementById('perfilRoleInfo');
     if (fullNameEl) fullNameEl.textContent = (user.nombre || '') + ' ' + (user.apellido || '');
     if (emailInfoEl) emailInfoEl.textContent = user.email || '';
-    if (roleInfoEl) roleInfoEl.textContent = user.rol === 'investigador' ? 'Investigador verificado' : 'Voluntario';
+    if (roleInfoEl) {
+      if (esInvestigador) {
+        roleInfoEl.textContent = credencialVerificada ? 'Investigador verificado' : 'Investigador (verificación pendiente)';
+      } else {
+        roleInfoEl.textContent = 'Voluntario';
+      }
+    }
+
+    // --- Verificación de investigador (solo aplica a rol investigador) ---
+    const cardVerificacion = document.getElementById('cardVerificacion');
+    const verificacionVerificada = document.getElementById('verificacionVerificada');
+    const verificacionPendiente = document.getElementById('verificacionPendiente');
+    if (esInvestigador && cardVerificacion) {
+      cardVerificacion.style.display = 'block';
+      if (credencialVerificada) {
+        verificacionVerificada.style.display = 'block';
+        verificacionPendiente.style.display = 'none';
+      } else {
+        verificacionVerificada.style.display = 'none';
+        verificacionPendiente.style.display = 'block';
+      }
+    }
+
+    // --- Logros: la etiqueta de rol debe reflejar el rol real ---
+    const achievementRoleTag = document.getElementById('achievementRoleTag');
+    if (achievementRoleTag) achievementRoleTag.textContent = esInvestigador ? 'investigador' : 'voluntario';
   }
 
   // --- Modal de cerrar sesión ---
