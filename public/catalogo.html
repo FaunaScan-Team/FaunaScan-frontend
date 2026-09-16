@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catálogo — FaunaScan</title>
-  <link rel="stylesheet" href="assets/styles/catalogo.css?v=3">
+  <link rel="stylesheet" href="assets/styles/catalogo.css?v=4">
 </head>
 <body>
   <div class="app-layout">
@@ -41,13 +41,21 @@
           <option value="">Todos los estados</option>
           <option value="critico">En peligro crítico</option>
           <option value="vulnerable">Vulnerable</option>
-          <option value="casi">Casi amenazado</option>
+          <option value="casi">Casi amenazada</option>
           <option value="menor">Preocupación menor</option>
         </select>
       </div>
 
+      <label class="catalogo-especialidad" id="especialidadFiltro" style="display:none;">
+        <input type="checkbox" id="chkSoloEspecialidad">
+        Mostrar solo mi especialidad (<span id="especialidadNombre"></span>)
+      </label>
+      <p class="catalogo-especialidad-hint" id="especialidadHint" style="display:none;">
+        Aún no configuraste tu especialidad taxonómica. <a href="perfil.html">Configúrala en tu perfil</a> para filtrar el catálogo por tu área de investigación (US61).
+      </p>
+
       <div class="catalogo-grid" id="catalogoGrid">
-        <article class="especie-card" data-nombre="Cóndor andino" data-estado="vulnerable">
+        <article class="especie-card" data-nombre="Cóndor andino" data-cientifico="Vultur gryphus" data-estado="vulnerable" data-estado-label="Vulnerable" data-familia="ave" data-emoji="🦅">
           <div class="especie-card__img">
             <img src="assets/images/Condor.png">
           </div>
@@ -57,7 +65,7 @@
             <span class="badge badge-yellow">Vulnerable</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Oso de anteojos" data-estado="vulnerable">
+        <article class="especie-card" data-nombre="Oso de anteojos" data-cientifico="Tremarctos ornatus" data-estado="vulnerable" data-estado-label="Vulnerable" data-familia="mamifero" data-emoji="🐻">
           <div class="especie-card__img">
             <img src="assets/images/OsoDeAnteojos.png">
           </div>
@@ -67,7 +75,7 @@
             <span class="badge badge-yellow">Vulnerable</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Jaguar" data-estado="critico">
+        <article class="especie-card" data-nombre="Jaguar" data-cientifico="Panthera onca" data-estado="critico" data-estado-label="En peligro crítico" data-familia="mamifero" data-emoji="🐆">
           <div class="especie-card__img">
             <img src="assets/images/Jaguar.png">
           </div>
@@ -77,17 +85,17 @@
             <span class="badge badge-red">En peligro crítico</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Guacamayo rojo" data-estado="menor">
+        <article class="especie-card" data-nombre="Guacamayo rojo" data-cientifico="Ara macao" data-estado="vulnerable" data-estado-label="Vulnerable" data-familia="ave" data-emoji="🦜">
           <div class="especie-card__img">
             <img src="assets/images/Guacamayo.png">
           </div>
           <div class="especie-card__body">
             <h3 class="especie-card__nombre">Guacamayo rojo</h3>
             <p class="especie-card__cientifico">Ara macao</p>
-            <span class="badge badge-green">Preocupación menor</span>
+            <span class="badge badge-yellow">Vulnerable</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Tapir amazónico" data-estado="vulnerable">
+        <article class="especie-card" data-nombre="Tapir amazónico" data-cientifico="Tapirus terrestris" data-estado="vulnerable" data-estado-label="Vulnerable" data-familia="mamifero" data-emoji="🦌">
           <div class="especie-card__img">
             <img src="assets/images/Tapir.png">
           </div>
@@ -97,7 +105,7 @@
             <span class="badge badge-yellow">Vulnerable</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Delfín rosado" data-estado="critico">
+        <article class="especie-card" data-nombre="Delfín rosado" data-cientifico="Inia geoffrensis" data-estado="critico" data-estado-label="En peligro crítico" data-familia="mamifero" data-emoji="🐬">
           <div class="especie-card__img">
             <img src="assets/images/Delfin.png">
           </div>
@@ -107,7 +115,7 @@
             <span class="badge badge-red">En peligro crítico</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Anaconda verde" data-estado="menor">
+        <article class="especie-card" data-nombre="Anaconda verde" data-cientifico="Eunectes murinus" data-estado="menor" data-estado-label="Preocupación menor" data-familia="reptil" data-emoji="🐍">
           <div class="especie-card__img">
             <img src="assets/images/Anaconda.png">
           </div>
@@ -117,7 +125,7 @@
             <span class="badge badge-green">Preocupación menor</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Llama andina" data-estado="menor">
+        <article class="especie-card" data-nombre="Llama andina" data-cientifico="Lama glama" data-estado="menor" data-estado-label="Preocupación menor" data-familia="mamifero" data-emoji="🦙">
           <div class="especie-card__img">
             <img src="assets/images/Llama.png">
           </div>
@@ -127,17 +135,17 @@
             <span class="badge badge-green">Preocupación menor</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Lobo marino" data-estado="casi">
+        <article class="especie-card" data-nombre="Lobo marino" data-cientifico="Otaria flavescens" data-estado="casi" data-estado-label="Casi amenazada" data-familia="mamifero" data-emoji="🦭">
           <div class="especie-card__img">
             <img src="assets/images/LoboMarino.png">
           </div>
           <div class="especie-card__body">
             <h3 class="especie-card__nombre">Lobo marino</h3>
             <p class="especie-card__cientifico">Otaria flavescens</p>
-            <span class="badge badge-blue">Casi amenazado</span>
+            <span class="badge badge-blue">Casi amenazada</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Mono choro" data-estado="critico">
+        <article class="especie-card" data-nombre="Mono choro" data-cientifico="Lagothrix lagotricha" data-estado="critico" data-estado-label="En peligro crítico" data-familia="mamifero" data-emoji="🐒">
           <div class="especie-card__img">
             <img src="assets/images/MonoChoro.png">
           </div>
@@ -147,7 +155,7 @@
             <span class="badge badge-red">En peligro crítico</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Puma" data-estado="menor">
+        <article class="especie-card" data-nombre="Puma" data-cientifico="Puma concolor" data-estado="menor" data-estado-label="Preocupación menor" data-familia="mamifero" data-emoji="🐈">
           <div class="especie-card__img">
             <img src="assets/images/Puma.png">
           </div>
@@ -157,7 +165,7 @@
             <span class="badge badge-green">Preocupación menor</span>
           </div>
         </article>
-        <article class="especie-card" data-nombre="Manatí amazónico" data-estado="critico">
+        <article class="especie-card" data-nombre="Manatí amazónico" data-cientifico="Trichechus inunguis" data-estado="critico" data-estado-label="En peligro crítico" data-familia="mamifero" data-emoji="🐄">
           <div class="especie-card__img">
             <img src="assets/images/Manati.png">
           </div>
@@ -168,8 +176,24 @@
           </div>
         </article>
       </div>
+      <p class="catalogo-empty" id="catalogoEmpty" style="display:none;">No se encontraron especies con esos criterios.</p>
     </main>
   </div>
-  <script src="assets/scripts/catalogo.js?v=3" defer></script>
+
+  <div class="modal-overlay" id="modalEspecie">
+    <div class="modal-card especie-modal">
+      <div class="especie-modal__img" id="modalEspecieImgWrap"><img id="modalEspecieImg" src="" alt=""></div>
+      <h3 class="modal-card__title" id="modalEspecieNombre">—</h3>
+      <p class="especie-modal__cientifico" id="modalEspecieCientifico">—</p>
+      <div class="especie-modal__badges">
+        <span class="badge" id="modalEspecieEstado">—</span>
+        <span class="badge badge-blue" id="modalEspecieFamilia">—</span>
+      </div>
+      <button class="btn btn-primary btn-full mt-3" id="btnRegistrarDesdeModal">Registrar avistamiento de esta especie</button>
+      <button class="btn btn-outline btn-full mt-3" id="btnCerrarModalEspecie">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="assets/scripts/catalogo.js?v=4" defer></script>
 </body>
 </html>
