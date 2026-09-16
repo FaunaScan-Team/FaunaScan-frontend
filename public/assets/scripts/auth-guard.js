@@ -37,6 +37,16 @@
     throw new Error('FaunaScan: sesión no encontrada, redirigiendo a login.');
   }
 
+  // Un investigador sin credencial verificada no debe poder usar el resto
+  // de la app (US31): se le manda de vuelta a completar la verificación en
+  // cualquier página protegida a la que intente entrar directamente por
+  // URL, salvo la propia pantalla de verificación.
+  var paginaActual = window.location.pathname.split('/').pop();
+  if (user.rol === 'investigador' && !user.credencialVerificada && paginaActual !== 'verificacion-investigador.html') {
+    window.location.replace('verificacion-investigador.html');
+    throw new Error('FaunaScan: investigador debe verificar su credencial antes de continuar.');
+  }
+
   // Expone el usuario actual para que otros scripts de la página no
   // tengan que volver a leer/parsear localStorage.
   window.FaunaAuth = {

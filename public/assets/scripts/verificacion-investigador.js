@@ -75,4 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(function () { window.location.href = 'dashboard.html'; }, 700);
     });
   }
+
+  const btnCerrarSesion = document.getElementById('btnCerrarSesionVerificacion');
+  if (btnCerrarSesion) {
+    btnCerrarSesion.addEventListener('click', function () {
+      localStorage.removeItem('faunaUser');
+      window.location.href = 'login.html';
+    });
+  }
 });
