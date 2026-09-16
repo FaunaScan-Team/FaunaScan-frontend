@@ -59,12 +59,13 @@
           <div class="card">
             <h3 class="card__title">Especie detectada</h3>
             <div class="especies-chips" id="especiesChips">
-              <button class="chip chip--active">🐻 Oso de anteojos</button>
-              <button class="chip">🦅 Cóndor andino</button>
-              <button class="chip">🐆 Jaguar</button>
-              <button class="chip">🦜 Guacamayo</button>
+              <button type="button" class="chip" data-nombre="Oso de anteojos" data-cientifico="Tremarctos ornatus" data-estado="VULNERABLE" data-emoji="🐻">🐻 Oso de anteojos</button>
+              <button type="button" class="chip" data-nombre="Cóndor andino" data-cientifico="Vultur gryphus" data-estado="VULNERABLE" data-emoji="🦅">🦅 Cóndor andino</button>
+              <button type="button" class="chip" data-nombre="Jaguar" data-cientifico="Panthera onca" data-estado="EN PELIGRO CRÍTICO" data-emoji="🐆">🐆 Jaguar</button>
+              <button type="button" class="chip" data-nombre="Guacamayo rojo" data-cientifico="Ara macao" data-estado="VULNERABLE" data-emoji="🦜">🦜 Guacamayo</button>
               <a href="seleccionar-especie.html" class="chip" id="chipOtraEspecie">Otra especie</a>
             </div>
+            <p class="upload-area__text mt-2" id="especieError" style="display:none;color:#c0392b;">Selecciona una especie antes de guardar.</p>
           </div>
 
           <div class="card">
@@ -79,7 +80,7 @@
             <h3 class="card__title">Detalles del avistamiento</h3>
             <div class="form-group">
               <label class="form-label">Observaciones</label>
-              <textarea class="form-input" rows="3" placeholder="Descripción del avistamiento, comportamiento observado..."></textarea>
+              <textarea class="form-input" id="obsInlineInput" rows="3" placeholder="Descripción del avistamiento, comportamiento observado..."></textarea>
             </div>
             <div class="form-group">
               <label class="form-label">Fecha y hora</label>
@@ -87,7 +88,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Área protegida</label>
-              <input class="form-input" type="text" placeholder="Ej: Bosque El Olivar">
+              <input class="form-input" type="text" id="areaInput" placeholder="Ej: Bosque El Olivar">
             </div>
           </div>
 
@@ -113,6 +114,7 @@
       </div>
     </main>
   </div>
-  <script src="assets/scripts/registrar.js?v=3" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/registrar.js?v=5" defer></script>
 </body>
 </html>
