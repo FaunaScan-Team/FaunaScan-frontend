@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Identificación por IA — FaunaScan</title>
-  <link rel="stylesheet" href="assets/styles/identificar-ia.css?v=4">
+  <link rel="stylesheet" href="assets/styles/identificar-ia.css?v=5">
 </head>
 <body>
   <div class="app-layout">
@@ -41,46 +41,47 @@
         </div>
 
         <div class="identificar-resultado">
-          <h3 class="card__title">Análisis completado</h3>
-          <div class="card resultado-principal">
-            <p class="resultado-principal__label">Resultado principal</p>
-            <h2 class="resultado-principal__nombre" id="resPrincipalNombre">Oso de Anteojos</h2>
-            <p class="resultado-principal__cientifico" id="resPrincipalCientifico">Tremarctos ornatus</p>
-            <div class="confianza-bar"><div class="confianza-bar__fill confianza-bar__fill--92"></div></div>
-            <p class="confianza-label">92% de confianza</p>
-            <div class="resultado-acciones">
-              <button class="btn btn-primary" id="btnConfirmarEspecie">Confirmar</button>
-              <button class="btn btn-outline" id="btnCambiarEspecie">Cambiar</button>
+          <div class="simulacion-aviso">
+            ⚠️ <strong>Simulación de demostración.</strong> FaunaScan Perú todavía no tiene un modelo de IA
+            conectado a un servicio real de identificación de imágenes — este resultado no proviene de un
+            análisis real de tu fotografía.
+          </div>
+
+          <div id="identificarResultado">
+            <h3 class="card__title">Resultado simulado</h3>
+            <div class="card resultado-principal">
+              <p class="resultado-principal__label">Resultado principal</p>
+              <h2 class="resultado-principal__nombre" id="resPrincipalNombre">—</h2>
+              <p class="resultado-principal__cientifico" id="resPrincipalCientifico">—</p>
+              <div class="confianza-bar"><div class="confianza-bar__fill" id="confianzaFill"></div></div>
+              <p class="confianza-label" id="confianzaLabel">—</p>
+              <div class="resultado-acciones">
+                <button class="btn btn-primary" id="btnConfirmarEspecie">Confirmar</button>
+                <button class="btn btn-outline" id="btnCambiarEspecie">Cambiar</button>
+              </div>
+            </div>
+
+            <h4 class="alternativas-titulo">Alternativas</h4>
+            <div class="alternativas-grid" id="alternativasGrid"></div>
+            <div class="manual-box">
+              <p class="manual-box__text">¿Ninguna coincide? Selecciona manualmente.</p>
+              <a href="seleccionar-especie.html" class="manual-box__link">Seleccionar de especie →</a>
             </div>
           </div>
 
-          <h4 class="alternativas-titulo">Alternativas</h4>
-          <div class="alternativas-grid" id="alternativasGrid">
-            <button class="alternativa-card" data-nombre="Oso negro americano" data-cientifico="Ursus americanus">
-              <span class="alternativa-card__emoji">🐻</span>
-              <span class="alternativa-card__nombre">Oso negro americano</span>
-              <span class="alternativa-card__pct">12% probabilidad</span>
-            </button>
-            <button class="alternativa-card" data-nombre="Oso panda" data-cientifico="Ailuropoda melanoleuca">
-              <span class="alternativa-card__emoji">🐼</span>
-              <span class="alternativa-card__nombre">Oso panda</span>
-              <span class="alternativa-card__pct">4% probabilidad</span>
-            </button>
-          </div>
-          <div class="manual-box">
-            <p class="manual-box__text">¿Ninguna coincide? Selecciona manualmente.</p>
-            <a href="seleccionar-especie.html" class="manual-box__link">Seleccionar de especie →</a>
-          </div>
-
-          <div class="card mt-5">
-            <h4 class="detalle-subtitulo">Ubicación</h4>
-            <div class="detalle-mapa"><span class="detalle-mapa__pin">📍 Bosque El Olivar</span></div>
-            <div class="detalle-coords"><span>Lat: -12.0464</span><span>Lng: -77.0428</span></div>
+          <div id="identificarNoEncontrado" class="card no-identificado" style="display:none;">
+            <span class="no-identificado__icon">🔍❓</span>
+            <h3 class="no-identificado__titulo">No pudimos identificar esta especie con suficiente confianza</h3>
+            <p class="no-identificado__texto">
+              Esto puede deberse a mala iluminación, el ángulo de la foto, o que la especie no esté
+              en el catálogo actual. Puedes seleccionarla manualmente en vez de continuar sin especie.
+            </p>
+            <a href="seleccionar-especie.html" class="btn btn-primary">Seleccionar especie manualmente</a>
           </div>
         </div>
       </div>
     </main>
   </div>
-  <script src="assets/scripts/identificar-ia.js?v=3" defer></script>
+  <script src="assets/scripts/identificar-ia.js?v=4" defer></script>
 </body>
 </html>
