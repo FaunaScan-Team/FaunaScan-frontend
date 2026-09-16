@@ -83,51 +83,10 @@
               <thead>
                 <tr><th></th><th>Especie</th><th>Zona</th><th>Fecha</th><th>Estado</th></tr>
               </thead>
-              <tbody>
-                <tr class="historial-row" data-especie="Oso de anteojos" data-cientifico="Tremarctos ornatus" data-emoji="🐻" data-zona="Bosque El Olivar" data-estado="No Validado" data-imagen="assets/images/OsoDeAnteojosDetalle.png">
-                  <td><button class="fav-btn">☆</button></td>
-                  <td><span class="especie-emoji">🐻</span> Oso de anteojos</td>
-                  <td>Bosque El Olivar</td>
-                  <td>09/05/2026</td>
-                  <td><span class="badge badge-gray">NO VALIDADO</span></td>
-                </tr>
-                <tr class="historial-row" data-especie="Cóndor andino" data-cientifico="Vultur gryphus" data-emoji="🦅" data-zona="Bosque de Zárate" data-estado="Pendiente" data-imagen="assets/images/CondorDetalle.png">
-                  <td><button class="fav-btn">★</button></td>
-                  <td><span class="especie-emoji">🦅</span> Cóndor andino</td>
-                  <td>Bosque de Zárate</td>
-                  <td>08/05/2026</td>
-                  <td><span class="badge badge-yellow">PENDIENTE</span></td>
-                </tr>
-                <tr class="historial-row" data-especie="Jaguar" data-cientifico="Panthera onca" data-emoji="🐆" data-zona="Reserva Amazónica" data-estado="No Validado" data-imagen="assets/images/JaguarDetalle.png">
-                  <td><button class="fav-btn">☆</button></td>
-                  <td><span class="especie-emoji">🐆</span> Jaguar</td>
-                  <td>Reserva Amazónica</td>
-                  <td>07/05/2026</td>
-                  <td><span class="badge badge-gray">NO VALIDADO</span></td>
-                </tr>
-                <tr class="historial-row" data-especie="Guacamayo rojo" data-cientifico="Ara macao" data-emoji="🦜" data-zona="Parque Nacional Tingo" data-estado="Validado" data-imagen="assets/images/GuacamayoRojoDetalle.png">
-                  <td><button class="fav-btn">☆</button></td>
-                  <td><span class="especie-emoji">🦜</span> Guacamayo rojo</td>
-                  <td>Parque Nacional Tingo</td>
-                  <td>06/05/2026</td>
-                  <td><span class="badge badge-green">VALIDADO</span></td>
-                </tr>
-                <tr class="historial-row" data-especie="Anaconda verde" data-cientifico="Eunectes murinus" data-emoji="🐍" data-zona="Bosque El Olivar" data-estado="Validado" data-imagen="assets/images/AnacondaDetalle.png">
-                  <td><button class="fav-btn">☆</button></td>
-                  <td><span class="especie-emoji">🐍</span> Anaconda verde</td>
-                  <td>Bosque El Olivar</td>
-                  <td>05/05/2026</td>
-                  <td><span class="badge badge-green">VALIDADO</span></td>
-                </tr>
-                <tr class="historial-row" data-especie="Llama andina" data-cientifico="Lama glama" data-emoji="🦙" data-zona="Puno — Altiplano" data-estado="Pendiente" data-imagen="assets/images/LlamaDetalle.png">
-                  <td><button class="fav-btn">★</button></td>
-                  <td><span class="especie-emoji">🦙</span> Llama andina</td>
-                  <td>Puno — Altiplano</td>
-                  <td>04/05/2026</td>
-                  <td><span class="badge badge-yellow">PENDIENTE</span></td>
-                </tr>
-              </tbody>
+              <tbody id="historialTableBody"></tbody>
             </table>
+            <p class="historial-empty" id="historialEmpty" style="display:none;">Aún no tienes avistamientos registrados. <a href="registrar.html">Registra tu primero</a>.</p>
+            <p class="historial-empty" id="historialSinResultados" style="display:none;">Ningún avistamiento coincide con los filtros aplicados.</p>
           </div>
 
           <div class="card mt-6">
@@ -140,6 +99,7 @@
       </div>
     </main>
   </div>
-  <script src="assets/scripts/historial.js?v=3" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/historial.js?v=4" defer></script>
 </body>
 </html>
