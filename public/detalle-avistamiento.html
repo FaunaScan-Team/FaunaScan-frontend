@@ -35,7 +35,11 @@
         <h1 class="app-topbar__title">Historial</h1>
       </div>
 
-      <div class="detalle-layout">
+      <p class="detalle-not-found" id="detalleNoEncontrado" style="display:none;">
+        No se encontró este avistamiento. <a href="historial.html">Volver al historial</a>.
+      </p>
+
+      <div class="detalle-layout" id="detalleLayout">
         <div>
           <div class="detalle-foto" id="detalleFoto">
           </div>
@@ -115,6 +119,7 @@
     </div>
   </div>
 
-  <script src="assets/scripts/detalle-avistamiento.js?v=3" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/detalle-avistamiento.js?v=4" defer></script>
 </body>
 </html>
