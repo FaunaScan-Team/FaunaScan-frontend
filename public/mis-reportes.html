@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis reportes — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/mis-reportes.css?v=3">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">        
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link active">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Resúmenes mensuales</h1>
+        <div class="app-topbar__actions">
+          <a href="resumen.html" class="app-topbar__action">Seleccionar mes</a>
+        </div>
+      </div>
+
+      <div class="misrep-layout">
+        <div class="card misrep-lista">
+          <h3 class="card__title">Mis reportes</h3>
+          <button class="misrep-item misrep-item--active" data-tipo="reporte" data-titulo="Reporte Mayo 2026" data-sub="Bosque El Olivar · 42 avistamientos" data-size="1.2 MB" data-icon="📊">
+            <span class="misrep-item__icon misrep-item__icon--green">📊</span>
+            <span class="misrep-item__info"><span class="misrep-item__titulo">Reporte Mayo 2026</span><span class="misrep-item__sub">Bosque El Olivar · 42 avistamientos</span></span>
+            <span class="misrep-item__size">1.2 MB</span>
+          </button>
+          <button class="misrep-item" data-tipo="reporte" data-titulo="Reporte Abril 2026" data-sub="Múltiples zonas · 38 avistamientos" data-size="980 KB" data-icon="📊">
+            <span class="misrep-item__icon misrep-item__icon--green">📊</span>
+            <span class="misrep-item__info"><span class="misrep-item__titulo">Reporte Abril 2026</span><span class="misrep-item__sub">Múltiples zonas · 38 avistamientos</span></span>
+            <span class="misrep-item__size">980 KB</span>
+          </button>
+          <button class="misrep-item" data-tipo="analisis" data-titulo="Análisis Q1 2026" data-sub="Resumen trimestral · 112 avistamientos" data-size="2.4 MB" data-icon="📈">
+            <span class="misrep-item__icon misrep-item__icon--red">📈</span>
+            <span class="misrep-item__info"><span class="misrep-item__titulo">Análisis Q1 2026</span><span class="misrep-item__sub">Resumen trimestral · 112 avistamientos</span></span>
+            <span class="misrep-item__size">2.4 MB</span>
+          </button>
+          <button class="misrep-item" data-tipo="alertas" data-titulo="Reporte de alertas - Mar 2026" data-sub="5 especies en estado crítico" data-size="640 KB" data-icon="🔔">
+            <span class="misrep-item__icon misrep-item__icon--orange">🔔</span>
+            <span class="misrep-item__info"><span class="misrep-item__titulo">Reporte de alertas - Mar 2026</span><span class="misrep-item__sub">5 especies en estado crítico</span></span>
+            <span class="misrep-item__size">640 KB</span>
+          </button>
+
+          <div class="misrep-hint">
+            Opción <strong>"Descargar en PDF"</strong> disponible al visualizar el reporte seleccionado
+          </div>
+        </div>
+
+        <div class="misrep-preview-col">
+          <div class="misrep-preview-header">
+            <span class="misrep-preview-header__title">Vista previa - <span id="previewTitulo">Reporte Mayo 2026</span></span>
+            <div class="misrep-preview-header__actions">
+              <button class="btn btn-outline btn-sm" id="btnImprimir">Imprimir</button>
+              <button class="btn btn-secondary btn-sm" id="btnCompartir">Compartir</button>
+              <button class="btn btn-danger btn-sm" id="btnDescargarPdf">Descargar en PDF</button>
+            </div>
+          </div>
+
+          <div class="pdf-frame">
+            <div class="pdf-page">
+              <div class="pdf-header">
+                <div class="pdf-header__logo">
+                  <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">        
+                  <span>FaunaScan</span>
+                </div>
+                <h2 class="pdf-header__titulo">Reporte de Biodiversidad</h2>
+                <p class="pdf-header__sub" id="pdfSub">Bosque El Olivar · Mayo 2026 · Generado: 08/05/2026</p>
+              </div>
+              <div class="pdf-stats">
+                <div class="pdf-stat"><span class="pdf-stat__num" id="pdfAvistamientos">42</span><span class="pdf-stat__label">Avistamientos</span></div>
+                <div class="pdf-stat"><span class="pdf-stat__num" id="pdfEspecies">18</span><span class="pdf-stat__label">Especies</span></div>
+                <div class="pdf-stat"><span class="pdf-stat__num" id="pdfCriticas">3</span><span class="pdf-stat__label">Críticas</span></div>
+              </div>
+              <div class="pdf-rows">
+                <div class="pdf-row"><span>Zona monitoreada</span><span id="pdfZona">Bosque el Olivar</span></div>
+                <div class="pdf-row"><span>Período</span><span id="pdfPeriodo">01 - 08 Mayo 2026</span></div>
+                <div class="pdf-row"><span>Especie más registrada</span><span id="pdfEspecieTop">Iguana verde (14 av.)</span></div>
+                <div class="pdf-row"><span>Alertas generadas</span><span id="pdfAlertas">3 alertas críticas</span></div>
+                <div class="pdf-row"><span>Datos validados</span><span id="pdfValidados">94%</span></div>
+                <div class="pdf-row"><span>Investigador</span><span id="pdfInvestigador">Jose Aguilar</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/mis-reportes.js?v=3" defer></script>
+</body>
+</html>

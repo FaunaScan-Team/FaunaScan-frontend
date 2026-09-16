@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/catalogo.css?v=3">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link active">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Catálogo de especies</h1>
+      </div>
+
+      <div class="catalogo-toolbar">
+        <input class="form-input" type="search" id="catalogoSearch" placeholder="Buscar especie...">
+        <select class="form-input form-input--sm" id="filtroEstado">
+          <option value="">Todos los estados</option>
+          <option value="critico">En peligro crítico</option>
+          <option value="vulnerable">Vulnerable</option>
+          <option value="casi">Casi amenazado</option>
+          <option value="menor">Preocupación menor</option>
+        </select>
+      </div>
+
+      <div class="catalogo-grid" id="catalogoGrid">
+        <article class="especie-card" data-nombre="Cóndor andino" data-estado="vulnerable">
+          <div class="especie-card__img">
+            <img src="assets/images/Condor.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Cóndor andino</h3>
+            <p class="especie-card__cientifico">Vultur gryphus</p>
+            <span class="badge badge-yellow">Vulnerable</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Oso de anteojos" data-estado="vulnerable">
+          <div class="especie-card__img">
+            <img src="assets/images/OsoDeAnteojos.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Oso de anteojos</h3>
+            <p class="especie-card__cientifico">Tremarctos ornatus</p>
+            <span class="badge badge-yellow">Vulnerable</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Jaguar" data-estado="critico">
+          <div class="especie-card__img">
+            <img src="assets/images/Jaguar.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Jaguar</h3>
+            <p class="especie-card__cientifico">Panthera onca</p>
+            <span class="badge badge-red">En peligro crítico</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Guacamayo rojo" data-estado="menor">
+          <div class="especie-card__img">
+            <img src="assets/images/Guacamayo.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Guacamayo rojo</h3>
+            <p class="especie-card__cientifico">Ara macao</p>
+            <span class="badge badge-green">Preocupación menor</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Tapir amazónico" data-estado="vulnerable">
+          <div class="especie-card__img">
+            <img src="assets/images/Tapir.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Tapir amazónico</h3>
+            <p class="especie-card__cientifico">Tapirus terrestris</p>
+            <span class="badge badge-yellow">Vulnerable</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Delfín rosado" data-estado="critico">
+          <div class="especie-card__img">
+            <img src="assets/images/Delfin.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Delfín rosado</h3>
+            <p class="especie-card__cientifico">Inia geoffrensis</p>
+            <span class="badge badge-red">En peligro crítico</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Anaconda verde" data-estado="menor">
+          <div class="especie-card__img">
+            <img src="assets/images/Anaconda.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Anaconda verde</h3>
+            <p class="especie-card__cientifico">Eunectes murinus</p>
+            <span class="badge badge-green">Preocupación menor</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Llama andina" data-estado="menor">
+          <div class="especie-card__img">
+            <img src="assets/images/Llama.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Llama andina</h3>
+            <p class="especie-card__cientifico">Lama glama</p>
+            <span class="badge badge-green">Preocupación menor</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Lobo marino" data-estado="casi">
+          <div class="especie-card__img">
+            <img src="assets/images/LoboMarino.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Lobo marino</h3>
+            <p class="especie-card__cientifico">Otaria flavescens</p>
+            <span class="badge badge-blue">Casi amenazado</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Mono choro" data-estado="critico">
+          <div class="especie-card__img">
+            <img src="assets/images/MonoChoro.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Mono choro</h3>
+            <p class="especie-card__cientifico">Lagothrix lagotricha</p>
+            <span class="badge badge-red">En peligro crítico</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Puma" data-estado="menor">
+          <div class="especie-card__img">
+            <img src="assets/images/Puma.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Puma</h3>
+            <p class="especie-card__cientifico">Puma concolor</p>
+            <span class="badge badge-green">Preocupación menor</span>
+          </div>
+        </article>
+        <article class="especie-card" data-nombre="Manatí amazónico" data-estado="critico">
+          <div class="especie-card__img">
+            <img src="assets/images/Manati.png">
+          </div>
+          <div class="especie-card__body">
+            <h3 class="especie-card__nombre">Manatí amazónico</h3>
+            <p class="especie-card__cientifico">Trichechus inunguis</p>
+            <span class="badge badge-red">En peligro crítico</span>
+          </div>
+        </article>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/catalogo.js?v=3" defer></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades recientes — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/actividades.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link active">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Actividades Recientes</h1>
+      </div>
+
+      <div class="actividades-layout">
+        <ul class="actividades-list" id="actividadesList">
+          <li class="actividad-item actividad-item--active" data-especie="Guacamayo Rojo" data-usuario="Sergio E." data-zona="Bosque El Zárate" data-lugar="Tambopata, Madre de Dios" data-lat="-12.0464" data-lng="-77.0428" data-imagen="assets/images/GuacamayoRojoVerMas.png">
+            <img src="assets/images/Guacamayo.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Guacamayo Rojo</p><p class="actividad-item__lugar">📍 Tambopata, Madre de Dios</p></div>
+          </li>
+          <li class="actividad-item" data-especie="Jaguar" data-usuario="Roberto S." data-zona="Reserva Amazónica" data-lugar="Manu, Madre de Dios" data-lat="-12.2761" data-lng="-70.9128" data-imagen="assets/images/JaguarVerMas.png">
+            <img src="assets/images/Jaguar.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Jaguar</p><p class="actividad-item__lugar">📍 Manu, Madre de Dios</p></div>
+          </li>
+          <li class="actividad-item" data-especie="Delfín Rosado" data-usuario="Kevin A." data-zona="Río Amazonas" data-lugar="Río Amazonas, Iquitos" data-lat="-3.7491" data-lng="-73.2538" data-imagen="assets/images/DelfinRosadoVerMas.png">
+            <img src="assets/images/Delfin.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Delfín Rosado</p><p class="actividad-item__lugar">📍 Río Amazonas, Iquitos</p></div>
+          </li>
+          <li class="actividad-item" data-especie="Gallito de las Rocas" data-usuario="Kevin A." data-zona="Parque Nacional Yanachaga" data-lugar="Parque Nacional Yanachaga Chemillén" data-lat="-10.5" data-lng="-75.4" data-imagen="assets/images/GallitoDeLasRocasVerMas.png">
+            <img src="assets/images/GallitoDeLasRocas.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Gallito de las Rocas</p><p class="actividad-item__lugar">📍 Parque Nacional Yanachaga Chemillén</p></div>
+          </li>
+          <li class="actividad-item" data-especie="Vizcacha Peruana" data-usuario="Sergio E." data-zona="Parque Nacional Huascarán" data-lugar="Parque Nacional Huascarán" data-lat="-9.1" data-lng="-77.6" data-imagen="assets/images/VizcachaVerMas.png">
+            <img src="assets/images/Vizcacha.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Vizcacha Peruana</p><p class="actividad-item__lugar">📍 Parque Nacional Huascarán</p></div>
+          </li>
+          <li class="actividad-item" data-especie="Paiche" data-usuario="Roberto S." data-zona="Río Amazonas" data-lugar="Río Amazonas, Iquitos" data-lat="-3.75" data-lng="-73.25" data-imagen="assets/images/PaicheVerMas.png">
+            <img src="assets/images/Paiche.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Paiche</p><p class="actividad-item__lugar">📍 Río Amazonas, Iquitos</p></div>
+          </li>
+          <li class="actividad-item" data-especie="Nutria Gigante" data-usuario="Kevin A." data-zona="Río Madre de Dios" data-lugar="Río Madre de Dios, Madre de Dios" data-lat="-12.6" data-lng="-69.2" data-imagen="assets/images/NutriaVerMas.png">
+            <img src="assets/images/Nutria.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Nutria Gigante</p><p class="actividad-item__lugar">📍 Río Madre de Dios, Madre de Dios</p></div>
+          </li>
+          <li class="actividad-item" data-especie="Zorro Andino" data-usuario="Sergio E." data-zona="Parque Nacional Huascarán" data-lugar="Parque Nacional Huascarán" data-lat="-9.2" data-lng="-77.5" data-imagen="assets/images/ZorroVerMas.png">
+            <img src="assets/images/Zorro.png" class="actividad-item__img">
+            <div class="actividad-item__info"><p class="actividad-item__nombre">Zorro Andino</p><p class="actividad-item__lugar">📍 Parque Nacional Huascarán</p></div>
+          </li>
+        </ul>
+
+        <div class="actividad-detalle card" id="actividadDetalle">
+          <h3 class="card__title">Registro</h3>
+          <h2 class="actividad-detalle__especie" id="detEspecie">Guacamayo Rojo</h2>
+          <div class="actividad-detalle__foto" id="detFoto"></div>
+          <p class="actividad-detalle__texto" id="detTexto">Sergio E. registró Guacamayo rojo · Bosque de Zárate</p>
+          <p class="actividad-detalle__lugar" id="detLugar">📍 Tambopata, Madre de Dios</p>
+          <h4 class="actividad-detalle__subtitulo">Ubicación</h4>
+          <div class="actividad-detalle__mapa" id="detMapa">
+            <span class="actividad-detalle__pin">📍 <span id="detZona">Bosque El Olivar</span></span>
+          </div>
+          <div class="actividad-detalle__coords">
+            <span>Lat: <strong id="detLat">-12.0464</strong></span>
+            <span>Lng: <strong id="detLng">-77.0428</strong></span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/actividades.js?v=3" defer></script>
+</body>
+</html>

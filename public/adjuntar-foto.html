@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adjuntar fotografía — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/adjuntar-foto.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link active">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Adjuntar fotografía</h1>
+      </div>
+
+      <div class="adjuntar-layout">
+        <div class="card">
+          <div class="dropzone" id="dropzone">
+            <p class="dropzone__title">Selecciona una imagen de tu galería</p>
+            <p class="dropzone__sub">Arrastra aquí o haz clic para explorar tus fotos</p>
+            <p class="dropzone__formats">JPG, PNG, WEBP · Máx. 10 MB por foto</p>
+            <input type="file" id="fotoGaleriaInput" accept="image/*" style="display:none">
+          </div>
+          <p class="adjuntar-fuente-label">o selecciona la fuente</p>
+          <div class="fuente-buttons">
+            <button class="btn btn-outline" id="btnGaleria">Galería</button>
+            <button class="btn btn-outline" id="btnNube">Nube</button>
+          </div>
+
+          <h4 class="adjuntar-subtitulo">Fotos recientes — selecciona la que deseas adjuntar</h4>
+          <div class="fotos-recientes" id="fotosRecientes">
+
+            <button class="foto-reciente" data-nombre="IMG_20260508_094137.jpg" data-emoji="🦎">
+              <div class="foto-reciente__preview">
+                <img src="assets/images/Reciente1.png" class="foto-reciente__img">
+              </div>
+              <span class="foto-reciente__nombre">IMG_20260508_094137.jpg</span>
+            </button>
+
+            <button class="foto-reciente" data-nombre="IMG_20260508_094201.jpg" data-emoji="🦎">
+              <div class="foto-reciente__preview">
+                <img src="assets/images/Reciente2.png" class="foto-reciente__img">
+              </div>
+              <span class="foto-reciente__nombre">IMG_20260508_094201.jpg</span>
+            </button>
+
+            <button class="foto-reciente" data-nombre="IMG_20260508_093845.jpg" data-emoji="🐍">
+              <div class="foto-reciente__preview">
+                <img src="assets/images/Reciente3.png" class="foto-reciente__img">
+              </div>
+              <span class="foto-reciente__nombre">IMG_20260508_093845.jpg</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card adjuntar-preview">
+          <h3 class="card__title">Vista previa</h3>
+          <div class="preview-img" id="previewImg">
+            <img id="previewImage" src="" alt="">
+          </div>
+          <div class="preview-meta">
+            <div class="preview-meta__row"><span>Archivo</span><span id="metaArchivo">—</span></div>
+            <div class="preview-meta__row"><span>Tamaño</span><span id="metaTamano">—</span></div>
+            <div class="preview-meta__row"><span>Resolución</span><span id="metaResolucion">—</span></div>
+            <div class="preview-meta__row"><span>Estado</span><span id="metaEstado">—</span></div>
+          </div>
+          <div class="preview-info-box">
+            Esta foto puede usarse para identificación automática de especie con IA al completar el registro.
+          </div>
+          <button class="btn btn-primary btn-full mt-5" id="btnAsociar" disabled>Asociar foto al registro</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/adjuntar-foto.js?v=3" defer></script>
+</body>
+</html>

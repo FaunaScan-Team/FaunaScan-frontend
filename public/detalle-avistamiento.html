@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de avistamiento — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/detalle-avistamiento.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link active">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Historial</h1>
+      </div>
+
+      <div class="detalle-layout">
+        <div>
+          <div class="detalle-foto" id="detalleFoto">
+          </div>
+          <h4 class="detalle-subtitulo">Ubicación</h4>
+          <div class="detalle-mapa" id="detalleMapa">
+            <span class="detalle-mapa__pin">📍 <span id="detalleZona">Bosque El Olivar</span></span>
+          </div>
+          <div class="detalle-coords">
+            <span>Lat: <strong id="detalleLat">-12.0464</strong></span>
+            <span>Lng: <strong id="detalleLng">-77.0428</strong></span>
+          </div>
+        </div>
+
+        <div>
+          <div id="detalleVistaNormal">
+            <div class="detalle-banner" id="detalleBanner">
+              <div class="detalle-banner__foto">
+                <img src="assets/images/oso.png" alt="Oso de anteojos">
+              </div>
+              <div class="detalle-banner__info">
+                <h2 class="detalle-banner__nombre" id="detalleNombre">Oso de Anteojos</h2>
+                <p class="detalle-banner__cientifico" id="detalleCientifico">Tremarctos ornatus</p>
+                <div class="detalle-banner__badges">
+                  <span class="badge badge-yellow" id="detalleEstadoEspecie">VULNERABLE (VU)</span>
+                  <span class="badge badge-gray" id="detalleEstadoValidacion">No Validado</span>
+                </div>
+              </div>
+            </div>
+
+            <h4 class="detalle-subtitulo">Observaciones</h4>
+            <p class="detalle-observacion" id="detalleObservacion">El animal descansaba sobre una roca al sol, aproximadamente a 3 metros del observador. Se observaron uno adulto y 2 pequeños.</p>
+
+            <div class="detalle-chips" id="detalleChips">
+              <span class="detalle-chip">☀️ Soleado</span>
+              <span class="detalle-chip">Grupo familiar</span>
+            </div>
+
+            <div class="detalle-metrics">
+              <div class="form-group"><label class="form-label">TEMP °C</label><input class="form-input" type="text" id="detalleTemp" value="24" readonly></div>
+              <div class="form-group"><label class="form-label">Humedad %</label><input class="form-input" type="text" id="detalleHumedad" value="68" readonly></div>
+              <div class="form-group"><label class="form-label">N° de individuos</label><input class="form-input" type="text" id="detalleIndividuos" value="3" readonly></div>
+            </div>
+
+            <button class="btn btn-danger btn-full mt-6" id="btnEliminar" data-modal="modalEliminar">Eliminar</button>
+            <button class="btn btn-outline btn-full mt-3" id="btnEditar">Editar</button>
+          </div>
+
+          <form id="detalleEditView" style="display:none;">
+            <h4 class="detalle-subtitulo"><span>📋</span> Observaciones</h4>
+            <div class="form-group mb-4">
+              <label class="form-label">Especie</label>
+              <input class="form-input form-input--edit" type="text" id="editEspecieInput" value="Oso de anteojos">
+            </div>
+            <div class="form-group mb-4">
+              <label class="form-label">Fecha y hora</label>
+              <input class="form-input form-input--edit" type="text" id="editFechaInput" value="9/05/2026 - 14:25 PM">
+            </div>
+            <div class="form-group mb-5">
+              <label class="form-label">Observaciones</label>
+              <textarea class="form-input form-input--edit" id="editObsTextarea" rows="3">Naturaleza alegre, el clima es soleado</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Guardar cambios</button>
+            <button type="button" class="btn btn-outline btn-full mt-3" id="btnCancelarEdicionDetalle">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="modalEliminar">
+    <div class="modal-card">
+      <h3 class="modal-card__title">Eliminar</h3>
+      <p class="modal-card__text">¿Estás seguro que deseas eliminar? No se podrá recuperar la información</p>
+      <button class="btn btn-danger btn-full" id="btnConfirmarEliminar">Eliminar</button>
+      <button class="btn btn-outline btn-full mt-3" id="btnCancelarEliminar">Cancelar</button>
+      <p class="modal-card__footer">Serás redirigido al <strong>historial</strong></p>
+    </div>
+  </div>
+
+  <script src="assets/scripts/detalle-avistamiento.js?v=3" defer></script>
+</body>
+</html>

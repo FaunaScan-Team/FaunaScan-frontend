@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Observaciones — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/observaciones.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link active">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Observaciones</h1>
+      </div>
+
+      <div class="observaciones-layout">
+        <div>
+          <div class="card">
+            <h3 class="card__title">Sección de observaciones</h3>
+            <div class="entorno-box">
+              <p class="entorno-box__titulo">Condiciones del entorno</p>
+              <p class="entorno-box__sub">Selecciona las condiciones climáticas al momento del avistamiento</p>
+            </div>
+            <div class="clima-grid" id="climaGrid">
+              <button class="clima-btn" data-clima="Soleado">☀️<span>Soleado</span></button>
+              <button class="clima-btn" data-clima="Parcial nublado">🌤️<span>Parcial nublado</span></button>
+              <button class="clima-btn" data-clima="Lluvioso">🌧️<span>Lluvioso</span></button>
+              <button class="clima-btn" data-clima="Nublado">☁️<span>Nublado</span></button>
+              <button class="clima-btn" data-clima="Ventoso">🌬️<span>Ventoso</span></button>
+              <button class="clima-btn" data-clima="Tormenta">⛈️<span>Tormenta</span></button>
+              <button class="clima-btn" data-clima="Frío intenso">❄️<span>Frío intenso</span></button>
+              <button class="clima-btn" data-clima="Caluroso">🌡️<span>Caluroso</span></button>
+            </div>
+            <div class="metrics-grid">
+              <div class="form-group"><label class="form-label">Temperatura (°C)</label><input class="form-input" type="number" id="obsTemp"></div>
+              <div class="form-group"><label class="form-label">Humedad (%)</label><input class="form-input" type="number" id="obsHumedad"></div>
+              <div class="form-group"><label class="form-label">N° de individuos</label><input class="form-input" type="number" id="obsIndividuos"></div>
+            </div>
+          </div>
+
+          <div class="card mt-6">
+            <h3 class="card__title">Notas libres del observador</h3>
+            <div class="form-group">
+              <label class="form-label">Descripción del avistamiento</label>
+              <textarea class="form-input" id="obsDescripcion" rows="4" maxlength="500" placeholder="Describe el comportamiento observado…"></textarea>
+              <p class="char-counter"><span id="charCount">0</span> / 500 caracteres</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Etiquetas de observación</label>
+              <div class="tags-box" id="tagsBox">
+                <input type="text" id="tagInput" placeholder="+ Agregar etiqueta…">
+              </div>
+            </div>
+            <button class="btn btn-primary btn-full mt-4" id="btnGuardarObs">Guardar observaciones</button>
+          </div>
+        </div>
+
+        <div class="card resumen-card">
+          <h3 class="card__title">Resumen del registro</h3>
+          <div class="resumen-row"><span>Especie</span><span id="resEspecie">-</span></div>
+          <div class="resumen-row"><span>Individuos</span><span id="resIndividuos">-</span></div>
+          <div class="resumen-row"><span>Fecha</span><span id="resFecha">-</span></div>
+          <div class="resumen-row"><span>Ubicación</span><span id="resUbicacion">-</span></div>
+          <div class="resumen-row"><span>Foto</span><span id="resFoto">-</span></div>
+          <div class="resumen-row"><span>Observaciones</span><span id="resObservaciones">-</span></div>
+          <div class="resumen-clima" id="resumenClima" style="display:none;">
+            <span id="resumenClimaIcon">☀️</span>
+            <div><p class="resumen-clima__nombre" id="resumenClimaNombre">Soleado · 24°C</p><p class="resumen-clima__sub" id="resumenClimaSub">Humedad 68% · Hora 09:42</p></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/observaciones.js?v=3" defer></script>
+</body>
+</html>

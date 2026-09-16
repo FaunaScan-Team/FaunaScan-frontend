@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi perfil — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/perfil.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link active">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Mi perfil</h1>
+      </div>
+
+      <div class="perfil-layout">
+        <div class="perfil-card card">
+          <div class="perfil-avatar" id="perfilAvatar">U</div>
+          <h2 class="perfil-name" id="perfilName">Usuario</h2>
+          <span class="badge badge-green perfil-role" id="perfilRole">Investigador</span>
+          <p class="perfil-email" id="perfilEmail">usuario@email.com</p>
+
+          <div class="perfil-stats">
+            <div class="perfil-stat">
+              <span class="perfil-stat__num">142</span>
+              <span class="perfil-stat__label">Avistamientos</span>
+            </div>
+            <div class="perfil-stat">
+              <span class="perfil-stat__num">38</span>
+              <span class="perfil-stat__label">Especies</span>
+            </div>
+            <div class="perfil-stat">
+              <span class="perfil-stat__num">7</span>
+              <span class="perfil-stat__label">Zonas</span>
+            </div>
+          </div>
+
+          <button class="btn btn-outline btn-full mb-3" id="btnEditarPerfil">Editar perfil</button>
+          <button class="btn btn-danger btn-full" id="btnLogout" data-modal="modalLogout">Cerrar sesión</button>
+        </div>
+
+        <div class="perfil-info">
+          <div class="card" id="cardInfoPersonal">
+            <h3 class="card__title">Información personal</h3>
+            <div class="info-grid" id="infoPersonalView">
+              <div class="info-item">
+                <span class="info-item__label">Nombre completo</span>
+                <span class="info-item__value" id="perfilFullName">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-item__label">Correo electrónico</span>
+                <span class="info-item__value" id="perfilEmailInfo">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-item__label">Rol</span>
+                <span class="info-item__value" id="perfilRoleInfo">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-item__label">Miembro desde</span>
+                <span class="info-item__value">Mayo 2026</span>
+              </div>
+            </div>
+
+            <form class="info-grid" id="infoPersonalForm" style="display:none;">
+              <div class="form-group">
+                <label class="form-label">Nombre</label>
+                <input class="form-input" type="text" id="editNombre">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Apellido</label>
+                <input class="form-input" type="text" id="editApellido">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Correo electrónico</label>
+                <input class="form-input" type="email" id="editEmail">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Teléfono</label>
+                <input class="form-input" type="tel" id="editTelefono" placeholder="+51 123 456 789">
+              </div>
+              <div class="form-group form-group--full">
+                <label class="form-label">Institución</label>
+                <input class="form-input" type="text" id="editInstitucion" placeholder="Ej: Universidad Peruana de Ciencias Aplicadas">
+              </div>
+              <div class="form-group form-group--full">
+                <label class="form-label">Biografía profesional</label>
+                <textarea class="form-input" id="editBio" rows="3" placeholder="Cuéntanos sobre tu experiencia investigando fauna silvestre…"></textarea>
+              </div>
+              <div class="info-grid__actions">
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <button type="button" class="btn btn-outline" id="btnCancelarEdicion">Cancelar</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title">Logros obtenidos</h3>
+            <div class="achievements-list">
+              <span class="badge badge-green">investigador</span>
+              <span class="badge badge-green">100 registros</span>
+              <span class="badge badge-green">5 zonas</span>
+              <span class="badge badge-green">IA explorador</span>
+              <span class="badge badge-blue">14 días seguidos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="modalLogout">
+    <div class="modal-card">
+      <h3 class="modal-card__title">¿Cerrar sesión?</h3>
+      <p class="modal-card__text">¿Estás seguro que deseas salir? Tus datos están guardados de forma segura.</p>
+      <div class="modal-card__user">
+        <div class="perfil-avatar perfil-avatar--sm" id="modalAvatar">U</div>
+        <div>
+          <p class="modal-card__user-name" id="modalUserName">Usuario</p>
+          <p class="modal-card__user-email" id="modalUserEmail">usuario@email.com</p>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-full" id="btnConfirmarLogout">Cerrar sesión</button>
+      <button class="btn btn-outline btn-full mt-3" id="btnCancelarLogout">Cancelar</button>
+      <p class="modal-card__footer">Serás redirigido a la <strong>pantalla inicial</strong></p>
+    </div>
+  </div>
+
+  <script src="assets/scripts/perfil.js?v=3" defer></script>
+</body>
+</html>

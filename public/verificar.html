@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/verificar.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link active">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Verificar avistamientos</h1>
+      </div>
+
+      <div class="verificar-header">
+        <p class="verificar-count"><strong id="pendienteCount">3</strong> avistamientos pendientes de verificación</p>
+      </div>
+
+      <div class="verificar-list" id="verificarList">
+        <div class="verificar-item card" data-id="1">
+          <div class="verificar-item__img verificar-item__img--clickable" data-zona="Bosque El Olivar">
+            <img src="assets/images/OsoDeAnteojos.png" alt="Oso de anteojos">
+          </div>
+          <div class="verificar-item__info">
+            <h3 class="verificar-item__nombre">Oso de anteojos</h3>
+            <p class="verificar-item__cientifico">Tremarctos ornatus</p>
+            <p class="verificar-item__meta">📍 Bosque El Olivar · Kevin A. · 09/05/2026 10:58</p>
+            <p class="verificar-item__obs">Individuo adulto, avistado solitario cerca del río. Sin comportamiento agresivo.</p>
+          </div>
+          <div class="verificar-item__status">
+            <span class="badge badge-yellow status-badge">PENDIENTE</span>
+          </div>
+          <div class="verificar-item__actions">
+            <button class="btn btn-primary btn-sm btn-validar">Validar</button>
+            <button class="btn btn-outline btn-sm btn-rechazar">Rechazar</button>
+          </div>
+        </div>
+
+        <div class="verificar-item card" data-id="2">
+          <div class="verificar-item__img verificar-item__img--clickable" data-zona="Reserva Amazónica">
+            <img src="assets/images/Anaconda.png" alt="Anaconda verde">
+          </div>
+          <div class="verificar-item__info">
+            <h3 class="verificar-item__nombre">Anaconda verde</h3>
+            <p class="verificar-item__cientifico">Eunectes murinus</p>
+            <p class="verificar-item__meta">📍 Reserva Amazónica · Roberto S. · 08/05/2026 14:22</p>
+            <p class="verificar-item__obs">Serpiente de aprox. 4 metros descansando en orilla del río.</p>
+          </div>
+          <div class="verificar-item__status">
+            <span class="badge badge-yellow status-badge">PENDIENTE</span>
+          </div>
+          <div class="verificar-item__actions">
+            <button class="btn btn-primary btn-sm btn-validar">Validar</button>
+            <button class="btn btn-outline btn-sm btn-rechazar">Rechazar</button>
+          </div>
+        </div>
+
+        <div class="verificar-item card" data-id="3">
+          <div class="verificar-item__img verificar-item__img--clickable" data-zona="Bosque de Zárate">
+            <img src="assets/images/Condor.png" alt="Cóndor andino">
+          </div>
+          <div class="verificar-item__info">
+            <h3 class="verificar-item__nombre">Cóndor andino</h3>
+            <p class="verificar-item__cientifico">Vultur gryphus</p>
+            <p class="verificar-item__meta">📍 Bosque de Zárate · Sergio E. · 07/05/2026 09:15</p>
+            <p class="verificar-item__obs">Pareja de cóndores en vuelo sobre la quebrada. Fotos claras adjuntas.</p>
+          </div>
+          <div class="verificar-item__status">
+            <span class="badge badge-yellow status-badge">PENDIENTE</span>
+          </div>
+          <div class="verificar-item__actions">
+            <button class="btn btn-primary btn-sm btn-validar">Validar</button>
+            <button class="btn btn-outline btn-sm btn-rechazar">Rechazar</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/verificar.js?v=3" defer></script>
+</body>
+</html>

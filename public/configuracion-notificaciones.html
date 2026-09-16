@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración de notificaciones — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/configuracion-notificaciones.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link active">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      
+      <div class="confignotif-layout">
+        <div class="card">
+          <h3 class="card__title">Categorías de notificaciones</h3>
+          <div class="notifcat-row" data-category="vulnerables" data-titulo="Alertas de especies vulnerables" data-icon="🔔" data-color="#fde8e6">
+            <span class="notifcat-row__icon notifcat-row__icon--red">🔔</span>
+            <div class="notifcat-row__info"><p class="notifcat-row__titulo">Alertas de especies vulnerables</p><p class="notifcat-row__desc">Notificación inmediata al registrar especie en estado crítico</p></div>
+            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__slider"></span></label>
+          </div>
+          <div class="notifcat-row" data-category="ausencia" data-titulo="Ausencia prolongada de especie" data-icon="🧬" data-color="#e8f0fe">
+            <span class="notifcat-row__icon notifcat-row__icon--blue">🧬</span>
+            <div class="notifcat-row__info"><p class="notifcat-row__titulo">Ausencia prolongada de especie</p><p class="notifcat-row__desc">Alerta cuando una especie supera el umbral sin registros</p></div>
+            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__slider"></span></label>
+          </div>
+          <div class="notifcat-row" data-category="bd" data-titulo="Actualizaciones de la base de datos" data-icon="📚" data-color="#fde8e6">
+            <span class="notifcat-row__icon notifcat-row__icon--red">📚</span>
+            <div class="notifcat-row__info"><p class="notifcat-row__titulo">Actualizaciones de la base de datos</p><p class="notifcat-row__desc">Nuevas especies, cambios de estado IUCN, correcciones</p></div>
+            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__slider"></span></label>
+          </div>
+          <div class="notifcat-row" data-category="validacion" data-titulo="Validación de mis registros" data-icon="✔️" data-color="#e8f5ee">
+            <span class="notifcat-row__icon notifcat-row__icon--green">✔️</span>
+            <div class="notifcat-row__info"><p class="notifcat-row__titulo">Validación de mis registros</p><p class="notifcat-row__desc">Cuando un investigador valide o rechace mis avistamientos</p></div>
+            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__slider"></span></label>
+          </div>
+          <div class="notifcat-row" data-category="sync" data-titulo="Sincronización offline" data-icon="📡" data-color="#e8f0fe">
+            <span class="notifcat-row__icon notifcat-row__icon--blue">📡</span>
+            <div class="notifcat-row__info"><p class="notifcat-row__titulo">Sincronización offline</p><p class="notifcat-row__desc">Confirmación al sincronizar registros guardados sin conexión</p></div>
+            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__slider"></span></label>
+          </div>
+          <div class="notifcat-row" data-category="mantenimiento" data-titulo="Mantenimiento del sistema" data-icon="🛠️" data-color="#e8f5ee">
+            <span class="notifcat-row__icon notifcat-row__icon--green">🛠️</span>
+            <div class="notifcat-row__info"><p class="notifcat-row__titulo">Mantenimiento del sistema</p><p class="notifcat-row__desc">Avisos de mantenimiento programado con 24h de anticipación</p></div>
+            <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__slider"></span></label>
+          </div>
+          <button class="btn btn-primary btn-full mt-6" id="btnGuardarNotif">Guardar</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card__title">Vista previa</h3>
+          <p class="vista-previa__desc">Las categorías activas aparecen como notificaciones. Las inactivas se silencian.</p>
+          <ul class="vista-previa__list" id="vistaPreviaList">
+            <li class="vista-previa__item" data-category="vulnerables"><span class="vista-previa__dot vista-previa__dot--red"></span><span class="vista-previa__texto"><strong>Oso de anteojos detectado</strong></span><span class="vista-previa__tiempo">Ahora</span></li>
+            <li class="vista-previa__item" data-category="ausencia"><span class="vista-previa__dot vista-previa__dot--yellow"></span><span class="vista-previa__texto"><strong>Cóndor andino</strong> - 47 días sin registro</span><span class="vista-previa__tiempo">3h</span></li>
+            <li class="vista-previa__item" data-category="bd"><span class="vista-previa__dot vista-previa__dot--gray"></span><span class="vista-previa__texto">BD actualizada - 12 especies</span><span class="vista-previa__tiempo">Silenciado</span></li>
+            <li class="vista-previa__item" data-category="validacion"><span class="vista-previa__dot vista-previa__dot--green"></span><span class="vista-previa__texto">Tu registro fue validado</span><span class="vista-previa__tiempo">1h</span></li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/configuracion-notificaciones.js?v=3" defer></script>
+</body>
+</html>

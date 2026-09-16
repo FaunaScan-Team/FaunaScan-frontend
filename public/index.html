@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="assets/styles/index.css?v=4">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FaunaScan</title>
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header>
+    <nav class="navbar">
+      <div class="navbar__inner">
+
+        <a href="index.html" class="navbar__logo" aria-label="FaunaScan — Inicio">
+          <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="navbar__logo-img">
+          <span class="navbar__logo-text">FaunaScan</span>
+        </a>
+
+        <ul class="navbar__nav">
+          <li><a href="index.html" class="navbar__link active">Inicio</a></li>
+          <li><a href="#monitoreo" class="navbar__link">Monitoreo</a></li>
+          <li><a href="#impacto" class="navbar__link">Impacto</a></li>
+          <li><a href="#app" class="navbar__link">App</a></li>
+          <li><a href="#ayuda" class="navbar__link">Ayuda</a></li>
+        </ul>
+
+        <div class="navbar__actions">
+          <a href="login.html" class="navbar__btn-login">Iniciar sesión</a>
+          <a href="register.html" class="navbar__btn-register">Registrarse</a>
+        </div>
+
+        <button class="navbar__toggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+
+      </div>
+    </nav>
+
+    <nav class="navbar__mobile" id="mobileMenu">
+      <a href="index.html" class="navbar__mobile-link active">Inicio</a>
+      <a href="#monitoreo" class="navbar__mobile-link">Monitoreo</a>
+      <a href="#impacto" class="navbar__mobile-link">Impacto</a>
+      <a href="#app" class="navbar__mobile-link">App</a>
+      <a href="#ayuda" class="navbar__mobile-link">Ayuda</a>
+      <div class="navbar__mobile-divider"></div>
+      <div class="navbar__mobile-actions">
+        <a href="login.html" class="btn btn-outline btn-full">Iniciar sesión</a>
+        <a href="register.html" class="btn btn-primary btn-full">Registrarse</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__content">
+          <span class="hero__tag">
+            Tecnología de conservación
+          </span>
+          <h1 class="hero__headline">
+            Vigilancia Ecológica en Tiempo Real: FaunaScan Perú
+          </h1>
+          <p class="hero__description">
+            Supera el registro manual y desorganizado. Monitorea la fauna silvestre incluso en las zonas más remotas sin internet.
+          </p>
+          <div class="hero__cta">
+            <a href="register.html" class="btn btn-primary btn-lg">Registrarse</a>
+            <a href="login.html" class="btn btn-outline btn-lg">Iniciar sesión</a>
+          </div>
+        </div>
+
+        <div class="hero__image-wrap">
+          <div class="hero__image-placeholder hero__image-placeholder--filled">
+            <img src="assets/images/Guacamayos.png" alt="Fauna silvestre monitoreada por FaunaScan" class="hero__image">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="features section" id="monitoreo">
+      <div class="container">
+        <header class="features__header">
+          <h2 class="features__title">Tecnología diseñada para la selva</h2>
+          <p class="features__subtitle">Unimos innovación digital y trabajo en campo para cuidar la fauna.</p>
+        </header>
+
+        <div class="features__grid">
+
+          <!-- Modo Offline -->
+          <article class="feature-card feature-card--large">
+            <div>
+              <div class="feature-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+              </div>
+              <h3 class="feature-card__title feature-card__title--spaced">Modo Offline</h3>
+              <p class="feature-card__desc">Permite registrar datos offline y sincroniza automáticamente al volver la conexión. Ideal para el trabajo continuo en la Amazonía.</p>
+            </div>
+            <img src="assets/images/GallitoDeLasRocasInicio.png" alt="Monitoreo de fauna en modo offline" class="feature-card__img-large">
+          </article>
+
+          <!-- Identifica con IA -->
+          <article class="feature-card feature-card--with-image">
+            <div class="feature-card__body">
+              <div class="feature-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="3"/></svg>
+              </div>
+              <h3 class="feature-card__title feature-card__title--spaced">Identifica con IA</h3>
+              <p class="feature-card__desc">Identificación de especies en tiempo real mediante visión por computadora, directamente desde la plataforma web.</p>
+            </div>
+            <img src="assets/images/Vicuna.png" alt="Fauna identificada por IA" class="feature-card__img feature-card__img-placeholder">
+          </article>
+
+          <!-- Alertas -->
+          <article class="feature-card">
+            <div class="feature-card__icon feature-card__icon--orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <h3 class="feature-card__title">Alertas en Tiempo Real</h3>
+            <p class="feature-card__desc">Notificaciones rápidas de amenazas detectadas o hallazgos científicos.</p>
+          </article>
+
+          <!-- Mapas Dinámicos -->
+          <article class="feature-card">
+            <div class="feature-card__icon feature-card__icon--blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            </div>
+            <h3 class="feature-card__title">Mapas Dinámicos</h3>
+            <p class="feature-card__desc">Visualización de mapas dinámicos con localizadores de registros cercanos a tu área.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BENEFITS ============ -->
+    <section class="benefits" id="impacto">
+      <div class="container">
+        <h2 class="sr-only" id="benefits-title">Ventajas de FaunaScan</h2>
+        <div class="benefits__grid">
+
+          <article class="benefit-item">
+            <div class="benefit-item__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="benefit-item__title">Registro sin demoras</h3>
+            <p class="benefit-item__desc">Optimizado para registrar datos en segundos, disminuyendo la carga de trabajo.</p>
+          </article>
+
+          <article class="benefit-item">
+            <div class="benefit-item__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h3 class="benefit-item__title">Precisión de datos</h3>
+            <p class="benefit-item__desc">Validación automática y geolocalización de alta precisión incorporada en cada registro.</p>
+          </article>
+
+          <article class="benefit-item">
+            <div class="benefit-item__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3 class="benefit-item__title">Diseñado para zonas rurales</h3>
+            <p class="benefit-item__desc">Interfaz de alto contraste bajo la luz directa del sol y botones de gran tamaño.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA / EMPEZAR ============ -->
+    <section class="cta-section" id="app">
+      <div class="cta-section__inner">
+        <div class="cta-section__content">
+          <h2 class="cta-section__title">Todo el poder científico, directo desde tu navegador</h2>
+          <p class="cta-section__desc">FaunaScan Perú es una plataforma 100% web, sin instalaciones ni descargas. Accede desde cualquier computadora, tablet o celular con conexión a internet y empieza a registrar avistamientos hoy mismo.</p>
+          <div class="cta-section__buttons">
+            <a href="register.html" class="btn btn-lg" style="background:#FFFFFF;color:var(--color-primary);">Crear cuenta gratis</a>
+            <a href="login.html" class="btn btn-outline btn-lg" style="border-color:#FFFFFF;color:#FFFFFF;">Ya tengo cuenta</a>
+          </div>
+        </div>
+
+        <div class="cta-section__phone">
+          <img src="assets/images/JaguarVerMas.png" alt="Fauna silvestre registrada en FaunaScan" class="cta-section__phone-image">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="ayuda" aria-label="Pie de página">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo" aria-label="FaunaScan">
+            <img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="footer__logo-img">
+            <span class="footer__logo-text">FaunaScan</span>
+          </a>
+          <p class="footer__brand-desc">Plataforma de conservación ecológica en tiempo real para el monitoreo de fauna silvestre en el Perú.</p>
+        </div>
+
+        <nav aria-label="Producto">
+          <h3 class="footer__col-title">Producto</h3>
+          <ul class="footer__links" role="list">
+            <li><span>Funcionalidades</span></li>
+            <li><span>Cómo funciona</span></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Usuarios">
+          <h3 class="footer__col-title">Usuarios</h3>
+          <ul class="footer__links" role="list">
+            <li><span>Investigadores</span></li>
+            <li><span>Voluntarios</span></li>
+            <li><span>Documentación</span></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Legal">
+          <h3 class="footer__col-title">Legal</h3>
+          <ul class="footer__links" role="list">
+            <li><span>Política de privacidad</span></li>
+            <li><span>Términos y condiciones</span></li>
+            <li><span>Contacto</span></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2026 FaunaScan Perú. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  
+  <script src="assets/scripts/index.js?v=3" defer></script>
+</body>
+</html>
