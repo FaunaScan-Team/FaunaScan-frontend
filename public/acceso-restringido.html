@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script src="assets/scripts/auth-guard.js?v=1"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="No tienes permiso para acceder a esta sección de FaunaScan Perú.">
+  <title>Acceso restringido — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/acceso-restringido.css?v=1">
+</head>
+<body>
+
+  <main class="restricted">
+    <div class="restricted__card">
+      <a href="index.html" class="restricted__logo">
+        <img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="restricted__logo-img">
+        <span class="restricted__logo-text">FaunaScan</span>
+      </a>
+
+      <div class="restricted__icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+        </svg>
+      </div>
+
+      <h1 class="restricted__title">Acceso restringido</h1>
+      <p class="restricted__desc">
+        Esta sección solo está disponible para investigadores con credencial verificada.
+        Si eres investigador y aún no verificaste tu credencial, hazlo desde tu perfil.
+      </p>
+
+      <div class="restricted__actions">
+        <a href="dashboard.html" class="btn btn-primary btn-lg">Volver al panel principal</a>
+        <a href="perfil.html" class="btn btn-outline btn-lg">Ir a mi perfil</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
