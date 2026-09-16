@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
     nameEl.textContent = 'Bienvenido de regreso, ' + user.nombre;
   }
 
+  var dateEl = document.querySelector('#welcomeDate');
+  if (dateEl) {
+    dateEl.textContent = new Date().toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
   var sidebar = document.querySelector('.sidebar');
   var overlay = document.querySelector('.sidebar-overlay');
   var toggle  = document.querySelector('.sidebar-toggle');

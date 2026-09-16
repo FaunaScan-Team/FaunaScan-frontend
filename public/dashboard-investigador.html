@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script src="assets/scripts/auth-guard.js?v=1"></script>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="assets/styles/dashboard.css?v=5">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panel principal del investigador — FaunaScan Perú.">
+  <title>Panel principal — FaunaScan</title>
+</head>
+<body>
+
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Menú principal de la aplicación">
+      <a href="index.html" class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </a>
+
+        <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link active">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+
+    <!-- OVERLAY (mobile) -->
+    <div class="sidebar-overlay" aria-hidden="true"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="app-content">
+
+      <div class="app-topbar">
+        <button class="sidebar-toggle" aria-label="Abrir menú lateral">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h1 class="app-topbar__title">Panel principal</h1>
+        <div class="app-topbar__actions">
+          <a href="notificaciones.html" class="app-topbar__action" aria-label="Ver Notificaciones">
+            <img src="assets/icons/Notificaciones.png" alt="Notificaciones" class="app-topbar__icon">
+            <span>Notificaciones</span>
+          </a>
+          <a href="perfil.html" class="app-topbar__action" aria-label="Ver perfil">
+            <img src="assets/icons/Perfil.png" alt="Perfil" class="app-topbar__icon">
+            <span>Perfil</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Welcome banner (tono investigador) -->
+      <div class="welcome-banner welcome-banner--info" role="banner" aria-label="Resumen de actividad">
+        <div class="welcome-banner__left">
+          <p class="welcome-banner__title" id="welcomeName">Bienvenido de regreso</p>
+          <p class="welcome-banner__desc">Tu validación mantiene confiables los registros de la comunidad.</p>
+          <span class="welcome-banner__badge">✓ Investigador verificado</span>
+        </div>
+        <div class="welcome-banner__right">
+          <p class="welcome-banner__date" id="welcomeDate"></p>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <nav aria-label="Acciones rápidas">
+        <div class="quick-actions">
+          <a href="registrar.html" class="action-card action-card--primary">
+            <div class="action-card__icon" aria-hidden="true">
+              <img src="assets/icons/NuevoRegistro.png" class="action-card__icon-img">
+            </div>
+            <span class="action-card__label">Nuevo<br>Registro</span>
+          </a>
+          <a href="verificar.html" class="action-card action-card--info" aria-label="Verificar avistamientos pendientes">
+            <div class="action-card__icon" aria-hidden="true">
+              <img src="assets/icons/Verificar.png" class="action-card__icon-img">
+            </div>
+            <span class="action-card__label">Verificar</span>
+          </a>
+          <a href="mis-reportes.html" class="action-card" aria-label="Ver mis reportes">
+            <div class="action-card__icon" aria-hidden="true">
+              <img src="assets/icons/Reportes.png" class="action-card__icon-img">
+            </div>
+            <span class="action-card__label">Mis reportes</span>
+          </a>
+          <a href="catalogo.html" class="action-card" aria-label="Ver catálogo de especies">
+            <div class="action-card__icon" aria-hidden="true">
+              <img src="assets/icons/Cátalogo.png" class="action-card__icon-img">
+            </div>
+            <span class="action-card__label">Catálogo</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Bottom grid -->
+      <div class="dashboard-grid">
+
+        <!-- Left column -->
+        <div class="dashboard-col">
+
+          <!-- Progress -->
+          <section class="progress-card" aria-labelledby="progress-title">
+            <h2 class="progress-card__title" id="progress-title">Mi progreso</h2>
+            <div class="progress-item">
+              <div class="progress-item__icon" aria-hidden="true">
+                <img src="assets/icons/Avistamiento.png" alt="" class="progress-item__icon-img">
+              </div>
+              <div class="progress-item__info">
+                <p class="progress-item__label">Avistamientos</p>
+                <p class="progress-item__value">142</p>
+              </div>
+              <span class="progress-item__delta progress-item__delta--positive">+2 este día</span>
+            </div>
+            <div class="progress-item">
+              <div class="progress-item__icon" aria-hidden="true">
+                <img src="assets/icons/Especies.png" alt="" class="progress-item__icon-img">
+              </div>
+              <div class="progress-item__info">
+                <p class="progress-item__label">Especies registradas</p>
+                <p class="progress-item__value">38</p>
+              </div>
+              <span class="progress-item__delta progress-item__delta--positive">+3 este mes</span>
+            </div>
+            <div class="progress-item">
+              <div class="progress-item__icon" aria-hidden="true">
+                <img src="assets/icons/Zonas.png" alt="" class="progress-item__icon-img">
+              </div>
+              <div class="progress-item__info">
+                <p class="progress-item__label">Zonas visitadas</p>
+                <p class="progress-item__value">7</p>
+              </div>
+              <span class="progress-item__delta progress-item__delta--neutral">Sin cambios</span>
+            </div>
+          </section>
+
+          <!-- Achievements -->
+          <section class="achievements-card" aria-labelledby="achievements-title">
+            <h2 class="achievements-card__title" id="achievements-title">
+              <span aria-hidden="true">🏆</span> Logros obtenidos
+            </h2>
+            <div class="achievements-list" role="list">
+              <span class="achievement-tag" role="listitem">investigador</span>
+              <span class="achievement-tag" role="listitem">100 registros</span>
+              <span class="achievement-tag" role="listitem">5 zonas</span>
+              <span class="achievement-tag" role="listitem">IA explorador</span>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Right column - Pending validation (exclusivo investigador) -->
+        <div class="dashboard-col">
+          <section class="pending-card" aria-labelledby="pending-title">
+            <h2 class="pending-card__title" id="pending-title">
+              <span class="pending-card__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              Avistamientos pendientes de mi validación
+            </h2>
+            <p class="pending-card__desc">
+              Como investigador verificado, tu revisión confirma la calidad de los registros
+              enviados por la comunidad antes de que se consideren validados.
+            </p>
+            <a href="verificar.html" class="btn btn-info pending-card__cta">Ir a verificar</a>
+          </section>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/scripts/dashboard.js?v=4" defer></script>
+</body>
+</html>
