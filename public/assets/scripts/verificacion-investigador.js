@@ -6,12 +6,44 @@ document.addEventListener('DOMContentLoaded', function () {
   const checkList = document.getElementById('checkList');
   const btnContinuar = document.getElementById('btnContinuar');
   const btnNueva = document.getElementById('btnNuevaCredencial');
+  const uploadError = document.getElementById('uploadError');
+
+  const FORMATOS_ACEPTADOS = ['application/pdf', 'image/jpeg', 'image/png'];
+  const TAMANO_MAXIMO_BYTES = 5 * 1024 * 1024;
+
+  function mostrarError(mensaje) {
+    if (!uploadError) return;
+    uploadError.textContent = mensaje;
+    uploadError.style.display = 'block';
+    uploadBox && uploadBox.classList.add('upload-box--error');
+  }
+
+  function limpiarError() {
+    if (!uploadError) return;
+    uploadError.textContent = '';
+    uploadError.style.display = 'none';
+    uploadBox && uploadBox.classList.remove('upload-box--error');
+  }
 
   if (uploadBox && input) {
     uploadBox.addEventListener('click', function () { input.click(); });
     input.addEventListener('change', function () {
       if (!input.files || !input.files[0]) return;
-      credencialNombre.textContent = input.files[0].name;
+      const archivo = input.files[0];
+
+      if (!FORMATOS_ACEPTADOS.includes(archivo.type)) {
+        mostrarError('Formato no soportado. Sube un archivo PDF, JPG o PNG.');
+        input.value = '';
+        return;
+      }
+      if (archivo.size > TAMANO_MAXIMO_BYTES) {
+        mostrarError('El archivo supera el tamaño máximo permitido de 5MB.');
+        input.value = '';
+        return;
+      }
+
+      limpiarError();
+      credencialNombre.textContent = archivo.name;
       credencialInfo.style.display = 'block';
       checkList.style.display = 'block';
       uploadBox.style.display = 'none';
@@ -26,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
       uploadBox.style.display = 'flex';
       btnContinuar.disabled = true;
       input.value = '';
+      limpiarError();
     });
   }
 
