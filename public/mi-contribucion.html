@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script src="assets/scripts/auth-guard.js?v=2"></script>
+  <script>
+    if (window.FaunaAuth.user.rol === 'investigador') { window.location.replace('mis-reportes.html'); throw new Error('FaunaScan: redirigiendo a mis-reportes.html'); }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Consulta tu contribución personal a la conservación en FaunaScan Perú.">
+  <title>Mi contribución — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/mi-contribucion.css?v=1">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="mi-contribucion.html" class="sidebar__link active">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Mi contribución</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Mi contribución a la conservación</h1>
+      </div>
+
+      <div class="contrib-metrics">
+        <div class="contrib-metric-card">
+          <img src="assets/icons/Avistamiento.png" alt="" class="contrib-metric-card__icon">
+          <span class="contrib-metric-card__num" id="metricAvistamientos">0</span>
+          <span class="contrib-metric-card__label">avistamientos registrados</span>
+        </div>
+        <div class="contrib-metric-card">
+          <img src="assets/icons/Especies.png" alt="" class="contrib-metric-card__icon">
+          <span class="contrib-metric-card__num" id="metricEspecies">0</span>
+          <span class="contrib-metric-card__label">especies distintas identificadas</span>
+        </div>
+        <div class="contrib-metric-card">
+          <img src="assets/icons/Zonas.png" alt="" class="contrib-metric-card__icon">
+          <span class="contrib-metric-card__num" id="metricZonas">0</span>
+          <span class="contrib-metric-card__label">zonas visitadas</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card__title">Mis últimos avistamientos</h3>
+        <div id="contribTimeline" class="contrib-timeline"></div>
+        <p class="contrib-empty" id="contribEmpty" style="display:none;">
+          Aún no tienes avistamientos registrados. <a href="registrar.html">Registra tu primero</a>.
+        </p>
+      </div>
+
+      <div class="contrib-motivacion" id="contribMotivacion">
+        <span class="contrib-motivacion__icon">🌱</span>
+        <div class="contrib-motivacion__texto">
+          <p class="contrib-motivacion__titulo" id="motivacionTitulo">¡Sigue así!</p>
+          <p class="contrib-motivacion__sub" id="motivacionSub">Registra tu primer avistamiento para empezar tu progreso.</p>
+          <div class="contrib-progress-bar"><div class="contrib-progress-bar__fill" id="motivacionBarra" style="width:0%;"></div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/reportes-utils.js?v=1" defer></script>
+  <script src="assets/scripts/mi-contribucion.js?v=1" defer></script>
+</body>
+</html>
