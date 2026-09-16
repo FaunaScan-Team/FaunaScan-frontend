@@ -68,6 +68,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- Logros: la etiqueta de rol debe reflejar el rol real ---
     const achievementRoleTag = document.getElementById('achievementRoleTag');
     if (achievementRoleTag) achievementRoleTag.textContent = esInvestigador ? 'investigador' : 'voluntario';
+
+    // --- Especialidad taxonómica (US61, solo investigador) ---
+    const grupoEspecialidad = document.getElementById('grupoEspecialidad');
+    if (grupoEspecialidad) grupoEspecialidad.style.display = esInvestigador ? 'flex' : 'none';
   }
 
   // --- Modal de cerrar sesión ---
@@ -111,6 +115,11 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('editNombre').value = user.nombre || '';
         document.getElementById('editApellido').value = user.apellido || '';
         document.getElementById('editEmail').value = user.email || '';
+        document.getElementById('editTelefono').value = user.telefono || '';
+        document.getElementById('editInstitucion').value = user.institucion || '';
+        document.getElementById('editBio').value = user.bio || '';
+        const especialidadInput = document.getElementById('editEspecialidad');
+        if (especialidadInput) especialidadInput.value = user.especialidad || '';
       }
       infoPersonalView.style.display = 'none';
       infoPersonalForm.style.display = 'grid';
@@ -125,9 +134,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (infoPersonalForm) {
     infoPersonalForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      const especialidadInput = document.getElementById('editEspecialidad');
       const updated = Object.assign({}, user, {
         nombre: document.getElementById('editNombre').value.trim(),
-        apellido: document.getElementById('editApellido').value.trim()
+        apellido: document.getElementById('editApellido').value.trim(),
+        telefono: document.getElementById('editTelefono').value.trim(),
+        institucion: document.getElementById('editInstitucion').value.trim(),
+        bio: document.getElementById('editBio').value.trim(),
+        especialidad: especialidadInput ? especialidadInput.value : ''
       });
       localStorage.setItem('faunaUser', JSON.stringify(updated));
       window.location.reload();

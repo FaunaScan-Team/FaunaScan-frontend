@@ -105,6 +105,16 @@
                 <label class="form-label">Institución</label>
                 <input class="form-input" type="text" id="editInstitucion" placeholder="Ej: Universidad Peruana de Ciencias Aplicadas">
               </div>
+              <div class="form-group form-group--full" id="grupoEspecialidad" style="display:none;">
+                <label class="form-label">Especialidad taxonómica</label>
+                <select class="form-input" id="editEspecialidad">
+                  <option value="">Sin especialidad definida</option>
+                  <option value="mamifero">Mamíferos</option>
+                  <option value="ave">Aves</option>
+                  <option value="reptil">Reptiles</option>
+                </select>
+                <span class="form-hint">Se usa para filtrar el catálogo y priorizar tu trabajo de validación (US61).</span>
+              </div>
               <div class="form-group form-group--full">
                 <label class="form-label">Biografía profesional</label>
                 <textarea class="form-input" id="editBio" rows="3" placeholder="Cuéntanos sobre tu experiencia investigando fauna silvestre…"></textarea>
@@ -159,6 +169,6 @@
     </div>
   </div>
 
-  <script src="assets/scripts/perfil.js?v=4" defer></script>
+  <script src="assets/scripts/perfil.js?v=5" defer></script>
 </body>
 </html>
