@@ -75,6 +75,15 @@ window.FaunaReportesUtils = (function () {
     return f.toLocaleDateString('es-PE', { month: 'long', year: 'numeric' });
   }
 
+  // Clave ordenable "YYYY-MM" -- mesLabel() devuelve un texto localizado
+  // ("julio de 2026") que NO se puede volver a parsear como fecha para
+  // ordenar cronológicamente; esta clave sí sirve para eso.
+  function mesKey(fechaIso) {
+    const f = new Date(fechaIso);
+    if (isNaN(f.getTime())) return '0000-00';
+    return f.getFullYear() + '-' + String(f.getMonth() + 1).padStart(2, '0');
+  }
+
   function agruparPorMes(lista) {
     const grupos = {};
     lista.forEach(function (a) {
@@ -96,6 +105,7 @@ window.FaunaReportesUtils = (function () {
     filtrarPorRango: filtrarPorRango,
     filtrarPorArea: filtrarPorArea,
     mesLabel: mesLabel,
+    mesKey: mesKey,
     agruparPorMes: agruparPorMes
   };
 })();

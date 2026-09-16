@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script src="assets/scripts/auth-guard.js?v=2"></script>
+  <script>window.FaunaAuth.requireRole('investigador', true);</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tendencias y patrones de biodiversidad — FaunaScan Perú.">
+  <title>Tendencias — FaunaScan</title>
+  <link rel="stylesheet" href="assets/styles/tendencias.css?v=1">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <img src="assets/images/LogoFaunaScan.png" alt="FaunaScan" class="sidebar__logo-img">
+        <span class="sidebar__logo-text">FaunaScan</span>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link">
+          <img src="assets/icons/Principal.png" class="sidebar__icon">Principal</a>
+        <a href="registrar.html" class="sidebar__link">
+          <img src="assets/icons/Registrar.png" class="sidebar__icon">Registrar</a>
+        <a href="mapa.html" class="sidebar__link">
+          <img src="assets/icons/Mapa.png" class="sidebar__icon">Mapa</a>
+        <a href="reportes.html" class="sidebar__link active">
+          <img src="assets/icons/Reportes.png" class="sidebar__icon">Reportes</a>
+        <a href="historial.html" class="sidebar__link">
+          <img src="assets/icons/Historial.png" class="sidebar__icon">Historial</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <main class="app-content">
+      <div class="app-topbar">
+        <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h1 class="app-topbar__title">Tendencias y patrones</h1>
+        <div class="app-topbar__actions">
+          <a href="mis-reportes.html" class="app-topbar__action">📁 Mis reportes</a>
+          <div class="tendencias-rango">
+            <input class="form-input" type="date" id="rangoDesde">
+            <span>–</span>
+            <input class="form-input" type="date" id="rangoHasta">
+          </div>
+        </div>
+      </div>
+
+      <div class="tendencias-layout">
+        <div class="tendencias-main">
+          <div class="card">
+            <h3 class="card__title">Avistamientos por especie a lo largo del tiempo</h3>
+            <div id="chartWrap"></div>
+            <div class="tendencias-legend" id="chartLegend"></div>
+            <p class="tendencias-empty" id="chartEmpty" style="display:none;">
+              Aún no hay suficientes avistamientos registrados para mostrar una tendencia.
+            </p>
+          </div>
+
+          <div class="tendencias-alerta" id="alertaCard" style="display:none;">
+            <span class="tendencias-alerta__icon">⚠️</span>
+            <p id="alertaTexto"></p>
+          </div>
+          <div class="tendencias-alerta tendencias-alerta--neutral" id="alertaNeutral" style="display:none;">
+            <span class="tendencias-alerta__icon">ℹ️</span>
+            <p>No se detectaron caídas significativas en el período seleccionado.</p>
+          </div>
+        </div>
+
+        <div class="tendencias-side card">
+          <h3 class="card__title">Actividad por zona</h3>
+          <div id="zonasTabla"></div>
+          <p class="tendencias-empty" id="zonasEmpty" style="display:none;">Sin datos de zonas todavía.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/reportes-utils.js?v=2" defer></script>
+  <script src="assets/scripts/tendencias.js?v=1" defer></script>
+</body>
+</html>
