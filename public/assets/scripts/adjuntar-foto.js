@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const dropzone = document.getElementById('dropzone');
   const input = document.getElementById('fotoGaleriaInput');
   const btnGaleria = document.getElementById('btnGaleria');
-  const btnNube = document.getElementById('btnNube');
   const btnAsociar = document.getElementById('btnAsociar');
   const previewImg = document.getElementById('previewImg');
   const metaArchivo = document.getElementById('metaArchivo');
@@ -26,17 +25,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let fotoSeleccionada = null;
 
-  function seleccionarFoto(nombre, emoji, src) {
-    fotoSeleccionada = { nombre: nombre, emoji: emoji, src };
-     if (src) {
-    previewImg.innerHTML = `<img src="${src}" alt="${nombre}">`;
-    } else {
-    previewImg.textContent = emoji;
-    }
+  function formatearBytes(bytes) {
+    if (!bytes && bytes !== 0) return '—';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
 
+  // Muestra tamaño y resolución REALES de la imagen (antes eran datos
+  // inventados: un tamaño aleatorio y una resolución fija "4032x3024"
+  // sin relación con el archivo elegido).
+  function mostrarMetadatosReales(nombre, src, bytesConocidos) {
     metaArchivo.textContent = nombre;
-    metaTamano.textContent = (1.2 + Math.random()).toFixed(1) + ' MB';
-    metaResolucion.textContent = '4032 x 3024 px';
+    metaTamano.textContent = 'Calculando…';
+    metaResolucion.textContent = 'Calculando…';
+
+    const img = new Image();
+    img.onload = function () {
+      metaResolucion.textContent = img.naturalWidth + ' x ' + img.naturalHeight + ' px';
+    };
+    img.onerror = function () {
+      metaResolucion.textContent = '—';
+    };
+    img.src = src;
+
+    if (bytesConocidos != null) {
+      metaTamano.textContent = formatearBytes(bytesConocidos);
+    } else {
+      fetch(src).then(function (r) { return r.blob(); }).then(function (blob) {
+        metaTamano.textContent = formatearBytes(blob.size);
+      }).catch(function () {
+        metaTamano.textContent = '—';
+      });
+    }
+  }
+
+  function seleccionarFoto(nombre, src, bytesConocidos) {
+    fotoSeleccionada = { nombre: nombre, src: src };
+    previewImg.innerHTML = `<img src="${src}" alt="${nombre}">`;
+    mostrarMetadatosReales(nombre, src, bytesConocidos);
     metaEstado.textContent = 'Lista para procesar';
     btnAsociar.disabled = false;
     document.querySelectorAll('.foto-reciente').forEach(function (b) { b.classList.remove('selected'); });
@@ -48,22 +73,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (input.files && input.files[0]) {
         const file = input.files[0];
         const fileURL = URL.createObjectURL(file);
-
-        seleccionarFoto(file.name, '📷', fileURL);
-    }
-  });
+        seleccionarFoto(file.name, fileURL, file.size);
+      }
+    });
   }
   if (btnGaleria && input) {
     btnGaleria.addEventListener('click', function () { input.click(); });
-  }
-  if (btnNube) {
-    btnNube.addEventListener('click', function () {
-      btnNube.textContent = 'Conectando…';
-      setTimeout(function () {
-        btnNube.textContent = 'Nube';
-        seleccionarFoto('foto_nube_' + Date.now() + '.jpg', '☁️', '');
-      }, 900);
-    });
   }
 
   document.querySelectorAll('.foto-reciente').forEach(function (btn) {
@@ -71,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.querySelectorAll('.foto-reciente').forEach(function (b) { b.classList.remove('selected'); });
       btn.classList.add('selected');
       const img = btn.querySelector('img');
-      seleccionarFoto(btn.dataset.nombre, btn.dataset.emoji, img.src);
+      seleccionarFoto(btn.dataset.nombre, img.src, null);
     });
   });
 
