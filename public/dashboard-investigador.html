@@ -3,7 +3,7 @@
 <head>
   <script src="assets/scripts/auth-guard.js?v=2"></script>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="assets/styles/dashboard.css?v=5">
+  <link rel="stylesheet" href="assets/styles/dashboard.css?v=6">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Panel principal del investigador — FaunaScan Perú.">
   <title>Panel principal — FaunaScan</title>
@@ -154,20 +154,64 @@
 
         </div>
 
-        <!-- Right column - Pending validation (exclusivo investigador) -->
+        <!-- Right column - Activity feed -->
         <div class="dashboard-col">
-          <section class="pending-card" aria-labelledby="pending-title">
-            <h2 class="pending-card__title" id="pending-title">
-              <span class="pending-card__icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-              </span>
-              Avistamientos pendientes de mi validación
-            </h2>
-            <p class="pending-card__desc">
-              Como investigador verificado, tu revisión confirma la calidad de los registros
-              enviados por la comunidad antes de que se consideren validados.
-            </p>
-            <a href="verificar.html" class="btn btn-info pending-card__cta">Ir a verificar</a>
+          <section class="activity-card" aria-labelledby="activity-title">
+            <div class="activity-card__header">
+              <h2 class="activity-card__title" id="activity-title">Actividad reciente de la comunidad</h2>
+              <a href="actividades.html" class="activity-card__more">Ver más</a>
+            </div>
+            <ol class="activity-list" aria-label="Actividad reciente">
+
+              <li class="activity-item">
+                <div class="activity-item__avatar activity-item__avatar--orange" aria-label="Usuario Kevin A." aria-hidden="true">K</div>
+                <div class="activity-item__info">
+                  <p class="activity-item__text">Kevin A. registró Oso de anteojos · Bosque El Olivar</p>
+                  <p class="activity-item__meta">
+                    <span class="vuln-badge vuln-badge--vulnerable">VULNERABLE</span>
+                    &nbsp;Coordenadas: -12.04, -77.04
+                  </p>
+                </div>
+                <time class="activity-item__time" datetime="2026-05-09T10:58">Hace 2 min</time>
+              </li>
+
+              <li class="activity-item">
+                <div class="activity-item__avatar activity-item__avatar--blue" aria-label="Usuario Roberto S." aria-hidden="true">R</div>
+                <div class="activity-item__info">
+                  <p class="activity-item__text">Roberto S. registró Cóndor andino · Bosque de Zárate</p>
+                  <p class="activity-item__meta">
+                    <span class="vuln-badge vuln-badge--vulnerable">VULNERABLE</span>
+                    &nbsp;1 individuo adulto
+                  </p>
+                </div>
+                <time class="activity-item__time" datetime="2026-05-09T10:42">Hace 18 min</time>
+              </li>
+
+              <li class="activity-item">
+                <div class="activity-item__avatar activity-item__avatar--red" aria-label="Usuario Sergio E." aria-hidden="true">S</div>
+                <div class="activity-item__info">
+                  <p class="activity-item__text">Sergio E. registró Guacamayo rojo · Bosque de Zárate</p>
+                  <p class="activity-item__meta">
+                    <span class="vuln-badge vuln-badge--vulnerable">VULNERABLE</span>
+                    &nbsp;1 individuo adulto
+                  </p>
+                </div>
+                <time class="activity-item__time" datetime="2026-05-09T10:42">Hace 18 min</time>
+              </li>
+
+              <li class="activity-item">
+                <div class="activity-item__avatar activity-item__avatar--green" aria-label="Usuario Kevin A." aria-hidden="true">K</div>
+                <div class="activity-item__info">
+                  <p class="activity-item__text">Kevin A. registró Anaconda · Bosque El Olivar</p>
+                  <p class="activity-item__meta">
+                    <span class="vuln-badge vuln-badge--ok">NO VULNERABLE</span>
+                    &nbsp;Coordenadas: -12.04, -77.04
+                  </p>
+                </div>
+                <time class="activity-item__time" datetime="2026-05-09T10:58">Hace 2 min</time>
+              </li>
+
+            </ol>
           </section>
         </div>
 
