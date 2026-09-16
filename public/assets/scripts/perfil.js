@@ -93,8 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       const updated = Object.assign({}, user, {
         nombre: document.getElementById('editNombre').value.trim(),
-        apellido: document.getElementById('editApellido').value.trim(),
-        email: document.getElementById('editEmail').value.trim()
+        apellido: document.getElementById('editApellido').value.trim()
       });
       localStorage.setItem('faunaUser', JSON.stringify(updated));
       window.location.reload();
