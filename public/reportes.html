@@ -2,10 +2,13 @@
 <html lang="es">
 <head>
   <script src="assets/scripts/auth-guard.js?v=2"></script>
+  <script>
+    if (window.FaunaAuth.user.rol !== 'investigador') { window.location.replace('mi-contribucion.html'); throw new Error('FaunaScan: redirigiendo a mi-contribucion.html'); }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reportes — FaunaScan</title>
-  <link rel="stylesheet" href="assets/styles/reportes.css?v=4">
+  <link rel="stylesheet" href="assets/styles/reportes.css?v=5">
 </head>
 <body>
   <div class="app-layout">
@@ -33,6 +36,10 @@
       <div class="app-topbar">
         <button class="sidebar-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
         <h1 class="app-topbar__title">Reportes de biodiversidad</h1>
+        <div class="app-topbar__actions">
+          <a href="mis-reportes.html" class="app-topbar__action">📁 Mis reportes</a>
+          <a href="tendencias.html" class="app-topbar__action">📈 Tendencias</a>
+        </div>
       </div>
 
       <div class="reportes-layout">
@@ -55,60 +62,46 @@
           <div class="form-group">
             <label class="form-label">Tipo de reporte</label>
             <select class="form-input" id="reporteTipo">
-              <option value="biodiversidad">Biodiversidad general</option>
+              <option value="biodiversidad">Biodiversidad por área y período</option>
               <option value="amenazadas">Especies amenazadas</option>
-              <option value="avistamientos">Avistamientos por zona</option>
-              <option value="tendencias">Tendencias temporales</option>
+              <option value="institucional">Institucional</option>
             </select>
+          </div>
+          <div class="form-group" id="grupoInstitucion" style="display:none;">
+            <label class="form-label">Institución solicitante</label>
+            <input class="form-input" type="text" id="reporteInstitucion" placeholder="Ej: SERNANP">
           </div>
           <button class="btn btn-primary btn-full" id="btnGenerar">Generar reporte</button>
           <div class="chart-area">
-            <canvas id="chartReporte"></canvas>
+            <p class="form-label mb-2">Avistamientos por especie</p>
+            <div class="chart-bars" id="chartBars"></div>
           </div>
         </div>
 
         <div class="reportes-results">
           <div class="reporte-banner card">
-            <h3 class="reporte-banner__title">Top especies registradas — Mayo 2026</h3>
-            <p class="reporte-banner__sub">Bosque El Olivar · 01/05 al 09/05/2026</p>
+            <h3 class="reporte-banner__title" id="bannerTitulo">Genera un reporte para ver resultados</h3>
+            <p class="reporte-banner__sub" id="bannerSub">Completa los parámetros de la izquierda y presiona "Generar reporte".</p>
           </div>
           <div class="card">
-            <table class="reporte-table">
+            <table class="reporte-table" id="reporteTablaWrap">
               <thead>
-                <tr><th>Especie</th><th>Registros</th><th>Estado</th><th>Tendencia</th></tr>
+                <tr><th>Especie</th><th>Registros</th><th>Estado</th><th>Proporción</th></tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Cóndor andino</td><td>24</td>
-                  <td><span class="badge badge-yellow">Vulnerable</span></td>
-                  <td><div class="trend-bar"><div class="trend-fill trend-fill--up w-80"></div></div></td>
-                </tr>
-                <tr>
-                  <td>Oso de anteojos</td><td>18</td>
-                  <td><span class="badge badge-yellow">Vulnerable</span></td>
-                  <td><div class="trend-bar"><div class="trend-fill trend-fill--up w-60"></div></div></td>
-                </tr>
-                <tr>
-                  <td>Guacamayo rojo</td><td>31</td>
-                  <td><span class="badge badge-green">Menor</span></td>
-                  <td><div class="trend-bar"><div class="trend-fill trend-fill--up w-100"></div></div></td>
-                </tr>
-                <tr>
-                  <td>Jaguar</td><td>5</td>
-                  <td><span class="badge badge-red">Crítico</span></td>
-                  <td><div class="trend-bar"><div class="trend-fill trend-fill--down w-20"></div></div></td>
-                </tr>
-              </tbody>
+              <tbody id="reporteTablaBody"></tbody>
             </table>
+            <p class="reporte-empty" id="reporteEmpty" style="display:none;">No hay avistamientos que coincidan con estos parámetros.</p>
             <div class="reporte-actions">
-              <button class="btn btn-outline btn-sm" id="btnGuardarReporte">Guardar reporte</button>
-              <a href="resumen.html" class="btn btn-primary btn-sm">Ver resumen mensual</a>
+              <button class="btn btn-outline btn-sm" id="btnGuardarReporte" disabled>Guardar reporte</button>
             </div>
           </div>
         </div>
       </div>
     </main>
   </div>
-  <script src="assets/scripts/reportes.js?v=3" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/reportes-utils.js?v=1" defer></script>
+  <script src="assets/scripts/reportes-store.js?v=1" defer></script>
+  <script src="assets/scripts/reportes.js?v=4" defer></script>
 </body>
 </html>
