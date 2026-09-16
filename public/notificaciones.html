@@ -40,15 +40,15 @@
 
       <div class="notif-summary">
         <div class="notif-summary-card notif-summary-card--red">
-          <span class="notif-summary-card__num">2</span>
+          <span class="notif-summary-card__num" id="countCriticas">0</span>
           <span class="notif-summary-card__label">Críticas</span>
         </div>
         <div class="notif-summary-card notif-summary-card--blue">
-          <span class="notif-summary-card__num">2</span>
+          <span class="notif-summary-card__num" id="countSistema">0</span>
           <span class="notif-summary-card__label">Sistema</span>
         </div>
         <div class="notif-summary-card notif-summary-card--yellow">
-          <span class="notif-summary-card__num">2</span>
+          <span class="notif-summary-card__num" id="countAlertas">0</span>
           <span class="notif-summary-card__label">Alertas</span>
         </div>
       </div>
@@ -60,76 +60,13 @@
         <button class="notif-filter" data-filter="alertas">Alertas</button>
       </div>
 
-      <div class="notif-list" id="notifList">
-        <div class="notif-item notif-item--red" data-category="criticas">
-          <div class="notif-item__left">
-            <span class="notif-item__icon">🚨</span>
-            <div>
-              <p class="notif-item__title">Avistamiento crítico — Jaguar</p>
-              <p class="notif-item__desc">Se registró un avistamiento de jaguar en Bosque El Olivar. Especie en peligro crítico.</p>
-              <p class="notif-item__meta">Hace 5 min · Bosque El Olivar</p>
-            </div>
-          </div>
-          <span class="badge badge-red">Crítica</span>
-        </div>
-        <div class="notif-item notif-item--red" data-category="criticas">
-          <div class="notif-item__left">
-            <span class="notif-item__icon">⚠️</span>
-            <div>
-              <p class="notif-item__title">Especie en peligro detectada</p>
-              <p class="notif-item__desc">Manatí amazónico avistado en zona de actividad humana alta. Requiere atención inmediata.</p>
-              <p class="notif-item__meta">Hace 1 hora · Río Amazonas km 340</p>
-            </div>
-          </div>
-          <span class="badge badge-red">Crítica</span>
-        </div>
-        <div class="notif-item notif-item--blue" data-category="sistema">
-          <div class="notif-item__left">
-            <span class="notif-item__icon">🤖</span>
-            <div>
-              <p class="notif-item__title">Actualización del modelo IA</p>
-              <p class="notif-item__desc">El modelo de identificación fue actualizado a v2.4. Precisión mejorada al 96.1%.</p>
-              <p class="notif-item__meta">Hace 3 horas · Sistema</p>
-            </div>
-          </div>
-          <span class="badge badge-blue">Sistema</span>
-        </div>
-        <div class="notif-item notif-item--blue" data-category="sistema">
-          <div class="notif-item__left">
-            <span class="notif-item__icon">💾</span>
-            <div>
-              <p class="notif-item__title">Sincronización completada</p>
-              <p class="notif-item__desc">Se sincronizaron 14 registros offline acumulados durante la última expedición.</p>
-              <p class="notif-item__meta">Hace 6 horas · Sistema</p>
-            </div>
-          </div>
-          <span class="badge badge-blue">Sistema</span>
-        </div>
-        <div class="notif-item notif-item--yellow" data-category="alertas">
-          <div class="notif-item__left">
-            <span class="notif-item__icon">🔔</span>
-            <div>
-              <p class="notif-item__title">Nuevo avistamiento en tu zona</p>
-              <p class="notif-item__desc">Kevin A. registró un Cóndor andino a 2.3 km de tu última ubicación registrada.</p>
-              <p class="notif-item__meta">Hace 20 min · Bosque de Zárate</p>
-            </div>
-          </div>
-          <span class="badge badge-yellow">Alerta</span>
-        </div>
-        <div class="notif-item notif-item--yellow" data-category="alertas">
-          <div class="notif-item__left">
-            <span class="notif-item__icon">✅</span>
-            <div>
-              <p class="notif-item__title">Tu registro fue validado</p>
-              <p class="notif-item__desc">El avistamiento de Oso de anteojos que registraste el 8 de mayo fue validado por un experto.</p>
-              <p class="notif-item__meta">Hace 2 horas · Registro #1482</p>
-            </div>
-          </div>
-          <span class="badge badge-yellow">Alerta</span>
-        </div>
-      </div>
+      <div class="notif-list" id="notifList"></div>
+      <p class="notif-empty" id="notifEmpty" style="display:none;">
+        No tienes notificaciones todavía. Aparecerán aquí avistamientos críticos de la comunidad y validaciones de tus propios registros.
+      </p>
     </main>
   </div>
-  <script src="assets/scripts/notificaciones.js?v=3" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/notificaciones.js?v=5" defer></script>
 </body>
 </html>
