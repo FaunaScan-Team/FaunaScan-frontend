@@ -6,7 +6,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verificar — FaunaScan</title>
-  <link rel="stylesheet" href="assets/styles/verificar-detalle.css?v=5">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="assets/styles/verificar-detalle.css?v=6">
 </head>
 <body>
   <div class="app-layout">
@@ -36,49 +37,59 @@
         <h1 class="app-topbar__title">Verificar</h1>
       </div>
 
-      <div class="verdet-layout">
+      <p class="verdet-no-encontrado" id="verdetNoEncontrado" style="display:none;">
+        No se encontró el avistamiento solicitado. <a href="verificar.html">Volver a la cola de validación</a>.
+      </p>
+
+      <div class="verdet-layout" id="verdetLayout">
         <div>
-          <div class="verdet-foto" id="verdetFoto">🐻</div>
+          <div class="verdet-foto" id="verdetFoto"></div>
           <h4 class="verdet-subtitulo"><span class="verdet-subtitulo__icon">📍</span> Ubicación</h4>
-          <div class="verdet-mapa">
-            <span class="verdet-mapa__expand">⤢</span>
-            <span class="verdet-mapa__pin">📍 <span id="verdetZona">Bosque El Olivar</span></span>
-          </div>
-          <div class="verdet-coords">
-            <span>Lat: <strong id="verdetLat">-12.0464</strong></span>
-            <span>Lng: <strong id="verdetLng">-77.0428</strong></span>
+          <p class="verdet-zona" id="verdetZona"></p>
+          <div class="verdet-mapa" id="verdetMapa"></div>
+          <p class="verdet-no-encontrado" id="verdetSinCoords" style="display:none;">
+            Este registro no incluye coordenadas.
+          </p>
+          <div class="verdet-coords" id="verdetCoords">
+            <span>Lat: <strong id="verdetLat">—</strong></span>
+            <span>Lng: <strong id="verdetLng">—</strong></span>
           </div>
         </div>
 
         <div>
           <div class="verdet-banner" id="verdetBanner">
-            <div class="verdet-banner__foto" id="verdetBannerFoto">🐻</div>
+            <div class="verdet-banner__foto" id="verdetBannerFoto">🐾</div>
             <div class="verdet-banner__info">
-              <h2 class="verdet-banner__nombre" id="verdetNombre">Oso de Anteojos</h2>
-              <p class="verdet-banner__cientifico" id="verdetCientifico">Tremarctos ornatus</p>
-              <span class="badge badge-yellow" id="verdetEstado">VULNERABLE (VU)</span>
+              <h2 class="verdet-banner__nombre" id="verdetNombre">—</h2>
+              <p class="verdet-banner__cientifico" id="verdetCientifico"></p>
+              <span class="badge badge-yellow" id="verdetEstado" style="display:none;"></span>
             </div>
           </div>
 
+          <p class="verdet-autor" id="verdetAutor"></p>
+
           <h4 class="verdet-subtitulo"><span class="verdet-subtitulo__icon">📋</span> Observaciones</h4>
-          <p class="verdet-observacion" id="verdetObservacion">El animal descansaba sobre una roca al sol, aproximadamente a 3 metros del observador. Se observaron uno adulto y 2 pequeños</p>
+          <p class="verdet-observacion" id="verdetObservacion">Sin observaciones registradas.</p>
 
-          <div class="verdet-chips">
-            <span class="verdet-chip">☀️ Soleado</span>
-            <span class="verdet-chip">Grupo familiar</span>
+          <div class="verdet-chips" id="verdetChips"></div>
+
+          <div class="verdet-metrics" id="verdetMetrics">
+            <div class="form-group"><label class="form-label">TEMP °C</label><input class="form-input" type="text" id="verdetTemp" value="—" readonly></div>
+            <div class="form-group"><label class="form-label">Humedad %</label><input class="form-input" type="text" id="verdetHumedad" value="—" readonly></div>
+            <div class="form-group"><label class="form-label">N° de individuos</label><input class="form-input" type="text" id="verdetIndividuos" value="—" readonly></div>
           </div>
 
-          <div class="verdet-metrics">
-            <div class="form-group"><label class="form-label">TEMP °C</label><input class="form-input" type="text" id="verdetTemp" value="24" readonly></div>
-            <div class="form-group"><label class="form-label">Humedad %</label><input class="form-input" type="text" id="verdetHumedad" value="68" readonly></div>
-            <div class="form-group"><label class="form-label">N° de individuos</label><input class="form-input" type="text" id="verdetIndividuos" value="3" readonly></div>
+          <p class="verdet-resuelto" id="verdetResuelto" style="display:none;"></p>
+          <div class="verdet-acciones" id="verdetAcciones">
+            <button class="btn btn-primary btn-full mt-6" id="btnValidarDetalle">Validar</button>
+            <button class="btn btn-outline btn-full mt-3" id="btnRechazarDetalle">Rechazar</button>
           </div>
-
-          <button class="btn btn-primary btn-full mt-6" id="btnValidarDetalle">Validar</button>
         </div>
       </div>
     </main>
   </div>
-  <script src="assets/scripts/verificar-detalle.js?v=3" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/verificar-detalle.js?v=4" defer></script>
 </body>
 </html>

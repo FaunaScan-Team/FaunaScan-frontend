@@ -37,69 +37,17 @@
       </div>
 
       <div class="verificar-header">
-        <p class="verificar-count"><strong id="pendienteCount">3</strong> avistamientos pendientes de verificación</p>
+        <p class="verificar-count"><strong id="pendienteCount">0</strong> avistamientos pendientes de verificación</p>
       </div>
 
-      <div class="verificar-list" id="verificarList">
-        <div class="verificar-item card" data-id="1">
-          <div class="verificar-item__img verificar-item__img--clickable" data-zona="Bosque El Olivar">
-            <img src="assets/images/OsoDeAnteojos.png" alt="Oso de anteojos">
-          </div>
-          <div class="verificar-item__info">
-            <h3 class="verificar-item__nombre">Oso de anteojos</h3>
-            <p class="verificar-item__cientifico">Tremarctos ornatus</p>
-            <p class="verificar-item__meta">📍 Bosque El Olivar · Kevin A. · 09/05/2026 10:58</p>
-            <p class="verificar-item__obs">Individuo adulto, avistado solitario cerca del río. Sin comportamiento agresivo.</p>
-          </div>
-          <div class="verificar-item__status">
-            <span class="badge badge-yellow status-badge">PENDIENTE</span>
-          </div>
-          <div class="verificar-item__actions">
-            <button class="btn btn-primary btn-sm btn-validar">Validar</button>
-            <button class="btn btn-outline btn-sm btn-rechazar">Rechazar</button>
-          </div>
-        </div>
+      <p class="verificar-empty" id="verificarEmpty" style="display:none;">
+        No hay avistamientos pendientes de validación. Aquí aparecerán los registros de otros usuarios en cuanto se registren.
+      </p>
 
-        <div class="verificar-item card" data-id="2">
-          <div class="verificar-item__img verificar-item__img--clickable" data-zona="Reserva Amazónica">
-            <img src="assets/images/Anaconda.png" alt="Anaconda verde">
-          </div>
-          <div class="verificar-item__info">
-            <h3 class="verificar-item__nombre">Anaconda verde</h3>
-            <p class="verificar-item__cientifico">Eunectes murinus</p>
-            <p class="verificar-item__meta">📍 Reserva Amazónica · Roberto S. · 08/05/2026 14:22</p>
-            <p class="verificar-item__obs">Serpiente de aprox. 4 metros descansando en orilla del río.</p>
-          </div>
-          <div class="verificar-item__status">
-            <span class="badge badge-yellow status-badge">PENDIENTE</span>
-          </div>
-          <div class="verificar-item__actions">
-            <button class="btn btn-primary btn-sm btn-validar">Validar</button>
-            <button class="btn btn-outline btn-sm btn-rechazar">Rechazar</button>
-          </div>
-        </div>
-
-        <div class="verificar-item card" data-id="3">
-          <div class="verificar-item__img verificar-item__img--clickable" data-zona="Bosque de Zárate">
-            <img src="assets/images/Condor.png" alt="Cóndor andino">
-          </div>
-          <div class="verificar-item__info">
-            <h3 class="verificar-item__nombre">Cóndor andino</h3>
-            <p class="verificar-item__cientifico">Vultur gryphus</p>
-            <p class="verificar-item__meta">📍 Bosque de Zárate · Sergio E. · 07/05/2026 09:15</p>
-            <p class="verificar-item__obs">Pareja de cóndores en vuelo sobre la quebrada. Fotos claras adjuntas.</p>
-          </div>
-          <div class="verificar-item__status">
-            <span class="badge badge-yellow status-badge">PENDIENTE</span>
-          </div>
-          <div class="verificar-item__actions">
-            <button class="btn btn-primary btn-sm btn-validar">Validar</button>
-            <button class="btn btn-outline btn-sm btn-rechazar">Rechazar</button>
-          </div>
-        </div>
-      </div>
+      <div class="verificar-list" id="verificarList"></div>
     </main>
   </div>
-  <script src="assets/scripts/verificar.js?v=3" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/verificar.js?v=4" defer></script>
 </body>
 </html>
