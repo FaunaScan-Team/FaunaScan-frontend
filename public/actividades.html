@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Actividades recientes — FaunaScan</title>
-  <link rel="stylesheet" href="assets/styles/actividades.css?v=5">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="assets/styles/actividades.css?v=7">
 </head>
 <body>
   <div class="app-layout">
@@ -36,59 +37,32 @@
       </div>
 
       <div class="actividades-layout">
-        <ul class="actividades-list" id="actividadesList">
-          <li class="actividad-item actividad-item--active" data-especie="Guacamayo Rojo" data-usuario="Sergio E." data-zona="Bosque El Zárate" data-lugar="Tambopata, Madre de Dios" data-lat="-12.0464" data-lng="-77.0428" data-imagen="assets/images/GuacamayoRojoVerMas.png">
-            <img src="assets/images/Guacamayo.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Guacamayo Rojo</p><p class="actividad-item__lugar">📍 Tambopata, Madre de Dios</p></div>
-          </li>
-          <li class="actividad-item" data-especie="Jaguar" data-usuario="Roberto S." data-zona="Reserva Amazónica" data-lugar="Manu, Madre de Dios" data-lat="-12.2761" data-lng="-70.9128" data-imagen="assets/images/JaguarVerMas.png">
-            <img src="assets/images/Jaguar.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Jaguar</p><p class="actividad-item__lugar">📍 Manu, Madre de Dios</p></div>
-          </li>
-          <li class="actividad-item" data-especie="Delfín Rosado" data-usuario="Kevin A." data-zona="Río Amazonas" data-lugar="Río Amazonas, Iquitos" data-lat="-3.7491" data-lng="-73.2538" data-imagen="assets/images/DelfinRosadoVerMas.png">
-            <img src="assets/images/Delfin.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Delfín Rosado</p><p class="actividad-item__lugar">📍 Río Amazonas, Iquitos</p></div>
-          </li>
-          <li class="actividad-item" data-especie="Gallito de las Rocas" data-usuario="Kevin A." data-zona="Parque Nacional Yanachaga" data-lugar="Parque Nacional Yanachaga Chemillén" data-lat="-10.5" data-lng="-75.4" data-imagen="assets/images/GallitoDeLasRocasVerMas.png">
-            <img src="assets/images/GallitoDeLasRocas.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Gallito de las Rocas</p><p class="actividad-item__lugar">📍 Parque Nacional Yanachaga Chemillén</p></div>
-          </li>
-          <li class="actividad-item" data-especie="Vizcacha Peruana" data-usuario="Sergio E." data-zona="Parque Nacional Huascarán" data-lugar="Parque Nacional Huascarán" data-lat="-9.1" data-lng="-77.6" data-imagen="assets/images/VizcachaVerMas.png">
-            <img src="assets/images/Vizcacha.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Vizcacha Peruana</p><p class="actividad-item__lugar">📍 Parque Nacional Huascarán</p></div>
-          </li>
-          <li class="actividad-item" data-especie="Paiche" data-usuario="Roberto S." data-zona="Río Amazonas" data-lugar="Río Amazonas, Iquitos" data-lat="-3.75" data-lng="-73.25" data-imagen="assets/images/PaicheVerMas.png">
-            <img src="assets/images/Paiche.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Paiche</p><p class="actividad-item__lugar">📍 Río Amazonas, Iquitos</p></div>
-          </li>
-          <li class="actividad-item" data-especie="Nutria Gigante" data-usuario="Kevin A." data-zona="Río Madre de Dios" data-lugar="Río Madre de Dios, Madre de Dios" data-lat="-12.6" data-lng="-69.2" data-imagen="assets/images/NutriaVerMas.png">
-            <img src="assets/images/Nutria.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Nutria Gigante</p><p class="actividad-item__lugar">📍 Río Madre de Dios, Madre de Dios</p></div>
-          </li>
-          <li class="actividad-item" data-especie="Zorro Andino" data-usuario="Sergio E." data-zona="Parque Nacional Huascarán" data-lugar="Parque Nacional Huascarán" data-lat="-9.2" data-lng="-77.5" data-imagen="assets/images/ZorroVerMas.png">
-            <img src="assets/images/Zorro.png" class="actividad-item__img">
-            <div class="actividad-item__info"><p class="actividad-item__nombre">Zorro Andino</p><p class="actividad-item__lugar">📍 Parque Nacional Huascarán</p></div>
-          </li>
-        </ul>
+        <ul class="actividades-list" id="actividadesList"></ul>
+        <p class="actividades-empty" id="actividadesEmpty" style="display:none;">
+          Todavía no hay avistamientos registrados por la comunidad.
+        </p>
 
         <div class="actividad-detalle card" id="actividadDetalle">
           <h3 class="card__title">Registro</h3>
-          <h2 class="actividad-detalle__especie" id="detEspecie">Guacamayo Rojo</h2>
+          <h2 class="actividad-detalle__especie" id="detEspecie">—</h2>
           <div class="actividad-detalle__foto" id="detFoto"></div>
-          <p class="actividad-detalle__texto" id="detTexto">Sergio E. registró Guacamayo rojo · Bosque de Zárate</p>
-          <p class="actividad-detalle__lugar" id="detLugar">📍 Tambopata, Madre de Dios</p>
+          <p class="actividad-detalle__texto" id="detTexto">—</p>
+          <p class="actividad-detalle__lugar" id="detLugar"></p>
           <h4 class="actividad-detalle__subtitulo">Ubicación</h4>
-          <div class="actividad-detalle__mapa" id="detMapa">
-            <span class="actividad-detalle__pin">📍 <span id="detZona">Bosque El Olivar</span></span>
-          </div>
-          <div class="actividad-detalle__coords">
-            <span>Lat: <strong id="detLat">-12.0464</strong></span>
-            <span>Lng: <strong id="detLng">-77.0428</strong></span>
+          <div class="actividad-detalle__mapa" id="detMapa"></div>
+          <p class="actividades-empty" id="detSinCoords" style="display:none;">
+            Este registro no incluye coordenadas.
+          </p>
+          <div class="actividad-detalle__coords" id="detCoords">
+            <span>Lat: <strong id="detLat">—</strong></span>
+            <span>Lng: <strong id="detLng">—</strong></span>
           </div>
         </div>
       </div>
     </main>
   </div>
-  <script src="assets/scripts/actividades.js?v=3" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/actividades.js?v=6" defer></script>
 </body>
 </html>
