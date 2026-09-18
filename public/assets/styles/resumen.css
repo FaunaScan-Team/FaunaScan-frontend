@@ -66,8 +66,8 @@ a{color:inherit;text-decoration:none;}button{font-family:inherit;cursor:pointer;
 .resumen-stat__label{font-size:var(--text-xs);color:rgba(255,255,255,.6);margin-top:var(--space-1);}
 .zonas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);}
 .zona-card{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);}
-.zona-card__emoji{font-size:1.5rem;}
 .zona-card__name{flex:1;font-size:var(--text-sm);font-weight:var(--font-medium);}
+.resumen-empty{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.5;}
 .alertas-list{display:flex;flex-direction:column;gap:var(--space-3);}
 .alerta-item{padding:var(--space-4);border-radius:var(--radius-md);font-size:var(--text-sm);line-height:1.5;}
 .alerta-item--red{background:var(--color-red-light);color:var(--color-red);}

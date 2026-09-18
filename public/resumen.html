@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
   <script src="assets/scripts/auth-guard.js?v=2"></script>
+  <script>window.FaunaAuth.requireRole('investigador', true);</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resumen mensual — FaunaScan</title>
-  <link rel="stylesheet" href="assets/styles/resumen.css?v=4">
+  <link rel="stylesheet" href="assets/styles/resumen.css?v=5">
 </head>
 <body>
   <div class="app-layout">
@@ -41,61 +42,44 @@
       <div class="resumen-layout">
         <aside class="resumen-meses card">
           <h3 class="card__title">Meses</h3>
-          <ul class="meses-list" id="mesesList">
-            <li class="mes-item mes-item--active" data-mes="Mayo 2026">
-              <span class="mes-item__name">Mayo 2026</span>
-            </li>
-            <li class="mes-item" data-mes="Abril 2026">
-              <span class="mes-item__name">Abril 2026</span>
-            </li>
-            <li class="mes-item" data-mes="Marzo 2026">
-              <span class="mes-item__name">Marzo 2026</span>
-            </li>
-            <li class="mes-item" data-mes="Febrero 2026">
-              <span class="mes-item__name">Febrero 2026</span>
-            </li>
-            <li class="mes-item" data-mes="Enero 2026">
-              <span class="mes-item__name">Enero 2026</span>
-            </li>
-            <li class="mes-item" data-mes="Diciembre 2025">
-              <span class="mes-item__name">Diciembre 2025</span>
-            </li>
-          </ul>
+          <ul class="meses-list" id="mesesList"></ul>
+          <p class="resumen-empty" id="mesesEmpty" style="display:none;">
+            Sin meses con registros todavía.
+          </p>
         </aside>
 
         <div class="resumen-detalle">
           <div class="resumen-banner">
-            <h2 class="resumen-banner__titulo" id="resumenTitulo">Mayo 2026 — Bosque El Olivar</h2>
+            <h2 class="resumen-banner__titulo" id="resumenTitulo">Sin datos</h2>
             <div class="resumen-banner__stats">
-              <div class="resumen-stat"><span class="resumen-stat__num">142</span><span class="resumen-stat__label">Registros</span></div>
-              <div class="resumen-stat"><span class="resumen-stat__num">23</span><span class="resumen-stat__label">Especies</span></div>
-              <div class="resumen-stat"><span class="resumen-stat__num">4</span><span class="resumen-stat__label">Zonas</span></div>
-              <div class="resumen-stat"><span class="resumen-stat__num">3</span><span class="resumen-stat__label">Alertas</span></div>
+              <div class="resumen-stat"><span class="resumen-stat__num" id="statRegistros">0</span><span class="resumen-stat__label">Registros</span></div>
+              <div class="resumen-stat"><span class="resumen-stat__num" id="statEspecies">0</span><span class="resumen-stat__label">Especies</span></div>
+              <div class="resumen-stat"><span class="resumen-stat__num" id="statZonas">0</span><span class="resumen-stat__label">Zonas</span></div>
+              <div class="resumen-stat"><span class="resumen-stat__num" id="statAlertas">0</span><span class="resumen-stat__label">Alertas</span></div>
             </div>
           </div>
 
           <div class="card">
             <h3 class="card__title">Zonas monitoreadas</h3>
-            <div class="zonas-grid">
-              <div class="zona-card"><span class="zona-card__emoji">🌿</span><span class="zona-card__name">Bosque El Olivar</span><span class="badge badge-green">48 reg.</span></div>
-              <div class="zona-card"><span class="zona-card__emoji">🏔️</span><span class="zona-card__name">Bosque de Zárate</span><span class="badge badge-blue">37 reg.</span></div>
-              <div class="zona-card"><span class="zona-card__emoji">🌊</span><span class="zona-card__name">Reserva Amazónica</span><span class="badge badge-yellow">31 reg.</span></div>
-              <div class="zona-card"><span class="zona-card__emoji">🏝️</span><span class="zona-card__name">Parque Nac. Tingo</span><span class="badge badge-gray">26 reg.</span></div>
-            </div>
+            <div class="zonas-grid" id="zonasGrid"></div>
+            <p class="resumen-empty" id="zonasEmpty" style="display:none;">
+              Sin áreas registradas para este período.
+            </p>
           </div>
 
           <div class="card">
             <h3 class="card__title">Alertas del mes</h3>
-            <div class="alertas-list">
-              <div class="alerta-item alerta-item--red">🚨 Jaguar avistado en zona de alta actividad humana — Acción requerida</div>
-              <div class="alerta-item alerta-item--yellow">⚠️ Reducción del 15% en avistamientos de cóndor andino respecto al mes anterior</div>
-              <div class="alerta-item alerta-item--blue">ℹ️ Nuevo récord de registros en un solo día: 18 el 5 de mayo</div>
-            </div>
+            <div class="alertas-list" id="alertasList"></div>
+            <p class="resumen-empty" id="alertasEmpty" style="display:none;">
+              Sin alertas: no hubo avistamientos de especies en peligro ni variaciones relevantes respecto al mes anterior.
+            </p>
           </div>
         </div>
       </div>
     </main>
   </div>
-  <script src="assets/scripts/resumen.js?v=3" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/reportes-utils.js?v=2" defer></script>
+  <script src="assets/scripts/resumen.js?v=4" defer></script>
 </body>
 </html>
