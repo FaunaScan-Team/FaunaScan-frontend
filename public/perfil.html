@@ -44,15 +44,15 @@
 
           <div class="perfil-stats">
             <div class="perfil-stat">
-              <span class="perfil-stat__num">142</span>
+              <span class="perfil-stat__num" id="statAvistamientos">0</span>
               <span class="perfil-stat__label">Avistamientos</span>
             </div>
             <div class="perfil-stat">
-              <span class="perfil-stat__num">38</span>
+              <span class="perfil-stat__num" id="statEspecies">0</span>
               <span class="perfil-stat__label">Especies</span>
             </div>
             <div class="perfil-stat">
-              <span class="perfil-stat__num">7</span>
+              <span class="perfil-stat__num" id="statZonas">0</span>
               <span class="perfil-stat__label">Zonas</span>
             </div>
           </div>
@@ -79,7 +79,7 @@
               </div>
               <div class="info-item">
                 <span class="info-item__label">Miembro desde</span>
-                <span class="info-item__value">Mayo 2026</span>
+                <span class="info-item__value" id="perfilMiembroDesde">—</span>
               </div>
             </div>
 
@@ -139,13 +139,10 @@
 
           <div class="card">
             <h3 class="card__title">Logros obtenidos</h3>
-            <div class="achievements-list" id="achievementsList">
-              <span class="badge badge-green" id="achievementRoleTag">investigador</span>
-              <span class="badge badge-green">100 registros</span>
-              <span class="badge badge-green">5 zonas</span>
-              <span class="badge badge-green">IA explorador</span>
-              <span class="badge badge-blue">14 días seguidos</span>
-            </div>
+            <div class="achievements-list" id="achievementsList"></div>
+            <p class="form-hint" id="achievementsEmpty" style="display:none;">
+              Aún no alcanzas ninguna insignia. Registra avistamientos para desbloquear la primera.
+            </p>
           </div>
         </div>
       </div>
@@ -169,6 +166,8 @@
     </div>
   </div>
 
-  <script src="assets/scripts/perfil.js?v=5" defer></script>
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/reportes-utils.js?v=2" defer></script>
+  <script src="assets/scripts/perfil.js?v=6" defer></script>
 </body>
 </html>

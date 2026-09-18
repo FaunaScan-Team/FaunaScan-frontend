@@ -289,17 +289,9 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     ];
 
-    var ONBOARDING_KEY = 'faunaOnboardingCompletado';
-
-    function registroOnboarding() {
-      try {
-        return JSON.parse(localStorage.getItem(ONBOARDING_KEY) || '{}');
-      } catch (e) {
-        return {};
-      }
-    }
-
-    if (!registroOnboarding()[user.email]) {
+    // register.js ya creaba la cuenta con onboardingCompletado:false, así
+    // que el flag vive en el propio usuario en vez de en una clave aparte.
+    if (user.onboardingCompletado !== true) {
       var paso = 0;
       var tituloEl = document.getElementById('onboardingTitulo');
       var textoEl = document.getElementById('onboardingTexto');
@@ -317,9 +309,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       function cerrarOnboarding() {
-        var registro = registroOnboarding();
-        registro[user.email] = true;
-        localStorage.setItem(ONBOARDING_KEY, JSON.stringify(registro));
+        user.onboardingCompletado = true;
+        localStorage.setItem('faunaUser', JSON.stringify(user));
         modalOnboarding.classList.remove('open');
       }
 

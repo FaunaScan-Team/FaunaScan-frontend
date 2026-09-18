@@ -65,9 +65,54 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // --- Logros: la etiqueta de rol debe reflejar el rol real ---
-    const achievementRoleTag = document.getElementById('achievementRoleTag');
-    if (achievementRoleTag) achievementRoleTag.textContent = esInvestigador ? 'investigador' : 'voluntario';
+    // --- Estadísticas y logros reales del usuario autenticado ---
+    // Antes eran números fijos en el HTML ("142 / 38 / 7") e insignias
+    // fijas ("100 registros", "5 zonas", "IA explorador", "14 días
+    // seguidos") iguales para cualquier cuenta.
+    const U = window.FaunaReportesUtils;
+    const mios = window.FaunaAvistamientos
+      ? window.FaunaAvistamientos.getAll().filter(function (a) {
+          return a.registradoPor && a.registradoPor.email === user.email;
+        })
+      : [];
+    const zonas = U.zonasUnicas(mios).size;
+
+    document.getElementById('statAvistamientos').textContent = mios.length;
+    document.getElementById('statEspecies').textContent = U.especiesUnicas(mios).size;
+    document.getElementById('statZonas').textContent = zonas;
+
+    // Mismos umbrales que usa el panel principal, para que las insignias
+    // no se contradigan entre pantallas.
+    function umbralAlcanzado(total, umbrales) {
+      let alcanzado = null;
+      umbrales.forEach(function (u) { if (total >= u) alcanzado = u; });
+      return alcanzado;
+    }
+    const umbralRegistros = umbralAlcanzado(mios.length, [5, 10, 25, 50, 100]);
+    const umbralZonas = umbralAlcanzado(zonas, [3, 5, 10, 20]);
+
+    const listaLogros = document.getElementById('achievementsList');
+    const logros = [esInvestigador ? 'investigador' : 'voluntario'];
+    if (umbralRegistros) logros.push(umbralRegistros + '+ avistamientos');
+    if (umbralZonas) logros.push(umbralZonas + '+ zonas');
+    logros.forEach(function (texto) {
+      const tag = document.createElement('span');
+      tag.className = 'badge badge-green';
+      tag.textContent = texto;
+      listaLogros.appendChild(tag);
+    });
+    if (!umbralRegistros && !umbralZonas) {
+      document.getElementById('achievementsEmpty').style.display = 'block';
+    }
+
+    // --- Miembro desde: fecha real de creación de la cuenta ---
+    const miembroDesde = document.getElementById('perfilMiembroDesde');
+    if (miembroDesde) {
+      const creada = user.creadoEn ? new Date(user.creadoEn) : null;
+      miembroDesde.textContent = creada && !isNaN(creada.getTime())
+        ? creada.toLocaleDateString('es-PE', { month: 'long', year: 'numeric' })
+        : 'No disponible';
+    }
 
     // --- Especialidad taxonómica (US61, solo investigador) ---
     const grupoEspecialidad = document.getElementById('grupoEspecialidad');

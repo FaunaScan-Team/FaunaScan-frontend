@@ -64,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
           rol:                  role,
           estado:               'ACTIVO',
           credencialVerificada: false,
-          onboardingCompletado: false
+          onboardingCompletado: false,
+          creadoEn:             new Date().toISOString()
         }));
         setTimeout(function () {
           window.location.href = role === 'investigador' ? 'verificacion-investigador.html' : 'dashboard.html';
