@@ -3,7 +3,7 @@
 <head>
   <script src="assets/scripts/auth-guard.js?v=2"></script>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="assets/styles/dashboard.css?v=6">
+  <link rel="stylesheet" href="assets/styles/dashboard.css?v=7">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Panel principal del voluntario — FaunaScan Perú.">
   <title>Panel principal — FaunaScan</title>
@@ -66,8 +66,8 @@
           <p class="welcome-banner__date" id="welcomeDate"></p>
           <div class="welcome-banner__streak">
             <span class="emoji-lg" aria-hidden="true">🔥</span>
-            <span class="welcome-banner__streak-num" aria-label="14 días activos seguidos">14</span>
-            <span class="welcome-banner__streak-label">días activos seguidos</span>
+            <span class="welcome-banner__streak-num" id="streakNum">0</span>
+            <span class="welcome-banner__streak-label" id="streakLabel">días activos seguidos</span>
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
           </a>
           <a href="catalogo.html" class="action-card" aria-label="Ver catálogo de especies">
             <div class="action-card__icon" aria-hidden="true">
-              <img src="assets/icons/Cátalogo.png" class="action-card__icon-img">
+              <img src="assets/icons/Catalogo.png" class="action-card__icon-img">
             </div>
             <span class="action-card__label">Catálogo</span>
           </a>
@@ -117,9 +117,9 @@
               </div>
               <div class="progress-item__info">
                 <p class="progress-item__label">Avistamientos</p>
-                <p class="progress-item__value">142</p>
+                <p class="progress-item__value" id="progressAvistamientos">0</p>
               </div>
-              <span class="progress-item__delta progress-item__delta--positive">+2 este día</span>
+              <span class="progress-item__delta progress-item__delta--neutral" id="progressAvistamientosDelta"></span>
             </div>
             <div class="progress-item">
               <div class="progress-item__icon" aria-hidden="true">
@@ -127,9 +127,9 @@
               </div>
               <div class="progress-item__info">
                 <p class="progress-item__label">Especies registradas</p>
-                <p class="progress-item__value">38</p>
+                <p class="progress-item__value" id="progressEspecies">0</p>
               </div>
-              <span class="progress-item__delta progress-item__delta--positive">+3 este mes</span>
+              <span class="progress-item__delta progress-item__delta--neutral" id="progressEspeciesDelta"></span>
             </div>
             <div class="progress-item">
               <div class="progress-item__icon" aria-hidden="true">
@@ -137,9 +137,8 @@
               </div>
               <div class="progress-item__info">
                 <p class="progress-item__label">Zonas visitadas</p>
-                <p class="progress-item__value">7</p>
+                <p class="progress-item__value" id="progressZonas">0</p>
               </div>
-              <span class="progress-item__delta progress-item__delta--neutral">Sin cambios</span>
             </div>
           </section>
 
@@ -148,11 +147,10 @@
             <h2 class="achievements-card__title" id="achievements-title">
               <span aria-hidden="true">🏆</span> Logros obtenidos
             </h2>
-            <div class="achievements-list" role="list">
-              <span class="achievement-tag" role="listitem">100 registros</span>
-              <span class="achievement-tag" role="listitem">5 zonas</span>
-              <span class="achievement-tag" role="listitem">IA explorador</span>
-            </div>
+            <div class="achievements-list" id="achievementsList" role="list"></div>
+            <p class="dashboard-empty" id="achievementsEmpty" style="display:none;">
+              Aún no alcanzas ninguna insignia. Registra avistamientos para desbloquear la primera.
+            </p>
           </section>
 
         </div>
@@ -164,57 +162,10 @@
               <h2 class="activity-card__title" id="activity-title">Actividad reciente de la comunidad</h2>
               <a href="actividades.html" class="activity-card__more">Ver más</a>
             </div>
-            <ol class="activity-list" aria-label="Actividad reciente">
-
-              <li class="activity-item">
-                <div class="activity-item__avatar activity-item__avatar--orange" aria-label="Usuario Kevin A." aria-hidden="true">K</div>
-                <div class="activity-item__info">
-                  <p class="activity-item__text">Kevin A. registró Oso de anteojos · Bosque El Olivar</p>
-                  <p class="activity-item__meta">
-                    <span class="vuln-badge vuln-badge--vulnerable">VULNERABLE</span>
-                    &nbsp;Coordenadas: -12.04, -77.04
-                  </p>
-                </div>
-                <time class="activity-item__time" datetime="2026-05-09T10:58">Hace 2 min</time>
-              </li>
-
-              <li class="activity-item">
-                <div class="activity-item__avatar activity-item__avatar--blue" aria-label="Usuario Roberto S." aria-hidden="true">R</div>
-                <div class="activity-item__info">
-                  <p class="activity-item__text">Roberto S. registró Cóndor andino · Bosque de Zárate</p>
-                  <p class="activity-item__meta">
-                    <span class="vuln-badge vuln-badge--vulnerable">VULNERABLE</span>
-                    &nbsp;1 individuo adulto
-                  </p>
-                </div>
-                <time class="activity-item__time" datetime="2026-05-09T10:42">Hace 18 min</time>
-              </li>
-
-              <li class="activity-item">
-                <div class="activity-item__avatar activity-item__avatar--red" aria-label="Usuario Sergio E." aria-hidden="true">S</div>
-                <div class="activity-item__info">
-                  <p class="activity-item__text">Sergio E. registró Guacamayo rojo · Bosque de Zárate</p>
-                  <p class="activity-item__meta">
-                    <span class="vuln-badge vuln-badge--vulnerable">VULNERABLE</span>
-                    &nbsp;1 individuo adulto
-                  </p>
-                </div>
-                <time class="activity-item__time" datetime="2026-05-09T10:42">Hace 18 min</time>
-              </li>
-
-              <li class="activity-item">
-                <div class="activity-item__avatar activity-item__avatar--green" aria-label="Usuario Kevin A." aria-hidden="true">K</div>
-                <div class="activity-item__info">
-                  <p class="activity-item__text">Kevin A. registró Anaconda · Bosque El Olivar</p>
-                  <p class="activity-item__meta">
-                    <span class="vuln-badge vuln-badge--ok">NO VULNERABLE</span>
-                    &nbsp;Coordenadas: -12.04, -77.04
-                  </p>
-                </div>
-                <time class="activity-item__time" datetime="2026-05-09T10:58">Hace 2 min</time>
-              </li>
-
-            </ol>
+            <ol class="activity-list" id="activityList" aria-label="Actividad reciente"></ol>
+            <p class="dashboard-empty" id="activityEmpty" style="display:none;">
+              Todavía no hay avistamientos registrados por la comunidad.
+            </p>
           </section>
         </div>
 
@@ -222,6 +173,25 @@
     </main>
   </div>
 
-  <script src="assets/scripts/dashboard.js?v=4" defer></script>
+  <!-- Onboarding guiado de 3 pasos (US66) — solo voluntario, solo el primer ingreso -->
+  <div class="modal-overlay" id="modalOnboarding" role="dialog" aria-modal="true" aria-labelledby="onboardingTitulo">
+    <div class="modal-card onboarding-modal">
+      <div class="onboarding-modal__dots" id="onboardingDots" aria-hidden="true">
+        <span class="onboarding-dot onboarding-dot--active"></span>
+        <span class="onboarding-dot"></span>
+        <span class="onboarding-dot"></span>
+      </div>
+      <h3 class="modal-card__title" id="onboardingTitulo"></h3>
+      <p class="modal-card__text" id="onboardingTexto"></p>
+      <div class="onboarding-modal__actions">
+        <button class="btn btn-outline" id="btnOnboardingOmitir">Omitir</button>
+        <button class="btn btn-primary" id="btnOnboardingSiguiente">Siguiente</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/scripts/avistamientos-store.js?v=1" defer></script>
+  <script src="assets/scripts/reportes-utils.js?v=2" defer></script>
+  <script src="assets/scripts/dashboard.js?v=5" defer></script>
 </body>
 </html>
