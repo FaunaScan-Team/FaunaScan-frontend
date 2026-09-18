@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
 
 /* === VARIABLES === */
 :root {
@@ -18,7 +18,7 @@
   --color-text-primary: #0f2318;
   --color-text-secondary: #4a6357;
   --color-text-muted: #7a9487;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;--font-heading:'Poppins',var(--font-body);
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -141,7 +141,7 @@ ul, ol { list-style: none; }
   justify-content: center; padding: var(--space-8) var(--space-10); }
 .auth-card { width: 100%; max-width: 480px; background: var(--color-white);
   border-radius: var(--radius-xl); padding: var(--space-10); box-shadow: var(--shadow-lg); }
-.auth-card__title { font-size: var(--text-3xl); font-weight: var(--font-bold);
+.auth-card__title {font-family:var(--font-heading); font-size: var(--text-3xl); font-weight: var(--font-bold);
   color: var(--color-text-primary); text-align: center; letter-spacing: -0.02em; }
 .auth-card__subtitle { font-size: var(--text-base); color: var(--color-text-muted);
   text-align: center; margin-top: var(--space-2); }
