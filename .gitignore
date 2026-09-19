@@ -1,0 +1,43 @@
+# --- IDEs / editores ---
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# --- Sistema operativo ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# --- Node / Angular (etapa posterior del proyecto) ---
+node_modules/
+dist/
+tmp/
+out-tsc/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# --- Variables de entorno / secretos ---
+.env
+.env.*
+!.env.example
+
+# --- Build / cobertura ---
+coverage/
+*.tsbuildinfo
+
+# --- Temporales ---
+*.log
+*.tmp
+*.bak
+
+# --- Material de trabajo local, fuera del repositorio publico ---
+# Referencias del curso e instrucciones de trabajo: se conservan en local,
+# pero no se publican en un repositorio publico.
+docs/
