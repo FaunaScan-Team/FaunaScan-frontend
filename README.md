@@ -113,10 +113,9 @@ Las publicaciones se hacen mediante Pull Request de `develop` hacia `main`.
 ## Equipo
 
 * Estefany Milagros Amaya Suni
-* Sebastian Alonso Curay Rodriguez
-* Carlos Antonio Geldres Cortez
-* Elí Yahveh Maldonado Zamudio
-* Yael Sarai Ojeda Rojas
-* Anderson Misael Yovera Chinchay
+* Sebastian Moises Suarez Simeon
+* Rosmery Catherine Villar Aguilar
+* Sebastian Isaac Añamuro Hilasaca
+* Nohelia
 
 Proyecto desarrollado para el curso **1ASI0705 – Arquitectura de Aplicaciones Web**, Universidad Peruana de Ciencias Aplicadas (UPC).
