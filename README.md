@@ -2,7 +2,7 @@
 
 Plataforma web para el registro, identificación y monitoreo de avistamientos de fauna silvestre en el Perú.
 
-**Sitio publicado:** https://faunateam.github.io/FaunaScan-frontend/
+**Sitio publicado:** https://faunascan-team.github.io/FaunaScan-frontend/
 
 ## Índice
 
