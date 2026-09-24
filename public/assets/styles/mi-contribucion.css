@@ -63,7 +63,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .contrib-motivacion__titulo{font-family:var(--font-heading);font-size:var(--text-lg);font-weight:700;color:var(--color-primary);}
 .contrib-motivacion__sub{font-size:var(--text-sm);color:var(--color-text-primary);margin:var(--space-1) 0 var(--space-3);}
 .contrib-progress-bar{height:10px;background:rgba(255,255,255,.6);border-radius:var(--radius-full);overflow:hidden;}
-.contrib-progress-bar__fill{height:100%;background:var(--color-primary);border-radius:var(--radius-full);transition:width var(--transition-base);}
+.contrib-progress-bar__fill{width:100%;height:100%;background:var(--color-primary);border-radius:var(--radius-full);clip-path:inset(0 100% 0 0 round 9999px);transition:clip-path 700ms var(--ease-out,ease-out);}
 
 @media(max-width:1023px){
   .sidebar{transform:translateX(-100%);transition:transform var(--transition-base);z-index:200;}

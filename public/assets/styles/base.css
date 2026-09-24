@@ -1,0 +1,148 @@
+/* =====================================================================
+   FaunaScan — capa compartida de movimiento y tacto
+   ---------------------------------------------------------------------
+   Se carga DESPUÉS de la hoja propia de cada página. Define los tokens
+   de movimiento y el comportamiento de los componentes que se repiten
+   en todas las páginas (menú lateral, modales, botones), para que se
+   mueva y responda igual en toda la app.
+
+   No cambia colores ni tipografía: eso sigue en la hoja de cada página
+   y en el Style Guide.
+   ===================================================================== */
+
+/* === TOKENS DE MOVIMIENTO === */
+:root {
+  /* ease-out fuerte: entradas, salidas y respuesta al toque */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* ease-in-out fuerte: elementos que se desplazan en pantalla */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  /* curva de cajón tipo iOS: el menú lateral */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* === TACTO EN MÓVIL === */
+html {
+  /* Sin el destello gris que pinta el navegador al tocar un elemento */
+  -webkit-tap-highlight-color: transparent;
+  /* Sin agrandar el texto al girar el teléfono */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* El toque dispara el clic al instante, sin esperar un posible doble toque */
+a, button, label, select, summary, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Mantener pulsado un control no selecciona su texto (el contenido sí se puede copiar) */
+button, [role="button"], .btn, .chip, .notif-filter, .sidebar-toggle, .sidebar__link, .mapa-ctrl-btn {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* iOS amplía la página al enfocar un campo con texto menor a 16px, y no la vuelve a su tamaño */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea, select, .form-input, .mapa-mock__search {
+    font-size: 16px;
+  }
+}
+
+/* === ALTURA DE PANTALLA COMPLETA ===
+   En móvil, 100vh mide la pantalla con la barra del navegador oculta:
+   con la barra visible, el final del menú queda escondido debajo de ella. */
+@supports (height: 100dvh) {
+  .sidebar { height: 100dvh; }
+  .app-layout, .app-content { min-height: 100dvh; }
+}
+@supports (height: 100svh) {
+  /* Pantallas de acceso: la altura más pequeña, para que nunca se corten */
+  .auth-split { min-height: 100svh; }
+}
+
+/* === BOTONES: RESPUESTA AL PRESIONAR === */
+.btn {
+  transition:
+    background-color var(--transition-fast, 150ms ease),
+    color var(--transition-fast, 150ms ease),
+    border-color var(--transition-fast, 150ms ease),
+    box-shadow var(--transition-fast, 150ms ease),
+    opacity var(--transition-fast, 150ms ease),
+    transform 160ms var(--ease-out);
+}
+.sidebar-toggle {
+  transition:
+    background-color var(--transition-fast, 150ms ease),
+    transform 160ms var(--ease-out);
+}
+.btn:active:not(:disabled):not([aria-disabled="true"]),
+.chip:active,
+.notif-filter:active,
+.sidebar-toggle:active,
+.mapa-ctrl-btn:active {
+  transform: scale(0.97);
+}
+
+/* === MENÚ LATERAL (cajón en móvil) ===
+   Cerrar es más rápido que abrir: al abrir el usuario está mirando,
+   al cerrar solo quiere volver al contenido. */
+.sidebar {
+  transition: transform 200ms var(--ease-out);
+  /* Al llegar al final del menú, el desplazamiento no arrastra la página de atrás */
+  overscroll-behavior: contain;
+}
+.sidebar.open {
+  transition: transform 300ms var(--ease-drawer);
+}
+
+/* El fondo oscuro acompaña al menú en vez de aparecer de golpe.
+   visibility (no display) permite animar la salida y deja pasar los
+   clics mientras está oculto. */
+.sidebar-overlay {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms var(--ease-out), visibility 0s linear 200ms;
+}
+.sidebar-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 300ms var(--ease-out), visibility 0s;
+}
+
+/* === MODALES ===
+   Crecen desde el centro de la pantalla: un modal no nace de ningún botón. */
+.modal-overlay {
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms var(--ease-out), visibility 0s linear 150ms;
+}
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 200ms var(--ease-out), visibility 0s;
+}
+.modal-overlay .modal-card {
+  transform: scale(0.96);
+  transition: transform 150ms var(--ease-out);
+}
+.modal-overlay.open .modal-card {
+  transform: none;
+  transition: transform 200ms var(--ease-out);
+}
+
+/* === MOVIMIENTO REDUCIDO ===
+   Reducido no es cero: se quitan los desplazamientos y los cambios de
+   escala, pero se conservan los fundidos y los cambios de color, que
+   ayudan a entender qué cambió. El mapa (Leaflet) queda fuera: maneja
+   sus propias animaciones. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *:not(.leaflet-container, .leaflet-container *),
+  *:not(.leaflet-container, .leaflet-container *)::before,
+  *:not(.leaflet-container, .leaflet-container *)::after {
+    transition-property: opacity, color, background-color, border-color, box-shadow, visibility !important;
+  }
+}

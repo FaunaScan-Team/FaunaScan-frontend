@@ -71,20 +71,31 @@ document.addEventListener('DOMContentLoaded', function () {
   const subEl = document.getElementById('motivacionSub');
   const barraEl = document.getElementById('motivacionBarra');
 
+  // La barra se revela en el fotograma siguiente al primer pintado: si el
+  // valor final se aplicara antes, el navegador no tendria un estado previo
+  // desde el cual animar y la barra apareceria ya llena.
+  function pintarProgreso(pct) {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        barraEl.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0 round 9999px)';
+      });
+    });
+  }
+
   if (total === 0) {
     tituloEl.textContent = '¡Empieza tu contribución!';
     subEl.textContent = 'Registra tu primer avistamiento para ganar tu primera insignia.';
-    barraEl.style.width = '0%';
+    pintarProgreso(0);
   } else if (!siguiente) {
     tituloEl.textContent = '¡Impresionante!';
     subEl.textContent = 'Superaste los ' + UMBRALES[UMBRALES.length - 1] + ' avistamientos registrados.';
-    barraEl.style.width = '100%';
+    pintarProgreso(100);
   } else {
     const anterior = UMBRALES[UMBRALES.indexOf(siguiente) - 1] || 0;
     const faltan = siguiente - total;
     const progreso = Math.round(((total - anterior) / (siguiente - anterior)) * 100);
     tituloEl.textContent = '¡Sigue así!';
     subEl.textContent = 'Estás a ' + faltan + ' registro' + (faltan === 1 ? '' : 's') + ' de tu próxima insignia (' + siguiente + ').';
-    barraEl.style.width = progreso + '%';
+    pintarProgreso(progreso);
   }
 });

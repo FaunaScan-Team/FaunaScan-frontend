@@ -44,18 +44,33 @@ document.addEventListener('DOMContentLoaded', function () {
   var targets = document.querySelectorAll(
     '.feature-card, .benefit-item, .hero__content, .hero__image-wrap, .cta-section__content'
   );
-  targets.forEach(function (el, i) {
+  // ease-out fuerte: el elemento arranca rapido y se asienta suave
+  var EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
+  targets.forEach(function (el) {
     el.style.opacity = '0';
     el.style.transform = 'translateY(24px)';
-    el.style.transition = 'opacity 0.5s ease ' + (i * 0.07) + 's, transform 0.5s ease ' + (i * 0.07) + 's';
   });
   var observer = new IntersectionObserver(function (entries) {
+    // El escalonado es solo entre los elementos que entran juntos en pantalla.
+    // Con el indice global, lo que esta al final de la pagina esperaba mas de
+    // un segundo despues de hacerse visible.
+    var orden = 0;
     entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        observer.unobserve(entry.target);
-      }
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      var retraso = (orden++ * 0.07) + 's';
+      el.style.transition = 'opacity 0.5s ' + EASE_OUT + ' ' + retraso + ', transform 0.5s ' + EASE_OUT + ' ' + retraso;
+      // Vaciar (en vez de fijar opacity:1 / translateY(0)) devuelve el control a
+      // la hoja de estilos: un transform en linea anulaba el :hover de las tarjetas.
+      el.style.opacity = '';
+      el.style.transform = '';
+      el.addEventListener('transitionend', function limpiar(e) {
+        if (e.target !== el || e.propertyName !== 'opacity') return;
+        // Sin esto, el hover heredaba la transicion de 0.5s con retraso
+        el.style.transition = '';
+        el.removeEventListener('transitionend', limpiar);
+      });
+      observer.unobserve(el);
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   targets.forEach(function (el) { observer.observe(el); });
