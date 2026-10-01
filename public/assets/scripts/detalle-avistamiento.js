@@ -79,7 +79,117 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.disabled = true;
       btn.title = 'Este avistamiento ya fue validado y no se puede modificar.';
     });
+    const aviso = document.getElementById('detalleBloqueo');
+    if (aviso) aviso.style.display = 'block';
   }
+
+  // --- US56: compartir el avistamiento con colegas investigadores ---
+  const usuario = window.FaunaAuth ? window.FaunaAuth.user : null;
+  const btnCompartir = document.getElementById('btnCompartir');
+  const modalCompartir = document.getElementById('modalCompartir');
+  const colegasLista = document.getElementById('colegasLista');
+  const compartirMensaje = document.getElementById('compartirMensaje');
+  const compartirError = document.getElementById('compartirError');
+  const detalleCompartidos = document.getElementById('detalleCompartidos');
+  const compartidosLista = document.getElementById('compartidosLista');
+
+  function formatearFechaCorta(valor) {
+    const fecha = new Date(valor);
+    if (isNaN(fecha.getTime())) return '—';
+    return fecha.toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) +
+      ' · ' + fecha.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function iniciales(nombre) {
+    return nombre
+      .replace(/^(Dr\.|Dra\.)\s*/i, '')
+      .split(' ')
+      .slice(0, 2)
+      .map(function (parte) { return parte.charAt(0).toUpperCase(); })
+      .join('');
+  }
+
+  /** Historial de envíos de este avistamiento, debajo de las observaciones. */
+  function pintarCompartidos() {
+    if (!detalleCompartidos || !compartidosLista || !window.FaunaCompartidos) return;
+    const envios = window.FaunaCompartidos.getByAvistamiento(registro.id);
+    if (envios.length === 0) {
+      detalleCompartidos.style.display = 'none';
+      return;
+    }
+    compartidosLista.innerHTML = '';
+    envios.forEach(function (envio) {
+      envio.destinatarios.forEach(function (colega) {
+        const item = document.createElement('li');
+        item.className = 'compartidos-item';
+        item.innerHTML =
+          '<span class="compartidos-item__avatar">' + iniciales(colega.nombre) + '</span>' +
+          '<span class="compartidos-item__info">' +
+            '<span class="compartidos-item__nombre">' + colega.nombre + '</span>' +
+            '<span class="compartidos-item__meta">' + colega.institucion + ' · ' + formatearFechaCorta(envio.fecha) + '</span>' +
+          '</span>';
+        compartidosLista.appendChild(item);
+      });
+    });
+    detalleCompartidos.style.display = 'block';
+  }
+
+  /** Lista de colegas seleccionables dentro del modal. */
+  function pintarColegas() {
+    if (!colegasLista || !window.FaunaCompartidos) return;
+    const especialidad = especie.familia || (usuario && usuario.especialidad) || '';
+    colegasLista.innerHTML = '';
+    window.FaunaCompartidos.colegas(especialidad).forEach(function (colega) {
+      const item = document.createElement('li');
+      item.className = 'colega-item';
+      item.innerHTML =
+        '<label class="colega-item__label">' +
+          '<input type="checkbox" class="colega-item__check" value="' + colega.id + '">' +
+          '<span class="colega-item__avatar">' + iniciales(colega.nombre) + '</span>' +
+          '<span class="colega-item__info">' +
+            '<span class="colega-item__nombre">' + colega.nombre + '</span>' +
+            '<span class="colega-item__meta">' + colega.institucion + '</span>' +
+          '</span>' +
+        '</label>';
+      colegasLista.appendChild(item);
+    });
+  }
+
+  if (btnCompartir && modalCompartir) {
+    btnCompartir.addEventListener('click', function () {
+      pintarColegas();
+      if (compartirMensaje) compartirMensaje.value = '';
+      if (compartirError) compartirError.style.display = 'none';
+      modalCompartir.classList.add('open');
+    });
+
+    document.getElementById('btnCancelarCompartir').addEventListener('click', function () {
+      modalCompartir.classList.remove('open');
+    });
+
+    document.getElementById('btnConfirmarCompartir').addEventListener('click', function () {
+      const seleccionados = Array.prototype.slice
+        .call(colegasLista.querySelectorAll('.colega-item__check:checked'))
+        .map(function (check) { return check.value; });
+
+      if (seleccionados.length === 0) {
+        if (compartirError) compartirError.style.display = 'block';
+        return;
+      }
+
+      window.FaunaCompartidos.compartir(
+        registro.id,
+        seleccionados,
+        compartirMensaje ? compartirMensaje.value : '',
+        usuario
+      );
+
+      modalCompartir.classList.remove('open');
+      pintarCompartidos();
+    });
+  }
+
+  pintarCompartidos();
 
   const modal = document.getElementById('modalEliminar');
   const btnConfirmar = document.getElementById('btnConfirmarEliminar');
