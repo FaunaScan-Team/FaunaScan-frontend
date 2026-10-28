@@ -1,0 +1,36 @@
+<section class="acceso-pagina" aria-labelledby="titulo-pagina">
+  <header class="acceso-encabezado">
+    <h1 id="titulo-pagina">Acceso restringido</h1>
+  </header>
+
+  <div class="acceso-contenido">
+    <div class="acceso-icono" aria-hidden="true">
+      <!-- Candado de la pantalla original de FaunaScan -->
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+      >
+        <rect x="4" y="10" width="16" height="10" rx="2" />
+        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+      </svg>
+    </div>
+
+    <h2 class="acceso-titulo">{{ titulo }}</h2>
+
+    <p class="acceso-descripcion">{{ mensaje }}</p>
+
+    <div class="acceso-acciones">
+      <a
+        class="acceso-boton"
+        [routerLink]="rutaInicio"
+        aria-label="Volver al inicio de FaunaScan"
+      >
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+</section>
