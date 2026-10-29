@@ -1,0 +1,24 @@
+<header><p class="eyebrow">BIODIVERSIDAD DEL PERÚ</p><h1>Catálogo de especies</h1><p>Conoce nuestra fauna y selecciona una especie para explorar su información.</p></header>
+<div class="toolbar">
+  <label>Buscar especie<input #buscar type="search" placeholder="Nombre común o científico..." [value]="busqueda()" (input)="busqueda.set(buscar.value)"></label>
+  <label>Estado de conservación<select #filtro [value]="estado()" (change)="estado.set(filtro.value)"><option value="">Todos los estados</option><option value="critico">En peligro crítico</option><option value="vulnerable">Vulnerable</option><option value="casi">Casi amenazada</option><option value="menor">Preocupación menor</option></select></label>
+  <button class="secondary" (click)="limpiar()">Limpiar filtros</button>
+</div>
+<p class="count" aria-live="polite">{{ especiesFiltradas().length }} de {{ especies.length }} especies</p>
+@if (seleccionada(); as especie) {
+  <section class="selection" aria-label="Especie seleccionada" aria-live="polite"><div><strong>{{ especie.nombre }}</strong><p><i>{{ especie.nombreCientifico }}</i> · {{ especie.estadoLabel }}</p></div><a class="primary" [routerLink]="['/catalogo', especie.id]">Ver detalle →</a></section>
+}
+<section class="grid" aria-label="Especies">
+  @for (especie of especiesFiltradas(); track especie.id) {
+    <article class="card" [class.selected]="seleccionada()?.id === especie.id">
+      <button class="select-card" (click)="seleccionar(especie)" [attr.aria-pressed]="seleccionada()?.id === especie.id" [attr.aria-label]="'Seleccionar ' + especie.nombre">
+        <div class="image"><img [src]="especie.imagen" [alt]="especie.nombre" loading="lazy"></div>
+        <div class="body"><h2>{{ especie.nombre }}</h2><p class="scientific">{{ especie.nombreCientifico }}</p><span class="badge" [attr.data-estado]="especie.estado">{{ especie.estadoLabel }}</span></div>
+      </button>
+      <a class="detail-link" [routerLink]="['/catalogo', especie.id]" [attr.aria-label]="'Ver detalle de ' + especie.nombre">Ver detalle →</a>
+    </article>
+  } @empty {
+    <div class="empty"><h2>No se encontraron especies</h2><p>Prueba otro nombre o cambia el estado de conservación.</p><button class="secondary" (click)="limpiar()">Mostrar todas</button></div>
+  }
+</section>
+<p class="note">Datos simulados del proyecto original para este avance académico.</p>
