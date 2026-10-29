@@ -1,0 +1,119 @@
+<section class="container registrar" aria-labelledby="titulo-registrar">
+  <header class="registrar__encabezado">
+    <h1 id="titulo-registrar">Nuevo avistamiento</h1>
+    <p>Completa los datos del animal que observaste. Los campos con * son obligatorios.</p>
+  </header>
+
+  @if (guardado()) {
+    <p class="aviso aviso--exito" role="status">
+      ¡Avistamiento guardado correctamente! Te llevamos a tu historial…
+    </p>
+  }
+
+  <form class="registrar__layout" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+    <div class="registrar__columna">
+      <div class="card" role="group" aria-labelledby="titulo-especie">
+        <h2 class="card__title" id="titulo-especie">Especie observada *</h2>
+        <div class="chips" role="radiogroup" aria-label="Especie observada">
+          @for (especie of especies; track especie.id) {
+            <button
+              type="button"
+              class="chip"
+              role="radio"
+              [class.chip--activa]="formulario.controls.especieId.value === especie.id"
+              [attr.aria-checked]="formulario.controls.especieId.value === especie.id"
+              (click)="seleccionarEspecie(especie.id)"
+            >
+              <span aria-hidden="true">{{ especie.emoji }}</span> {{ especie.nombre }}
+            </button>
+          }
+        </div>
+        @if (tieneError('especieId')) {
+          <p class="error">Selecciona una especie antes de guardar.</p>
+        }
+        <a routerLink="/catalogo" class="enlace">¿No está en la lista? Revisa el catálogo</a>
+      </div>
+
+      <div class="card">
+        <h2 class="card__title">Observaciones detalladas</h2>
+        <p class="texto-suave">Clima, temperatura, número de individuos y notas del observador.</p>
+        @if (servicio.observacionesBorrador(); as obs) {
+          <p class="aviso aviso--info">
+            Observaciones agregadas{{ obs.clima ? ': ' + obs.clima : '' }}{{ obs.individuos ? ' · ' + obs.individuos + ' individuo(s)' : '' }}
+          </p>
+        }
+        <button type="button" class="btn btn-outline btn-full" (click)="irAObservaciones()">
+          {{ servicio.observacionesBorrador() ? 'Editar observaciones' : 'Agregar observaciones detalladas' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="registrar__columna">
+      <div class="card">
+        <h2 class="card__title">Detalles del avistamiento</h2>
+
+        <div class="campo">
+          <label for="fecha">Fecha y hora *</label>
+          <input id="fecha" class="input" type="datetime-local" formControlName="fecha" [max]="maxFecha" />
+          @if (tieneError('fecha', 'required')) {
+            <p class="error">Indica cuándo fue el avistamiento.</p>
+          }
+          @if (tieneError('fecha', 'fechaFutura')) {
+            <p class="error">La fecha no puede ser futura.</p>
+          }
+        </div>
+
+        <div class="campo">
+          <label for="area">Área o lugar *</label>
+          <input id="area" class="input" type="text" formControlName="area" placeholder="Ej: Reserva Nacional de Paracas" />
+          @if (tieneError('area', 'required')) {
+            <p class="error">Indica dónde lo viste.</p>
+          }
+          @if (tieneError('area', 'minlength')) {
+            <p class="error">Escribe al menos 3 caracteres.</p>
+          }
+          @if (tieneError('area', 'maxlength')) {
+            <p class="error">Máximo 100 caracteres.</p>
+          }
+        </div>
+
+        <div class="campo">
+          <label for="descripcion">Descripción breve</label>
+          <textarea id="descripcion" class="input" rows="3" maxlength="500" formControlName="descripcion"
+            placeholder="Comportamiento observado, cantidad, etc."></textarea>
+          <p class="contador">{{ formulario.controls.descripcion.value.length }} / 500</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card__title">Ubicación</h2>
+        <div class="fila">
+          <div class="campo">
+            <label for="latitud">Latitud</label>
+            <input id="latitud" class="input" type="number" step="0.000001" formControlName="latitud" placeholder="-12.0464" />
+            @if (tieneError('latitud')) {
+              <p class="error">Debe estar entre -90 y 90.</p>
+            }
+          </div>
+          <div class="campo">
+            <label for="longitud">Longitud</label>
+            <input id="longitud" class="input" type="number" step="0.000001" formControlName="longitud" placeholder="-77.0428" />
+            @if (tieneError('longitud')) {
+              <p class="error">Debe estar entre -180 y 180.</p>
+            }
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline" (click)="usarUbicacion()" [disabled]="ubicando()">
+          {{ ubicando() ? 'Obteniendo ubicación…' : '📍 Usar mi ubicación actual' }}
+        </button>
+        @if (errorUbicacion()) {
+          <p class="error">{{ errorUbicacion() }}</p>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-full" [disabled]="guardado()">
+        {{ guardado() ? 'Guardado' : 'Guardar avistamiento' }}
+      </button>
+    </div>
+  </form>
+</section>
