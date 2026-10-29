@@ -1,0 +1,3 @@
+:host { display: block; }
+.footer__brand-desc, .footer__copy { color: var(--color-text-secondary); }
+.footer__links a:hover { text-decoration: underline; text-underline-offset: 3px; }
