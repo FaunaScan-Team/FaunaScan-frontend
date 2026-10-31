@@ -1,0 +1,117 @@
+<app-panel-layout titulo="Historial de registros">
+  <div class="historial-layout">
+    <aside class="historial-filters card" aria-labelledby="titulo-filtros">
+      <h2 class="card__title" id="titulo-filtros">Filtros</h2>
+
+      <div class="form-group">
+        <label class="form-label" for="filtroAnimal">Animal</label>
+        <input class="form-input" type="text" id="filtroAnimal" placeholder="Nombre de especie..." [(ngModel)]="borrador.animal" name="animal">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="filtroPeriodo">Período</label>
+        <select class="form-input" id="filtroPeriodo" [(ngModel)]="borrador.periodo" name="periodo">
+          <option value="">Todo el período</option>
+          <option value="trimestre">Último trimestre</option>
+          <option value="anio">Este año</option>
+          <option value="personalizado">Personalizado</option>
+        </select>
+      </div>
+
+      @if (borrador.periodo === 'personalizado') {
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="filtroDesde">Desde</label>
+            <input class="form-input" type="date" id="filtroDesde" [(ngModel)]="borrador.desde" name="desde">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="filtroHasta">Hasta</label>
+            <input class="form-input" type="date" id="filtroHasta" [(ngModel)]="borrador.hasta" name="hasta">
+          </div>
+        </div>
+      }
+
+      <div class="form-group">
+        <label class="form-label" for="filtroEstado">Estado</label>
+        <select class="form-input" id="filtroEstado" [(ngModel)]="borrador.estado" name="estado">
+          <option value="">Todos</option>
+          <option value="validado">Validado</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="no-validado">No validado</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="filtroZona">Zona</label>
+        <input class="form-input" type="text" id="filtroZona" placeholder="Nombre de zona..." [(ngModel)]="borrador.zona" name="zona">
+      </div>
+
+      <button type="button" class="btn btn-primary btn-full" (click)="aplicarFiltros()">Aplicar filtros</button>
+      <button type="button" class="btn btn-link btn-full" (click)="limpiarFiltros()">Limpiar</button>
+    </aside>
+
+    <div class="historial-main">
+      <div class="card">
+        @if (sinRegistros()) {
+          <p class="historial-empty">
+            Aún no tienes avistamientos registrados.
+            <a routerLink="/registrar">Registra tu primero</a>.
+          </p>
+        } @else if (sinResultados()) {
+          <p class="historial-empty">Ningún avistamiento coincide con los filtros aplicados.</p>
+        } @else {
+          <table class="historial-table">
+            <caption class="sr-only">Avistamientos que registraste</caption>
+            <thead>
+              <tr>
+                <th scope="col"><span class="sr-only">Favorito</span></th>
+                <th scope="col">Especie</th>
+                <th scope="col">Zona</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (av of filas(); track av.id) {
+                <tr class="historial-row" (click)="abrirDetalle(av.id)">
+                  <td>
+                    <button
+                      type="button"
+                      class="fav-btn"
+                      [attr.aria-pressed]="!!av.favorito"
+                      [attr.aria-label]="(av.favorito ? 'Quitar de favoritos: ' : 'Marcar como favorito: ') + (av.especie?.nombre || 'avistamiento')"
+                      (click)="alternarFavorito(av, $event)">{{ av.favorito ? '★' : '☆' }}</button>
+                  </td>
+                  <td>
+                    <span class="especie-emoji" aria-hidden="true">{{ av.especie?.emoji || '🐾' }}</span>
+                    <a [routerLink]="['/avistamientos', av.id]" (click)="$event.stopPropagation()">{{ av.especie?.nombre || 'Especie no especificada' }}</a>
+                  </td>
+                  <td>{{ av.area || '—' }}</td>
+                  <td>{{ formatearFecha(av.fecha) }}</td>
+                  <td><span class="badge" [class]="badge(av.estadoValidacion).clase">{{ badge(av.estadoValidacion).texto }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+
+      <div class="card mt-6">
+        <h2 class="card__title">Favoritos</h2>
+        @if (favoritos().length) {
+          <div class="favoritos-list">
+            @for (av of favoritos(); track av.id) {
+              <a class="favorito-item" [routerLink]="['/avistamientos', av.id]">
+                <span class="especie-emoji" aria-hidden="true">{{ av.especie?.emoji || '🐾' }}</span>
+                <span class="favorito-item__nombre">{{ av.especie?.nombre || 'Especie no especificada' }}</span>
+                <span class="favorito-item__zona">📍 {{ av.area || '—' }}</span>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="favoritos-empty">Aún no marcaste avistamientos como favoritos.</p>
+        }
+      </div>
+    </div>
+  </div>
+</app-panel-layout>

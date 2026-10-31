@@ -1,0 +1,117 @@
+<app-panel-layout titulo="Historial" seccionActiva="Historial">
+  @if (registro(); as av) {
+    <div class="detalle-layout">
+      <div>
+        <div class="detalle-foto">
+          @if (av.foto?.src; as fotoSrc) {
+            <img [src]="fotoSrc" [alt]="'Foto de ' + (especie().nombre || 'el avistamiento')">
+          } @else {
+            <span class="detalle-foto__placeholder" aria-hidden="true">{{ especie().emoji || '🐾' }}</span>
+          }
+        </div>
+
+        <h2 class="detalle-subtitulo">Ubicación</h2>
+        <div class="detalle-mapa">
+          <span class="detalle-mapa__pin">📍 {{ av.area || 'Zona no especificada' }}</span>
+        </div>
+        <div class="detalle-coords">
+          <span>Lat: <strong>{{ av.lat ?? '—' }}</strong></span>
+          <span>Lng: <strong>{{ av.lng ?? '—' }}</strong></span>
+        </div>
+      </div>
+
+      <div>
+        @if (!editando()) {
+          <div class="detalle-banner">
+            <div class="detalle-banner__foto">
+              @if (av.foto?.src; as fotoSrc) {
+                <img [src]="fotoSrc" alt="">
+              } @else {
+                <span aria-hidden="true">{{ especie().emoji || '🐾' }}</span>
+              }
+            </div>
+            <div class="detalle-banner__info">
+              <h2 class="detalle-banner__nombre">{{ especie().nombre || 'Especie no especificada' }}</h2>
+              <p class="detalle-banner__cientifico">{{ especie().cientifico || '—' }}</p>
+              <div class="detalle-banner__badges">
+                <span class="badge badge-yellow">{{ especie().estado || 'Estado no registrado' }}</span>
+                <span class="badge" [class]="claseValidacion()">{{ av.estadoValidacion || 'Pendiente' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="detalle-fecha">Registrado el {{ formatearFechaHora(av.fecha) }}</p>
+
+          <h2 class="detalle-subtitulo">Observaciones</h2>
+          <p class="detalle-observacion">{{ observaciones().descripcion || 'Sin observaciones registradas.' }}</p>
+
+          @if (observaciones().clima) {
+            <div class="detalle-chips">
+              <span class="detalle-chip">{{ observaciones().clima }}</span>
+            </div>
+          }
+
+          <div class="detalle-metrics">
+            <div class="form-group">
+              <label class="form-label" for="detalleTemp">Temp °C</label>
+              <input class="form-input" type="text" id="detalleTemp" [value]="metrica(observaciones().temp)" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="detalleHumedad">Humedad %</label>
+              <input class="form-input" type="text" id="detalleHumedad" [value]="metrica(observaciones().humedad)" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="detalleIndividuos">N° de individuos</label>
+              <input class="form-input" type="text" id="detalleIndividuos" [value]="metrica(observaciones().individuos)" readonly>
+            </div>
+          </div>
+
+          @if (bloqueado()) {
+            <p class="detalle-aviso">Este avistamiento ya fue validado por un investigador, por eso no se puede editar ni eliminar.</p>
+          }
+
+          <button type="button" class="btn btn-danger btn-full mt-6" [disabled]="bloqueado()" (click)="pedirConfirmacion()">Eliminar</button>
+          <button type="button" class="btn btn-outline btn-full mt-3" [disabled]="bloqueado()" (click)="abrirEdicion()">Editar</button>
+        } @else {
+          <form (ngSubmit)="guardarEdicion()">
+            <h2 class="detalle-subtitulo">Editar avistamiento</h2>
+
+            <div class="form-group mb-4">
+              <label class="form-label" for="editEspecie">Especie</label>
+              <input class="form-input form-input--edit" type="text" id="editEspecie" name="especie" [(ngModel)]="edicion.nombre">
+            </div>
+            <div class="form-group mb-4">
+              <label class="form-label" for="editFecha">Fecha y hora</label>
+              <input class="form-input form-input--edit" type="datetime-local" id="editFecha" name="fecha" [(ngModel)]="edicion.fecha">
+            </div>
+            <div class="form-group mb-5">
+              <label class="form-label" for="editObs">Observaciones</label>
+              <textarea class="form-input form-input--edit" id="editObs" name="observaciones" rows="3" [(ngModel)]="edicion.descripcion"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Guardar cambios</button>
+            <button type="button" class="btn btn-outline btn-full mt-3" (click)="cancelarEdicion()">Cancelar</button>
+          </form>
+        }
+      </div>
+    </div>
+
+    @if (modalAbierto()) {
+      <div class="modal-overlay open" (click)="cerrarModal()">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="tituloEliminar" (click)="$event.stopPropagation()">
+          <h2 class="modal-card__title" id="tituloEliminar">Eliminar</h2>
+          <p class="modal-card__text">¿Estás seguro que deseas eliminar? No se podrá recuperar la información</p>
+          <button type="button" class="btn btn-danger btn-full" [disabled]="eliminando()" (click)="confirmarEliminacion()">
+            {{ eliminando() ? 'Eliminando...' : 'Eliminar' }}
+          </button>
+          <button type="button" class="btn btn-outline btn-full mt-3" (click)="cerrarModal()">Cancelar</button>
+          <p class="modal-card__footer">Serás redirigido al <strong>historial</strong></p>
+        </div>
+      </div>
+    }
+  } @else {
+    <p class="detalle-not-found">
+      No se encontró este avistamiento. <a routerLink="/historial">Volver al historial</a>.
+    </p>
+  }
+</app-panel-layout>

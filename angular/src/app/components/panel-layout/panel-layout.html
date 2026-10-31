@@ -1,0 +1,44 @@
+<div class="app-layout">
+  <aside class="sidebar" [class.open]="menuAbierto()">
+    <a routerLink="/" class="sidebar__header" aria-label="FaunaScan, ir al inicio" (click)="cerrarMenu()">
+      <img src="assets/images/LogoFaunaScan.png" alt="" class="sidebar__logo-img" width="40" height="40">
+      <span class="sidebar__logo-text">FaunaScan</span>
+    </a>
+    <nav class="sidebar__nav" aria-label="Secciones de la plataforma">
+      @for (enlace of enlaces; track enlace.texto) {
+        @if (enlace.ruta) {
+          <a
+            [routerLink]="enlace.ruta"
+            routerLinkActive="active"
+            [class.active]="seccionActiva() === enlace.texto"
+            ariaCurrentWhenActive="page"
+            class="sidebar__link"
+            (click)="cerrarMenu()">
+            <img [src]="'assets/icons/' + enlace.icono" alt="" class="sidebar__icon" width="20" height="20">{{ enlace.texto }}
+          </a>
+        } @else {
+          <span class="sidebar__link sidebar__link--pendiente" aria-disabled="true" title="Pantalla pendiente de integración">
+            <img [src]="'assets/icons/' + enlace.icono" alt="" class="sidebar__icon" width="20" height="20">{{ enlace.texto }}
+          </span>
+        }
+      }
+    </nav>
+  </aside>
+
+  @if (menuAbierto()) {
+    <div class="sidebar-overlay open" (click)="cerrarMenu()"></div>
+  }
+
+  <div class="app-content">
+    <div class="app-topbar">
+      <button type="button" class="sidebar-toggle" [attr.aria-expanded]="menuAbierto()" aria-label="Abrir menú lateral" (click)="alternarMenu()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <h1 class="app-topbar__title">{{ titulo() }}</h1>
+    </div>
+
+    <ng-content />
+  </div>
+</div>
