@@ -1,0 +1,6 @@
+:host { display: block; }
+.features__subtitle, .benefit-item__desc { color: var(--color-text-secondary); }
+.hero { padding-top: var(--space-12); }
+.cta-catalogo { background: var(--color-white); color: var(--color-primary); }
+.cta-registro { border-color: var(--color-white); color: var(--color-white); }
+.cta-registro:hover { background: var(--color-primary); }

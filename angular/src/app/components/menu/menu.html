@@ -1,0 +1,23 @@
+<header>
+  <nav class="navbar" aria-label="Navegación principal">
+    <div class="navbar__inner">
+      <a routerLink="/" class="navbar__logo" aria-label="FaunaScan, inicio" (click)="cerrarMenu()">
+        <img src="assets/images/LogoFaunaScan.png" alt="" class="navbar__logo-img" width="50" height="50">
+        <span class="navbar__logo-text">FaunaScan</span>
+      </a>
+      <ul class="navbar__nav">
+        @for (enlace of enlaces; track enlace.ruta) {
+          <li><a [routerLink]="enlace.ruta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: enlace.ruta === '/' }" ariaCurrentWhenActive="page" class="navbar__link">{{ enlace.texto }}</a></li>
+        }
+      </ul>
+      <button type="button" class="navbar__toggle" [class.open]="abierto()" [attr.aria-expanded]="abierto()" aria-controls="menu-movil" [attr.aria-label]="abierto() ? 'Cerrar menú' : 'Abrir menú'" (click)="alternarMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <nav class="navbar__mobile" id="menu-movil" [class.open]="abierto()" aria-label="Navegación móvil">
+    @for (enlace of enlaces; track enlace.ruta) {
+      <a [routerLink]="enlace.ruta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: enlace.ruta === '/' }" ariaCurrentWhenActive="page" class="navbar__mobile-link" (click)="cerrarMenu()">{{ enlace.texto }}</a>
+    }
+  </nav>
+</header>

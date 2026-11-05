@@ -1,0 +1,4 @@
+:host { display: block; }
+main { min-height: 60vh; }
+.skip-link { position: fixed; top: -100px; left: 1rem; z-index: 200; padding: 1rem; background: white; color: var(--color-primary); }
+.skip-link:focus { top: 1rem; }
