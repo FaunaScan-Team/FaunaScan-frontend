@@ -1,0 +1,88 @@
+<section class="container observaciones" aria-labelledby="titulo-observaciones">
+  <header class="observaciones__encabezado">
+    <a routerLink="/registrar" class="volver">← Volver al registro</a>
+    <h1 id="titulo-observaciones">Observaciones</h1>
+    <p>Describe las condiciones del entorno al momento del avistamiento. Todos los campos son opcionales.</p>
+  </header>
+
+  <div class="observaciones__layout">
+    <form [formGroup]="formulario" (ngSubmit)="guardar()" novalidate class="observaciones__form">
+      <div class="card" role="group" aria-labelledby="titulo-entorno">
+        <h2 class="card__title" id="titulo-entorno">Condiciones del entorno</h2>
+        <div class="climas" role="radiogroup" aria-label="Clima">
+          @for (clima of climas; track clima.valor) {
+            <button
+              type="button"
+              class="clima"
+              role="radio"
+              [class.clima--activo]="valores().clima === clima.valor"
+              [attr.aria-checked]="valores().clima === clima.valor"
+              (click)="elegirClima(clima.valor)"
+            >
+              <span aria-hidden="true">{{ clima.icono }}</span>{{ clima.valor }}
+            </button>
+          }
+        </div>
+
+        <div class="metricas">
+          <div class="campo">
+            <label for="temperatura">Temperatura (°C)</label>
+            <input id="temperatura" class="input" type="number" formControlName="temperatura" />
+            @if (tieneError('temperatura')) {
+              <p class="error">Entre -30 y 50 °C.</p>
+            }
+          </div>
+          <div class="campo">
+            <label for="humedad">Humedad (%)</label>
+            <input id="humedad" class="input" type="number" formControlName="humedad" />
+            @if (tieneError('humedad')) {
+              <p class="error">Entre 0 y 100 %.</p>
+            }
+          </div>
+          <div class="campo">
+            <label for="individuos">N.º de individuos</label>
+            <input id="individuos" class="input" type="number" min="1" step="1" formControlName="individuos" />
+            @if (tieneError('individuos')) {
+              <p class="error">Número entero entre 1 y 1000.</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card__title">Notas libres del observador</h2>
+        <div class="campo">
+          <label for="notas">Descripción del avistamiento</label>
+          <textarea id="notas" class="input" rows="4" maxlength="500" formControlName="notas"
+            placeholder="Describe el comportamiento observado…"></textarea>
+          <p class="contador">{{ valores().notas?.length ?? 0 }} / 500 caracteres</p>
+        </div>
+        <div class="campo">
+          <label for="etiqueta">Etiquetas (presiona Enter para agregar)</label>
+          <div class="etiquetas">
+            @for (etiqueta of etiquetas(); track etiqueta) {
+              <span class="etiqueta">
+                {{ etiqueta }}
+                <button type="button" (click)="quitarEtiqueta(etiqueta)" [attr.aria-label]="'Quitar etiqueta ' + etiqueta">×</button>
+              </span>
+            }
+            <input id="etiqueta" type="text" maxlength="30" placeholder="+ Agregar etiqueta…" (keydown.enter)="agregarEtiqueta($event)" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Guardar observaciones</button>
+      </div>
+    </form>
+
+    <aside class="card resumen" aria-label="Resumen del registro">
+      <h2 class="card__title">Resumen del registro</h2>
+      <dl>
+        <div class="resumen__fila"><dt>Especie</dt><dd>{{ especie() ? especie()!.emoji + ' ' + especie()!.nombre : '—' }}</dd></div>
+        <div class="resumen__fila"><dt>Individuos</dt><dd>{{ valores().individuos ?? '—' }}</dd></div>
+        <div class="resumen__fila"><dt>Clima</dt><dd>{{ valores().clima ? iconoClima() + ' ' + valores().clima : '—' }}</dd></div>
+        <div class="resumen__fila"><dt>Temperatura</dt><dd>{{ valores().temperatura != null ? valores().temperatura + ' °C' : '—' }}</dd></div>
+        <div class="resumen__fila"><dt>Humedad</dt><dd>{{ valores().humedad != null ? valores().humedad + ' %' : '—' }}</dd></div>
+        <div class="resumen__fila"><dt>Notas</dt><dd>{{ valores().notas ? 'Completadas' : '—' }}</dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>
