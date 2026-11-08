@@ -1,0 +1,73 @@
+.pagina {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+    color: #123524;
+}
+
+.etiqueta {
+    margin: 0;
+    color: #28714c;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+h1 {
+    margin: 8px 0;
+}
+
+select {
+    display: block;
+    margin: 10px 0 20px;
+    padding: 10px;
+    border: 1px solid #b8cfc0;
+    border-radius: 8px;
+    background: white;
+}
+
+.mapa {
+    position: relative;
+    height: 440px;
+    overflow: hidden;
+    border-radius: 16px;
+    background:
+            linear-gradient(135deg, #d8efe2, #a9d1d8);
+}
+
+.marcador {
+    position: absolute;
+    color: #b42318;
+    font-size: 30px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.marcador.pendiente {
+    color: #d97706;
+}
+
+.lista {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.lista article {
+    display: grid;
+    gap: 4px;
+    padding: 14px;
+    border: 1px solid #d8e5dc;
+    border-radius: 10px;
+    background: white;
+}
+
+.lista span {
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 99px;
+    background: #e9f7ee;
+    color: #166534;
+    font-size: 12px;
+    font-weight: 700;
+}
