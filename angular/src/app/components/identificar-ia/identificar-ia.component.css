@@ -1,0 +1,70 @@
+.pagina {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px;
+    color: #123524;
+}
+
+.etiqueta {
+    margin: 0;
+    color: #28714c;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+h1 {
+    margin: 8px 0;
+}
+
+input {
+    margin: 20px 0;
+}
+
+.vista-previa {
+    display: block;
+    width: 100%;
+    max-height: 320px;
+    margin-bottom: 16px;
+    object-fit: contain;
+    border-radius: 14px;
+    background: #edf8f0;
+}
+
+button {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #0b5d3b;
+    color: white;
+    cursor: pointer;
+}
+
+.mensaje {
+    margin: 16px 0;
+    color: #526d5d;
+}
+
+.sugerencias {
+    margin-top: 24px;
+}
+
+.sugerencia {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin: 12px 0;
+    padding: 16px;
+    border: 1px solid #d8e5dc;
+    border-radius: 12px;
+    background: white;
+}
+
+.sugerencia h3,
+.sugerencia p {
+    margin: 4px 0;
+}
+
+.emoji {
+    font-size: 48px;
+}

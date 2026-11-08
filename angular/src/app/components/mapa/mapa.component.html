@@ -1,0 +1,47 @@
+<section class="pagina">
+    <header>
+        <p class="etiqueta">AVISTAMIENTOS</p>
+        <h1>Mapa de avistamientos</h1>
+
+    </header>
+
+    <label>
+        Filtrar por estado
+
+        <select #estado (change)="filtroEstado.set(estado.value)">
+            <option value="">Todos los estados</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Validado">Validado</option>
+            <option value="Rechazado">Rechazado</option>
+        </select>
+    </label>
+
+    <section class="mapa" aria-label="Mapa simulado de avistamientos">
+        @for (avistamiento of visibles(); track avistamiento.id) {
+            <span
+                    class="marcador"
+                    [class.pendiente]="avistamiento.estadoValidacion === 'Pendiente'"
+                    [style.left]="posicionHorizontal(avistamiento.longitud)"
+                    [style.top]="posicionVertical(avistamiento.latitud)"
+                    [title]="avistamiento.especie"
+            >
+        ●
+      </span>
+        }
+    </section>
+
+    <section class="lista">
+        @for (avistamiento of visibles(); track avistamiento.id) {
+            <article>
+                <strong>{{ avistamiento.especie }}</strong>
+                <span>{{ avistamiento.estadoValidacion }}</span>
+                <small>
+                    {{ avistamiento.fecha }} ·
+                    {{ avistamiento.latitud }}, {{ avistamiento.longitud }}
+                </small>
+            </article>
+        } @empty {
+            <p>No hay avistamientos con ese estado.</p>
+        }
+    </section>
+</section>
