@@ -1,0 +1,47 @@
+<section class="pagina">
+    <header>
+        <p class="etiqueta">IDENTIFICACIÓN SIMULADA</p>
+        <h1>Identificar especie con IA</h1>
+        <p>Sube una imagen para recibir sugerencias de especies.</p>
+    </header>
+
+    <input
+            type="file"
+            accept="image/*"
+            (change)="seleccionarImagen($event)"
+    />
+
+    @if (imagen(); as vistaPrevia) {
+        <img
+                class="vista-previa"
+                [src]="vistaPrevia"
+                alt="Vista previa de la imagen seleccionada"
+        />
+
+        <button type="button" (click)="analizar()">
+            Analizar imagen
+        </button>
+    }
+
+    @if (mensaje()) {
+        <p class="mensaje">{{ mensaje() }}</p>
+    }
+
+    @if (sugerencias().length > 0) {
+        <section class="sugerencias">
+            <h2>Especies sugeridas</h2>
+
+            @for (sugerencia of sugerencias(); track sugerencia.especie.id) {
+                <article class="sugerencia">
+                    <span class="emoji">{{ sugerencia.especie.emoji }}</span>
+
+                    <div>
+                        <h3>{{ sugerencia.especie.nombre }}</h3>
+                        <p><i>{{ sugerencia.especie.nombreCientifico }}</i></p>
+                        <strong>Confianza: {{ sugerencia.confianza }}%</strong>
+                    </div>
+                </article>
+            }
+        </section>
+    }
+</section>
