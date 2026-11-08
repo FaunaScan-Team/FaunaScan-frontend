@@ -1,0 +1,49 @@
+<section class="pagina">
+    <header>
+        <p class="etiqueta">REGISTRO DE AVISTAMIENTO</p>
+        <h1>Seleccionar especie</h1>
+        <p>Busca y selecciona la especie observada.</p>
+    </header>
+
+    <input
+        #buscador
+        type="search"
+        placeholder="Buscar por nombre común o científico..."
+        [value]="busqueda()"
+        (input)="busqueda.set(buscador.value)"
+    />
+
+    <p class="contador">
+        {{ especiesFiltradas().length }} especies encontradas
+    </p>
+
+    <section class="lista-especies">
+        @for (especie of especiesFiltradas(); track especie.id) {
+            <button
+                    type="button"
+                    class="tarjeta"
+                    [class.seleccionada]="seleccionada()?.id === especie.id"
+                    (click)="seleccionar(especie)"
+            >
+                <img [src]="especie.imagen" [alt]="especie.nombre" />
+
+                <strong>{{ especie.nombre }}</strong>
+
+                <small>{{ especie.nombreCientifico }}</small>
+
+                <span>{{ especie.estadoLabel }}</span>
+            </button>
+        } @empty {
+            <p>No se encontraron especies con esa búsqueda.</p>
+        }
+    </section>
+
+    @if (seleccionada(); as especie) {
+        <section class="resultado">
+            <p>Especie seleccionada</p>
+            <h2>{{ especie.nombre }}</h2>
+            <p><i>{{ especie.nombreCientifico }}</i></p>
+            <span>{{ especie.estadoLabel }}</span>
+        </section>
+    }
+</section>
