@@ -1,0 +1,138 @@
+/*
+ * Estilos locales del componente Acceso Restringido.
+ * Paleta y tipografías basadas en la pantalla original de FaunaScan.
+ * No modifica body, html ni los estilos compartidos del equipo.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap');
+
+:host {
+  display: block;
+  --fs-verde: #002d1c;
+  --fs-fondo: #f7f9f7;
+  --fs-azul: #05366a;
+  --fs-azul-claro: #e8f0f7;
+  --fs-texto: #0f2318;
+  --fs-texto-secundario: #4a6357;
+  --fs-acento: #f59e0b;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--fs-texto);
+}
+
+.acceso-pagina {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 32px;
+  background-color: var(--fs-fondo);
+}
+
+.acceso-encabezado h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.acceso-contenido {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.acceso-icono {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--fs-azul-claro);
+  color: var(--fs-azul);
+}
+
+.acceso-titulo {
+  margin: 0;
+  font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.acceso-descripcion {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--fs-texto-secundario);
+}
+
+.acceso-acciones {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.acceso-boton {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 16px 32px;
+  border: 2px solid var(--fs-verde);
+  border-radius: 16px;
+  background-color: var(--fs-verde);
+  color: #fff;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: filter 150ms ease, transform 150ms ease;
+}
+
+.acceso-boton:hover {
+  filter: brightness(1.2);
+}
+
+.acceso-boton:active {
+  transform: scale(0.98);
+}
+
+.acceso-boton:focus-visible {
+  outline: 3px solid var(--fs-acento);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .acceso-pagina {
+    padding: 20px;
+  }
+
+  .acceso-encabezado h1,
+  .acceso-titulo {
+    font-size: 22px;
+  }
+
+  .acceso-boton {
+    width: 100%;
+    max-width: 360px;
+    font-size: 16px;
+  }
+}
