@@ -1,9 +1,7 @@
 /**
- * Modelo común de avistamiento.
- * Lo usan `registrar` (guarda) e `historial` / `detalle-avistamiento` (muestran).
- * Si cambias un campo, avisa en el grupo para no romper la otra parte.
+ * PROPUESTA de actualización del contrato compartido de avistamientos.
+ * Coordinar revisión y aceptación con Sebastián Añamauro y Sebastián Suárez.
  */
-
 export type Clima =
   | 'Soleado'
   | 'Parcial nublado'
@@ -16,7 +14,6 @@ export type Clima =
 
 export type EstadoValidacion = 'Pendiente' | 'Validado' | 'Rechazado';
 
-/** Datos que se llenan en la pantalla /observaciones. */
 export interface ObservacionesDetalladas {
   clima: Clima | null;
   temperatura: number | null;
@@ -26,29 +23,42 @@ export interface ObservacionesDetalladas {
   etiquetas: string[];
 }
 
-/** Resumen de la especie guardado junto al avistamiento. */
 export interface EspecieResumen {
-  /** Mismo `id` numérico que el modelo `Especie` del catálogo. */
+  /** Mantener ID numérico, compatible con el catálogo de Estefany. */
   id: number;
   nombre: string;
   nombreCientifico: string;
   emoji: string;
 }
 
+export interface UsuarioAvistamiento {
+  email: string;
+  nombre: string;
+}
+
 export interface Avistamiento {
+  /** ID de registro: string, no confundir con el ID numérico de la especie. */
   id: string;
   especie: EspecieResumen;
-  /** Fecha y hora del avistamiento en formato ISO. */
+  /** ISO de la fecha del avistamiento. */
   fecha: string;
   area: string;
   latitud: number | null;
   longitud: number | null;
   descripcion: string;
   observaciones: ObservacionesDetalladas | null;
+  registradoPor: UsuarioAvistamiento;
   estadoValidacion: EstadoValidacion;
-  /** Fecha y hora en que se registró en la app, en formato ISO. */
+  /** Email del investigador validador. */
+  validadoPor: string | null;
+  /** ISO de la fecha y hora de validación. */
+  validadoEn: string | null;
+  /** ISO del momento en el que se guardó el registro. */
   creadoEn: string;
 }
 
-/** Lo que envía el formulario; el servicio completa id, estado y creadoEn. */
-export type NuevoAvistamiento = Omit<Avistamiento, 'id' | 'estadoValidacion' | 'creadoEn'>;
+/** El servicio completa el usuario registrador, ID, estado y fechas. */
+export type NuevoAvistamiento = Omit<
+  Avistamiento,
+  'id' | 'registradoPor' | 'estadoValidacion' | 'validadoPor' | 'validadoEn' | 'creadoEn'
+>;

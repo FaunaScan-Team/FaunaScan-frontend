@@ -3,6 +3,7 @@ import { Inicio } from './components/inicio/inicio';
 import { PaginaPendiente } from './components/pagina-pendiente/pagina-pendiente';
 import { Registrar } from './components/registrar/registrar';
 import { Observaciones } from './components/observaciones/observaciones';
+import { rutasNohelia } from './nohelia.routes';
 
 export const routes: Routes = [
   { path: '', component: Inicio, title: 'Inicio | FaunaScan Perú' },
@@ -12,6 +13,6 @@ export const routes: Routes = [
   { path: 'observaciones', component: Observaciones, title: 'Observaciones | FaunaScan Perú' },
   { path: 'historial', component: PaginaPendiente, title: 'Historial | FaunaScan Perú', data: { titulo: 'Historial de avistamientos', responsable: 'Sebastián Suarez' } },
   { path: 'avistamientos/:id', component: PaginaPendiente, title: 'Avistamiento | FaunaScan Perú', data: { titulo: 'Detalle de avistamiento', responsable: 'Sebastián Suarez' } },
-  { path: 'acceso-restringido', component: PaginaPendiente, title: 'Acceso restringido | FaunaScan Perú', data: { titulo: 'Acceso restringido', responsable: 'Nohelia' } },
-  { path: '**', redirectTo: '' },
+  ...rutasNohelia,
+  { path: '**', redirectTo: '' }, 
 ];
