@@ -1,0 +1,11 @@
+<section class="cuenta"><div class="cuenta__panel"><a routerLink="/" class="cuenta__marca">🌿 FaunaScan</a><h1>Únete a FaunaScan</h1><p>Registra avistamientos y ayuda a conocer la biodiversidad del Perú.</p></div>
+<div class="cuenta__tarjeta"><h2>Crear cuenta</h2><p>Elige cómo participar.</p><form (ngSubmit)="registrar()" novalidate>
+<fieldset><legend>Tipo de usuario</legend><label><input type="radio" name="rol" value="voluntario" [(ngModel)]="rol"> Voluntario</label><label><input type="radio" name="rol" value="investigador" [(ngModel)]="rol"> Investigador</label></fieldset>
+<label for="reg-nombre">Nombre</label><input id="reg-nombre" name="nombre" [(ngModel)]="nombre" autocomplete="given-name" required>
+<label for="reg-apellido">Apellido</label><input id="reg-apellido" name="apellido" [(ngModel)]="apellido" autocomplete="family-name" required>
+<label for="reg-email">Correo electrónico</label><input id="reg-email" name="email" type="email" [(ngModel)]="email" autocomplete="email" required>
+<label for="reg-clave">Contraseña</label><input id="reg-clave" name="clave" type="password" [(ngModel)]="clave" autocomplete="new-password" required>
+<label for="reg-repetir">Confirmar contraseña</label><input id="reg-repetir" name="repetir" type="password" [(ngModel)]="repetir" autocomplete="new-password" required>
+<label><input type="checkbox" name="terminos" [(ngModel)]="terminos"> Acepto los términos de uso</label>
+@if (error()) { <p class="cuenta__error" role="alert">{{ error() }}</p> }
+<button class="cuenta__boton" type="submit" [disabled]="cargando()">{{ cargando() ? 'Creando cuenta…' : 'Crear cuenta' }}</button></form><p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p></div></section>

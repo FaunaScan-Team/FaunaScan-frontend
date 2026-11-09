@@ -1,0 +1,6 @@
+<section class="cuenta"><div class="cuenta__panel"><a routerLink="/" class="cuenta__marca">🌿 FaunaScan</a><h1>Recupera tu acceso</h1><p>Vuelve a tu cuenta para continuar registrando avistamientos.</p></div><div class="cuenta__tarjeta"><h2>Recuperar contraseña</h2><p class="cuenta__nota">Demostración local: este formulario no envía correos ni códigos. La recuperación real se conectará al backend.</p>
+@if (paso() === 1) { <form (ngSubmit)="comprobar()"><label for="rec-email">Correo registrado en este navegador</label><input id="rec-email" name="email" type="email" [(ngModel)]="email" required><button class="cuenta__boton" type="submit">Continuar</button></form> }
+@if (paso() === 2) { <form (ngSubmit)="cambiar()"><label for="rec-clave">Nueva contraseña</label><input id="rec-clave" name="clave" type="password" [(ngModel)]="clave" required><label for="rec-repetir">Confirmar contraseña</label><input id="rec-repetir" name="repetir" type="password" [(ngModel)]="repetir" required><button class="cuenta__boton" type="submit">Guardar contraseña</button></form> }
+@if (paso() === 3) { <p role="status">Contraseña local actualizada. <a routerLink="/login">Ir a iniciar sesión</a></p> }
+@if (error()) { <p class="cuenta__error" role="alert">{{ error() }}</p> }
+</div></section>

@@ -1,0 +1,6 @@
+<section class="cuenta"><div class="cuenta__panel"><a routerLink="/" class="cuenta__marca">🌿 FaunaScan</a><h1>Bienvenido a FaunaScan</h1><p>Continúa registrando avistamientos y contribuyendo a la conservación de la fauna peruana.</p></div>
+<div class="cuenta__tarjeta"><h2>Iniciar sesión</h2><p>Ingresa tus datos para acceder.</p><form (ngSubmit)="ingresar()" novalidate>
+<label for="login-email">Correo electrónico</label><input id="login-email" name="email" type="email" autocomplete="email" [(ngModel)]="email" required>
+<label for="login-clave">Contraseña</label><input id="login-clave" name="clave" type="password" autocomplete="current-password" [(ngModel)]="clave" required>
+@if (error()) { <p class="cuenta__error" role="alert">{{ error() }}</p> }
+<a routerLink="/recuperar">¿Olvidaste tu contraseña?</a><button class="cuenta__boton" type="submit" [disabled]="cargando()">{{ cargando() ? 'Ingresando…' : 'Iniciar sesión' }}</button></form><p>¿No tienes cuenta? <a routerLink="/registro">Regístrate gratis</a></p></div></section>
