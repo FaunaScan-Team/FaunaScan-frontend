@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { Usuario } from '../../models/usuario';
 
-@Component({ selector: 'app-registro', imports: [FormsModule, RouterLink], templateUrl: './registro.html', styleUrl: '../cuenta.css' })
+@Component({ selector: 'app-registro', imports: [FormsModule, RouterLink], templateUrl: './registro.html', styleUrl: './registro.css' })
 export class Registro {
   private usuarios = inject(UsuarioService);
   private router = inject(Router);

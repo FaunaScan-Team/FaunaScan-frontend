@@ -1,6 +1,25 @@
-<section class="cuenta"><div class="cuenta__panel"><a routerLink="/" class="cuenta__marca">🌿 FaunaScan</a><h1>Bienvenido a FaunaScan</h1><p>Continúa registrando avistamientos y contribuyendo a la conservación de la fauna peruana.</p></div>
-<div class="cuenta__tarjeta"><h2>Iniciar sesión</h2><p>Ingresa tus datos para acceder.</p><form (ngSubmit)="ingresar()" novalidate>
-<label for="login-email">Correo electrónico</label><input id="login-email" name="email" type="email" autocomplete="email" [(ngModel)]="email" required>
-<label for="login-clave">Contraseña</label><input id="login-clave" name="clave" type="password" autocomplete="current-password" [(ngModel)]="clave" required>
-@if (error()) { <p class="cuenta__error" role="alert">{{ error() }}</p> }
-<a routerLink="/recuperar">¿Olvidaste tu contraseña?</a><button class="cuenta__boton" type="submit" [disabled]="cargando()">{{ cargando() ? 'Ingresando…' : 'Iniciar sesión' }}</button></form><p>¿No tienes cuenta? <a routerLink="/registro">Regístrate gratis</a></p></div></section>
+<div class="auth-split">
+  <aside class="auth-split__left" aria-label="Información de FaunaScan">
+    <a routerLink="/" class="auth-split__logo"><img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="auth-split__logo-img"><span class="auth-split__logo-text">FaunaScan</span></a>
+    <div><h1 class="auth-split__headline">Bienvenido a<br><span>FaunaScan</span></h1>
+      <p class="auth-split__desc">Tu historial, alertas y registros de avistamientos te están esperando. Inicia sesión para continuar protegiendo la biodiversidad.</p>
+      <div class="auth-split__features">
+        <div class="auth-split__feature"><span class="auth-split__feature-icon">📋</span><span>Retoma tu historial de avistamientos donde lo dejaste</span></div>
+        <div class="auth-split__feature"><span class="auth-split__feature-icon">🔔</span><span>Consulta alertas sobre especies vulnerables</span></div>
+        <div class="auth-split__feature"><span class="auth-split__feature-icon">🗺️</span><span>Consulta el mapa de avistamientos de la comunidad</span></div>
+      </div>
+    </div>
+  </aside>
+  <div class="auth-split__right"><div class="auth-card">
+    <h2 class="auth-card__title">Iniciar sesión</h2><p class="auth-card__subtitle">Ingresa tus credenciales para acceder a tu cuenta</p>
+    <p class="auth-card__alert" role="status">Demostración local: los datos se comprueban en este navegador.</p>
+    <form class="auth-card__form" (ngSubmit)="ingresar()" novalidate>
+      <div class="form-group"><label class="form-label" for="loginEmail">Correo electrónico</label><input class="form-input" id="loginEmail" name="email" type="email" autocomplete="email" [(ngModel)]="email" required></div>
+      <div class="form-group"><label class="form-label" for="loginPassword">Contraseña</label><input class="form-input" id="loginPassword" name="clave" type="password" autocomplete="current-password" [(ngModel)]="clave" required></div>
+      <div class="auth-card__forgot"><a routerLink="/recuperar">¿Olvidaste tu contraseña?</a></div>
+      @if (error()) { <p role="alert" class="form-error">{{ error() }}</p> }
+      <button class="btn btn-primary btn-full btn-lg" type="submit" [disabled]="cargando()">{{ cargando() ? 'Iniciando sesión…' : 'Iniciar sesión' }}</button>
+    </form>
+    <p class="auth-card__footer">¿No tienes cuenta? <a routerLink="/registro">Regístrate gratis</a></p>
+  </div></div>
+</div>

@@ -37,6 +37,8 @@ export interface EspecieResumen {
 
 export interface Avistamiento {
   id: string;
+  /** Cuenta que creó el registro en la demostración local. Los registros anteriores pueden no tenerla. */
+  registradoPorEmail?: string;
   especie: EspecieResumen;
   /** Fecha y hora del avistamiento en formato ISO. */
   fecha: string;

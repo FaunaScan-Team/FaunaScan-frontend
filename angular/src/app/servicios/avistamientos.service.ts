@@ -46,6 +46,7 @@ export class AvistamientosService {
   registrar(nuevo: NuevoAvistamiento): Avistamiento {
     const avistamiento: Avistamiento = {
       ...nuevo,
+      registradoPorEmail: this.correoActual(),
       id: this.generarId(),
       estadoValidacion: 'Pendiente',
       creadoEn: new Date().toISOString(),
@@ -54,6 +55,15 @@ export class AvistamientosService {
     this.guardarAlmacenamiento();
     this.limpiarBorrador();
     return avistamiento;
+  }
+
+  private correoActual(): string | undefined {
+    try {
+      const usuario = JSON.parse(localStorage.getItem('faunaUser') || 'null');
+      return sessionStorage.getItem('faunaSesion') === usuario?.email ? usuario.email : undefined;
+    } catch {
+      return undefined;
+    }
   }
 
   limpiarBorrador(): void {

@@ -1,11 +1,19 @@
-<section class="cuenta"><div class="cuenta__panel"><a routerLink="/" class="cuenta__marca">🌿 FaunaScan</a><h1>Únete a FaunaScan</h1><p>Registra avistamientos y ayuda a conocer la biodiversidad del Perú.</p></div>
-<div class="cuenta__tarjeta"><h2>Crear cuenta</h2><p>Elige cómo participar.</p><form (ngSubmit)="registrar()" novalidate>
-<fieldset><legend>Tipo de usuario</legend><label><input type="radio" name="rol" value="voluntario" [(ngModel)]="rol"> Voluntario</label><label><input type="radio" name="rol" value="investigador" [(ngModel)]="rol"> Investigador</label></fieldset>
-<label for="reg-nombre">Nombre</label><input id="reg-nombre" name="nombre" [(ngModel)]="nombre" autocomplete="given-name" required>
-<label for="reg-apellido">Apellido</label><input id="reg-apellido" name="apellido" [(ngModel)]="apellido" autocomplete="family-name" required>
-<label for="reg-email">Correo electrónico</label><input id="reg-email" name="email" type="email" [(ngModel)]="email" autocomplete="email" required>
-<label for="reg-clave">Contraseña</label><input id="reg-clave" name="clave" type="password" [(ngModel)]="clave" autocomplete="new-password" required>
-<label for="reg-repetir">Confirmar contraseña</label><input id="reg-repetir" name="repetir" type="password" [(ngModel)]="repetir" autocomplete="new-password" required>
-<label><input type="checkbox" name="terminos" [(ngModel)]="terminos"> Acepto los términos de uso</label>
-@if (error()) { <p class="cuenta__error" role="alert">{{ error() }}</p> }
-<button class="cuenta__boton" type="submit" [disabled]="cargando()">{{ cargando() ? 'Creando cuenta…' : 'Crear cuenta' }}</button></form><p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p></div></section>
+<div class="auth-split"><aside class="auth-split__left">
+  <a routerLink="/" class="auth-split__logo"><img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="auth-split__logo-img"><span class="auth-split__logo-text">FaunaScan</span></a>
+  <div class="auth-split__content"><h1 class="auth-split__headline">Únete a<br><span>FaunaScan</span></h1><p class="auth-split__desc">Registra avistamientos y contribuye a la conservación de la fauna silvestre del Perú.</p>
+    <div class="auth-split__features"><div class="auth-split__feature"><span class="auth-split__feature-icon">🔍</span><span>Explora especies del catálogo</span></div><div class="auth-split__feature"><span class="auth-split__feature-icon">🗺️</span><span>Consulta el mapa de avistamientos</span></div><div class="auth-split__feature"><span class="auth-split__feature-icon">🔔</span><span>Infórmate sobre especies vulnerables</span></div></div>
+  </div></aside><div class="auth-split__right"><div class="auth-card"><h2 class="auth-card__title">Crear cuenta</h2><p class="auth-card__subtitle">Completa los datos para comenzar a monitorear la fauna</p>
+    <form class="auth-card__form" (ngSubmit)="registrar()" novalidate>
+      <div class="form-group"><span class="form-label" id="rol-label">Tipo de usuario</span><div class="role-selector" role="group" aria-labelledby="rol-label">
+        <label class="role-card" [class.selected]="rol === 'investigador'"><input type="radio" name="rol" value="investigador" [(ngModel)]="rol"><span class="role-card__icon">🔬</span><span class="role-card__title">Investigador</span><span class="role-card__sub">Científico o académico</span></label>
+        <label class="role-card" [class.selected]="rol === 'voluntario'"><input type="radio" name="rol" value="voluntario" [(ngModel)]="rol"><span class="role-card__icon">🌿</span><span class="role-card__title">Voluntario</span><span class="role-card__sub">Ciudadano colaborador</span></label>
+      </div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label" for="regNombre">Nombre</label><input class="form-input" id="regNombre" name="nombre" [(ngModel)]="nombre" autocomplete="given-name" required></div><div class="form-group"><label class="form-label" for="regApellido">Apellido</label><input class="form-input" id="regApellido" name="apellido" [(ngModel)]="apellido" autocomplete="family-name" required></div></div>
+      <div class="form-group"><label class="form-label" for="regEmail">Correo electrónico</label><input class="form-input" id="regEmail" name="email" type="email" [(ngModel)]="email" autocomplete="email" required></div>
+      <div class="form-group"><label class="form-label" for="regPassword">Contraseña</label><input class="form-input" id="regPassword" name="clave" type="password" [(ngModel)]="clave" autocomplete="new-password" required></div>
+      <div class="form-group"><label class="form-label" for="regConfirm">Confirmar contraseña</label><input class="form-input" id="regConfirm" name="repetir" type="password" [(ngModel)]="repetir" autocomplete="new-password" required></div>
+      <label class="form-check"><input type="checkbox" name="terminos" [(ngModel)]="terminos"><span class="form-check__label">Acepto los términos de uso</span></label>
+      @if (error()) { <p role="alert" class="form-error">{{ error() }}</p> }
+      <button class="btn btn-primary btn-full btn-lg" type="submit" [disabled]="cargando()">{{ cargando() ? 'Creando cuenta…' : 'Crear cuenta' }}</button>
+    </form><p class="auth-card__footer">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+  </div></div></div>

@@ -9,6 +9,7 @@ import { Recuperar } from './components/recuperar/recuperar';
 import { VerificacionInvestigador } from './components/verificacion-investigador/verificacion-investigador';
 import { Perfil } from './components/perfil/perfil';
 import { redirigirPanel, requiereSesion } from './servicios/acceso.guard';
+import { MapaComponent } from './components/mapa/mapa.component';
 
 export const routes: Routes = [
   { path: '', component: Inicio, title: 'Inicio | FaunaScan Perú' },
@@ -20,6 +21,8 @@ export const routes: Routes = [
   { path: 'dashboard', component: PaginaPendiente, canActivate: [redirigirPanel] },
   { path: 'dashboard-investigador', component: PaginaPendiente, canActivate: [requiereSesion], title: 'Panel de investigador | FaunaScan Perú', data: { titulo: 'Panel de investigador', responsable: 'Sebastián Suarez' } },
   { path: 'dashboard-voluntario', component: PaginaPendiente, canActivate: [requiereSesion], title: 'Panel de voluntario | FaunaScan Perú', data: { titulo: 'Panel de voluntario', responsable: 'Sebastián Suarez' } },
+  { path: 'mapa', component: MapaComponent, title: 'Mapa | FaunaScan Perú' },
+  { path: 'reportes', component: PaginaPendiente, title: 'Reportes | FaunaScan Perú', data: { titulo: 'Reportes', responsable: 'Sebastián Añamauro' } },
   { path: 'catalogo', component: PaginaPendiente, title: 'Catálogo | FaunaScan Perú', data: { titulo: 'Catálogo de especies', responsable: 'Estefany' } },
   { path: 'catalogo/:id', component: PaginaPendiente, title: 'Especie | FaunaScan Perú', data: { titulo: 'Detalle de especie', responsable: 'Estefany' } },
   { path: 'registrar', component: Registrar, title: 'Registrar | FaunaScan Perú' },

@@ -1,13 +1,25 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { UsuarioService } from '../../servicios/usuario.service';
 
-@Component({ selector: 'app-verificacion-investigador', templateUrl: './verificacion-investigador.html', styleUrl: '../cuenta.css' })
+@Component({ selector: 'app-verificacion-investigador', imports: [RouterLink], templateUrl: './verificacion-investigador.html', styleUrl: './verificacion-investigador.css' })
 export class VerificacionInvestigador {
   private usuarios = inject(UsuarioService);
   private router = inject(Router);
   nombre = signal('');
   error = signal('');
+
+  limpiar(input: HTMLInputElement): void {
+    input.value = '';
+    this.nombre.set('');
+    this.error.set('');
+  }
+
+  async salir(): Promise<void> {
+    this.usuarios.salir();
+    await this.router.navigateByUrl('/login');
+  }
 
   seleccionar(evento: Event): void {
     const archivo = (evento.target as HTMLInputElement).files?.[0];
