@@ -83,6 +83,36 @@ export class AvistamientosService {
     return true;
   }
 
+  /**
+   * Edita los datos básicos de un registro propio que siga pendiente.
+   * Pedido por Suárez para /avistamientos/:id; revisar con Añamauro (responsable del módulo).
+   */
+  actualizar(id: string, cambios: Pick<Avistamiento, 'fecha' | 'area' | 'descripcion'>): boolean {
+    const actual = this.sesion.usuarioActual();
+    const av = this.obtenerPorId(id);
+    if (!actual || !av) return false;
+    if (av.registradoPor.email.toLowerCase() !== actual.email.toLowerCase()) return false;
+    if (av.estadoValidacion !== 'Pendiente') return false;
+    const area = cambios.area.trim();
+    if (!area || !cambios.fecha) return false;
+    this.datos.update((lista) => lista.map((item) => item.id === id
+      ? { ...item, fecha: cambios.fecha, area, descripcion: cambios.descripcion.trim() }
+      : item));
+    this.guardarAlmacenamiento();
+    return true;
+  }
+
+  /** Borra un registro propio. La baja definitiva la decidirá el backend. */
+  eliminar(id: string): boolean {
+    const actual = this.sesion.usuarioActual();
+    const av = this.obtenerPorId(id);
+    if (!actual || !av) return false;
+    if (av.registradoPor.email.toLowerCase() !== actual.email.toLowerCase()) return false;
+    this.datos.update((lista) => lista.filter((item) => item.id !== id));
+    this.guardarAlmacenamiento();
+    return true;
+  }
+
   limpiarBorrador(): void {
     this.borrador.set(null);
     this.observacionesBorrador.set(null);

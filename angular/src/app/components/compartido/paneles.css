@@ -1,0 +1,105 @@
+/* Estilos compartidos por historial, detalle, paneles y reportes.
+   Prefijo fs- para no chocar con las clases globales ni con las de otros módulos. */
+:host { display: block; color: var(--color-text-primary, #0f2318); }
+
+.fs-page { width: min(1200px, 100%); margin-inline: auto; padding: calc(var(--nav-height, 68px) + 36px) 24px 72px; min-height: 65vh; }
+.fs-heading { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+.fs-eyebrow { font-size: 13px; font-weight: 700; color: #1b6e49; letter-spacing: .04em; margin-bottom: 8px; }
+.fs-page h1 { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: clamp(26px, 3.5vw, 34px); color: #002d1c; line-height: 1.25; }
+.fs-page h2 { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 19px; }
+.fs-page h3 { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 16px; }
+.fs-subtitle { margin-top: 9px; color: #53685e; line-height: 1.6; max-width: 62ch; }
+.fs-muted { color: #53685e; }
+.fs-demo { background: #edf5ef; color: #305842; border: 1px solid #ccdfd1; border-radius: 10px; padding: 12px 16px; margin: 0 0 22px; font-size: 13px; }
+
+.fs-card { background: #fff; border: 1px solid #dde8e1; border-radius: 18px; padding: 20px; box-shadow: 0 2px 12px #1a3c2e0a; }
+.fs-card + .fs-card { margin-top: 18px; }
+.fs-card__title { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 16px; margin-bottom: 14px; }
+.fs-stack { display: flex; flex-direction: column; gap: 14px; }
+.fs-columns { display: grid; grid-template-columns: minmax(260px, 300px) minmax(0, 1fr); align-items: start; gap: 22px; }
+.fs-columns--iguales { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+@media (max-width: 860px) { .fs-columns { grid-template-columns: 1fr; } }
+
+.fs-empty { padding: 40px 22px; background: #fff; border: 1px dashed #b9d2c2; border-radius: 16px; text-align: center; color: #53685e; }
+.fs-empty a, .fs-link { color: #0b6541; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.fs-link { background: none; border: none; padding: 0; font: inherit; cursor: pointer; }
+
+.fs-field { display: flex; flex-direction: column; gap: 6px; }
+.fs-field label { font-size: 13px; font-weight: 600; color: #35503f; }
+.fs-input { width: 100%; padding: 9px 12px; border: 1.5px solid #dde8e1; border-radius: 10px; background: #fff; color: inherit; }
+.fs-input:focus { outline: none; border-color: #002d1c; }
+.fs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.fs-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 9px 16px; font-size: 14px; font-weight: 700; border-radius: 10px; border: 1px solid transparent; cursor: pointer; text-decoration: none; }
+.fs-btn--primary { background: #002d1c; color: #fff; }
+.fs-btn--outline { background: #fff; border-color: #1d6b4b; color: #12492f; }
+.fs-btn--danger { background: #fff; border-color: #b53131; color: #a12424; }
+.fs-btn--full { width: 100%; }
+.fs-btn:hover { filter: brightness(.94); }
+.fs-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+.fs-badge { display: inline-block; width: fit-content; border-radius: 99px; padding: 4px 10px; font-size: 12px; font-weight: 700; background: #eef2f0; color: #43574c; }
+.fs-badge--validado { background: #e7f4ec; color: #195c3a; }
+.fs-badge--pendiente { background: #fff2d5; color: #8e5b06; }
+.fs-badge--rechazado { background: #fdecec; color: #9d2b2b; }
+
+.fs-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 22px; }
+.fs-stat { background: #fff; border: 1px solid #dde8e1; border-radius: 16px; padding: 18px 20px; }
+.fs-stat strong { display: block; font-size: 29px; color: #002d1c; font-family: var(--font-heading, 'Poppins', sans-serif); }
+.fs-stat span { color: #53685e; font-size: 14px; }
+
+.fs-avatar { width: 46px; height: 46px; flex: none; border-radius: 14px; display: grid; place-items: center; background: #e9f4ec; font-size: 24px; }
+.fs-item { display: flex; gap: 14px; align-items: flex-start; }
+.fs-item + .fs-item { border-top: 1px solid #eaf2ed; padding-top: 14px; margin-top: 14px; }
+.fs-grow { min-width: 0; flex: 1; }
+.fs-item small, .fs-card small { display: block; color: #53685e; font-size: 13px; line-height: 1.55; }
+
+.fs-banner { background: linear-gradient(135deg, #0a3d27 0%, #0f5a38 100%); color: #fff; border-radius: 20px; padding: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+.fs-banner--info { background: linear-gradient(135deg, #05366a 0%, #0a4f93 100%); }
+.fs-banner h1, .fs-banner h2 { color: #fff; }
+.fs-banner p { color: #e4f1ea; line-height: 1.6; }
+.fs-banner__badge { display: inline-block; margin-top: 12px; background: #ffffff2e; border-radius: 99px; padding: 5px 12px; font-size: 13px; font-weight: 700; }
+.fs-banner__dato { text-align: right; min-width: 160px; }
+.fs-banner__dato strong { display: block; font-size: 32px; font-family: var(--font-heading, 'Poppins', sans-serif); }
+
+.fs-acciones-rapidas { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.fs-accion { background: #fff; border: 1px solid #dde8e1; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; font-weight: 700; color: #12492f; }
+.fs-accion:hover { border-color: #1d6b4b; background: #f3f9f5; }
+.fs-accion--principal { background: #002d1c; color: #fff; border-color: #002d1c; }
+.fs-accion--principal:hover { background: #014027; }
+.fs-accion span[aria-hidden] { font-size: 28px; }
+
+.fs-logros { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.fs-logro { border: 1px solid #dde8e1; border-radius: 14px; padding: 14px; background: #f8fbf9; }
+.fs-logro--bloqueado { opacity: .45; }
+.fs-logro strong { display: block; font-size: 14px; }
+
+.fs-progreso { height: 10px; border-radius: 99px; background: #e4ede7; overflow: hidden; margin-top: 10px; }
+.fs-progreso__relleno { height: 100%; background: #2b9262; border-radius: 99px; }
+
+.fs-tabla { width: 100%; border-collapse: collapse; font-size: 14px; }
+.fs-tabla th, .fs-tabla td { text-align: left; padding: 11px 10px; border-bottom: 1px solid #eaf2ed; vertical-align: middle; }
+.fs-tabla th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #53685e; }
+.fs-tabla tbody tr:hover { background: #f6faf7; }
+.fs-tabla__scroll { overflow-x: auto; }
+.fs-fav { font-size: 18px; line-height: 1; background: none; border: none; cursor: pointer; }
+
+.fs-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.fs-chip { background: #eef5f0; border-radius: 99px; padding: 5px 12px; font-size: 13px; color: #2d5742; }
+.fs-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 14px; }
+.fs-metrics > div { background: #f4f8f5; border-radius: 10px; padding: 12px; font-size: 13px; color: #53685e; }
+.fs-metrics strong { display: block; color: #123a29; font-size: 17px; margin-top: 4px; }
+.fs-foto { height: 215px; border: 1px solid #dce8e0; border-radius: 14px; display: grid; place-items: center; background: #edf5ef; font-size: 90px; }
+.fs-mapa { margin-top: 14px; height: 150px; border: 1px solid #dce8e0; border-radius: 14px; background: #eaf3ed; display: grid; place-items: center; color: #2d5742; font-weight: 600; }
+.fs-coords { display: flex; gap: 18px; margin-top: 10px; font-size: 13px; color: #53685e; }
+
+.fs-meses { display: flex; flex-direction: column; gap: 6px; }
+.fs-mes { text-align: left; width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid transparent; background: none; cursor: pointer; font: inherit; color: #2d5742; }
+.fs-mes:hover { background: #f3f9f5; }
+.fs-mes--activo { background: #002d1c; color: #fff; }
+.fs-mes small { display: inline; color: inherit; opacity: .8; }
+
+.fs-aviso { background: #fff8e8; border: 1px solid #f0dcae; border-radius: 12px; padding: 12px 15px; color: #7a5410; font-size: 14px; }
+.fs-aviso + .fs-aviso { margin-top: 10px; }
+.fs-error { color: #991b1b; background: #fff0f0; border: 1px solid #f3b5b5; border-radius: 10px; padding: 12px 16px; margin-block: 12px; }
+.fs-exito { color: #155d39; background: #e7f4ec; border-radius: 10px; padding: 12px 16px; margin-block: 12px; }
