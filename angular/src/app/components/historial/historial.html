@@ -1,0 +1,129 @@
+<section class="pagina">
+  <div class="encabezado">
+    <div>
+      <p class="etiqueta">Mis registros</p>
+      <h1>Historial de avistamientos</h1>
+      <p class="subtitulo">Filtra tus avistamientos por especie, período, estado o zona, y abre el detalle de cada uno.</p>
+    </div>
+    <a mat-flat-button routerLink="/registrar">Nuevo avistamiento</a>
+  </div>
+
+  <form [formGroup]="filtrosForm" class="filtros" (ngSubmit)="buscar()">
+    <mat-form-field appearance="fill">
+      <mat-label>Especie</mat-label>
+      <input matInput formControlName="especie" placeholder="Nombre de la especie" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Zona</mat-label>
+      <input matInput formControlName="zona" placeholder="Nombre de la zona" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option value="">Todos</mat-option>
+        <mat-option value="pendiente">Pendiente</mat-option>
+        <mat-option value="validado">Validado</mat-option>
+        <mat-option value="rechazado">Rechazado</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Desde</mat-label>
+      <input matInput [matDatepicker]="pickerDesde" formControlName="desde" />
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDesde></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Hasta</mat-label>
+      <input matInput [matDatepicker]="pickerHasta" formControlName="hasta" />
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+      <mat-datepicker #pickerHasta></mat-datepicker>
+    </mat-form-field>
+
+    <div class="filtros__botones">
+      <button type="submit" mat-flat-button>Buscar</button>
+      <button type="button" mat-stroked-button (click)="limpiar()">Limpiar</button>
+    </div>
+  </form>
+
+  @if (cargando) {
+    <p role="status">Cargando historial…</p>
+  }
+
+  <div class="tabla mat-elevation-z2">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="favorito">
+        <th mat-header-cell *matHeaderCellDef><span class="oculto">Favorito</span></th>
+        <td mat-cell *matCellDef="let av">
+          <button type="button" class="estrella" (click)="alternarFavorito(av)"
+                  [attr.aria-pressed]="esFavorito(av.idAvistamiento)"
+                  [attr.aria-label]="esFavorito(av.idAvistamiento) ? 'Quitar de favoritos' : 'Marcar como favorito'">
+            {{ esFavorito(av.idAvistamiento) ? '★' : '☆' }}
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombreEspecie">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Especie </th>
+        <td mat-cell *matCellDef="let av"> {{ av.nombreEspecie }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaAvistamiento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+        <td mat-cell *matCellDef="let av"> {{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estadoValidacion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+        <td mat-cell *matCellDef="let av">
+          <span class="estado" [attr.data-estado]="av.estadoValidacion">{{ av.estadoValidacion }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="detalle">
+        <th mat-header-cell *matHeaderCellDef><span class="oculto">Detalle</span></th>
+        <td mat-cell *matCellDef="let av"><a [routerLink]="['/avistamientos', av.idAvistamiento]">Ver detalle</a></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="sin-datos" [attr.colspan]="displayedColumns.length">No hay avistamientos con esos filtros.</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Páginas del historial"></mat-paginator>
+  </div>
+
+  <section class="tarjeta">
+    <h2>Favoritos</h2>
+    @for (av of favoritos(); track av.idAvistamiento) {
+      <p class="fila">
+        <strong>{{ av.nombreEspecie }}</strong> · {{ av.fechaAvistamiento | date:'dd/MM/yyyy' }}
+        <a [routerLink]="['/avistamientos', av.idAvistamiento]">Ver detalle</a>
+      </p>
+    } @empty {
+      <p class="apagado">Aún no marcaste avistamientos como favoritos. Usa la estrella de la tabla.</p>
+    }
+  </section>
+
+  @if (esInvestigador()) {
+    <section class="tarjeta">
+      <h2>Compartidos conmigo</h2>
+      @for (c of compartidos; track c.idCompartido) {
+        <p class="fila">
+          {{ c.mensaje || 'Sin mensaje' }} · {{ c.fechaCompartido | date:'dd/MM/yyyy' }}
+          <a [routerLink]="['/avistamientos', c.idAvistamiento]">Ver avistamiento</a>
+        </p>
+      } @empty {
+        <p class="apagado">Ningún colega te ha compartido avistamientos todavía.</p>
+      }
+    </section>
+  }
+</section>

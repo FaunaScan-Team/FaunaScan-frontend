@@ -1,0 +1,27 @@
+:host { display: block; }
+.pagina { max-width: 1200px; margin: 0 auto; padding: 32px 16px 64px; }
+.encabezado { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.etiqueta { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #256a48; }
+h1 { font-size: clamp(26px, 3.5vw, 34px); color: #002d1c; margin: 6px 0; }
+h2 { font-size: 19px; color: #002d1c; margin: 0 0 12px; }
+.subtitulo, .apagado { color: #4a6357; }
+
+.filtros { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0 16px; align-items: start; }
+.filtros__botones { display: flex; gap: 8px; align-items: center; min-height: 56px; }
+
+.tabla { background: white; border-radius: 12px; overflow-x: auto; margin: 8px 0 24px; }
+table { width: 100%; }
+.estrella { background: none; border: 0; font-size: 22px; color: #f59e0b; cursor: pointer; }
+.estado { display: inline-block; padding: 4px 10px; border-radius: 30px; font-size: 12px; font-weight: 600; text-transform: capitalize; background: #fef3c7; color: #785500; }
+.estado[data-estado=validado] { background: #e8f5ee; color: #1a5c35; }
+.estado[data-estado=rechazado] { background: #fde8e6; color: #991b1b; }
+.sin-datos { padding: 16px; color: #4a6357; }
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.tarjeta { background: white; border: 1px solid #dde8e1; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+.fila { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
+a { color: #176c43; font-weight: 600; }
+
+@media (max-width: 600px) {
+  .encabezado { align-items: flex-start; }
+}
