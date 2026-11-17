@@ -1,0 +1,41 @@
+<section class="notificaciones-pagina" aria-labelledby="notif-title">
+  <div class="notificaciones-encabezado">
+    <div><p class="notificaciones-rotulo">Centro de avisos</p><h1 id="notif-title">Notificaciones</h1>
+      <p class="notificaciones-subtitulo">Consulta novedades derivadas de tus registros de fauna.</p></div>
+    <a routerLink="/configuracion-notificaciones" class="notificaciones-boton notificaciones-boton--secundario">⚙ Configurar</a>
+  </div>
+  <p class="notificaciones-aviso-prototipo">Datos locales del prototipo. Los avisos de sistema y especies críticas se incorporarán cuando existan eventos verificables.</p>
+  <div class="notificaciones-resumen" aria-label="Resumen de notificaciones">
+    <div class="notificaciones-estadistica"><strong>{{ contar('criticas') }}</strong><span>Críticas</span></div>
+    <div class="notificaciones-estadistica"><strong>{{ contar('sistema') }}</strong><span>Sistema</span></div>
+    <div class="notificaciones-estadistica"><strong>{{ contar('alertas') }}</strong><span>Alertas</span></div>
+  </div>
+  <div class="notificaciones-pestanas" role="group" aria-label="Filtrar notificaciones">
+    @for (opcion of filtros; track opcion.valor) {
+      <button type="button" class="notificaciones-pestana" [class.notificaciones-pestana--active]="filtro === opcion.valor"
+        [attr.aria-pressed]="filtro === opcion.valor" (click)="filtro = opcion.valor">{{ opcion.texto }}</button>
+    }
+  </div>
+  @if (visibles.length === 0) {
+    <div class="notificaciones-vacio" role="status">No hay notificaciones para este filtro.</div>
+  } @else {
+    <ul class="notificaciones-lista" aria-label="Notificaciones recibidas">
+      @for (notif of visibles; track notif.id) {
+        <li class="notificaciones-tarjeta notificaciones-notificacion" [class.notificaciones-notificacion--sin-leer]="!leidas.includes(notif.id)">
+          <span class="notificaciones-icono" aria-hidden="true">{{ notif.titulo.includes('validado') ? '✅' : '📋' }}</span>
+          <div class="notificaciones-contenido">
+            <div class="notificaciones-fila"><strong>{{ notif.titulo }}</strong><span class="notificaciones-etiqueta">Alerta</span></div>
+            <p>{{ notif.descripcion }}</p>
+            <small>{{ notif.fecha | date:'dd/MM/yyyy HH:mm' }}</small>
+            <div class="notificaciones-acciones notificaciones-acciones--pequeno"><a [routerLink]="['/avistamientos', notif.avistamientoId]">Ver avistamiento</a>
+              @if (!leidas.includes(notif.id)) {
+                <button type="button" class="notificaciones-enlace" (click)="marcarLeida(notif.id)">Marcar como leída</button>
+              }
+            </div>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+  @if (error) { <p class="notificaciones-error" role="alert">No se pudo guardar el estado de lectura en este navegador.</p> }
+</section>

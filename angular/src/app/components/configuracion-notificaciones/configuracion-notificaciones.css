@@ -1,0 +1,38 @@
+/* Estilos de configuracion-notificaciones. No modifica otras pantallas. */
+:host { display: block; color: var(--color-text-primary, #0f2318); }
+.configuracion-pagina { width: min(1180px, 100%); margin-inline: auto; padding: calc(var(--nav-height, 68px) + 36px) 24px 72px; min-height: 65vh; }
+.configuracion-encabezado { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+.configuracion-rotulo { font-size: 13px; font-weight: 700; color: #1b6e49; letter-spacing: .04em; margin-bottom: 8px; }
+h1, h2, h3 { font-family: var(--font-heading, 'Poppins', sans-serif); line-height: 1.3; }
+h1 { font-size: clamp(26px, 3.5vw, 34px); color: #002d1c; }
+h2 { font-size: 19px; }
+h3 { font-size: 16px; }
+.configuracion-subtitulo, .configuracion-tarjeta small { color: #53685e; }
+.configuracion-subtitulo { margin-top: 9px; line-height: 1.6; }
+.configuracion-aviso-prototipo { background: #edf5ef; color: #305842; border: 1px solid #ccdfd1; border-radius: 10px; padding: 12px 16px; margin: 0 0 22px; font-size: 13px; }
+.configuracion-tarjeta { border: 1px solid #dde8e1; background: #fff; border-radius: 18px; padding: 20px; box-shadow: 0 2px 12px #1a3c2e0a; }
+.configuracion-tarjeta p { line-height: 1.65; }
+.configuracion-tarjeta small { display: block; font-size: 13px; line-height: 1.5; margin-top: 4px; }
+.configuracion-columna { display: flex; flex-direction: column; gap: 14px; }
+.configuracion-icono { width: 44px; height: 44px; flex: none; border-radius: 14px; display: grid; place-items: center; background: #e9f4ec; font-size: 23px; }
+.configuracion-contenido { min-width: 0; flex: 1; }
+.configuracion-boton { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 9px 16px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; text-align: center; border: 1px solid transparent; text-decoration: none; }
+.configuracion-boton--principal { background: #002d1c; color: #fff; }
+.configuracion-boton--secundario { background: #fff; border-color: #1d6b4b; color: #12492f; }
+.configuracion-boton:hover { filter: brightness(.94); }
+.configuracion-error { color: #991b1b; background: #fff0f0; border: 1px solid #f3b5b5; border-radius: 10px; padding: 12px 16px; margin-block: 12px; }
+.configuracion-columnas { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(290px, 1fr); align-items: start; gap: 22px; }
+.configuracion-panel { display: flex; flex-direction: column; gap: 14px; }
+.configuracion-nota { font-size: 13px; color: #66796f; background: #f6f9f7; padding: 12px; border-radius: 10px; }
+.configuracion-ajuste { display: flex; align-items: center; gap: 15px; padding: 13px 0; border-bottom: 1px solid #eaf2ed; cursor: pointer; }
+.configuracion-ajuste small { margin-top: 4px; }
+.configuracion-ajuste input { flex: none; width: 20px; height: 20px; accent-color: #00643c; cursor: pointer; }
+@media (max-width: 850px) {
+.configuracion-columnas { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+.configuracion-pagina { padding: calc(var(--nav-height, 68px) + 22px) 16px 50px; }
+.configuracion-encabezado { flex-direction: column; }
+.configuracion-icono { width: 38px; height: 38px; font-size: 20px; }
+.configuracion-tarjeta { padding: 15px; }
+}
