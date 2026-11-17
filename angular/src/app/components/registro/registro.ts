@@ -1,39 +1,77 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { UsuarioService } from '../../servicios/usuario.service';
-import { Usuario } from '../../models/usuario';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {MatFormField, MatInput, MatLabel, MatError} from '@angular/material/input';
+import {MatButton} from '@angular/material/button';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AuthService} from '../../servicios/auth.service';
+import {UsuarioRegistro} from '../../models/usuario-registro';
 
-@Component({ selector: 'app-registro', imports: [FormsModule, RouterLink], templateUrl: './registro.html', styleUrl: './registro.css' })
+// ids de la tabla roles (orden de import.sql: 1 ADMIN, 2 INVESTIGADOR, 3 VOLUNTARIO)
+const ID_ROL_INVESTIGADOR = 2;
+const ID_ROL_VOLUNTARIO = 3;
+
+@Component({
+  selector: 'app-registro',
+  imports: [ReactiveFormsModule, RouterLink, MatFormField, MatLabel, MatInput, MatError, MatButton, MatCheckbox],
+  templateUrl: './registro.html',
+  styleUrl: './registro.css',
+})
 export class Registro {
-  private usuarios = inject(UsuarioService);
-  private router = inject(Router);
-  nombre = ''; apellido = ''; email = ''; clave = ''; repetir = '';
-  rol: Usuario['rol'] = 'voluntario';
-  terminos = false;
-  error = signal('');
-  cargando = signal(false);
+  registroForm: FormGroup;
+  fb: FormBuilder = inject(FormBuilder);
+  authService: AuthService = inject(AuthService);
+  router: Router = inject(Router);
+  snackBar: MatSnackBar = inject(MatSnackBar);
+  cargando: boolean = false;
+  rolInvestigador = ID_ROL_INVESTIGADOR;
+  rolVoluntario = ID_ROL_VOLUNTARIO;
 
-  async registrar(): Promise<void> {
-    this.error.set('');
-    if (!this.nombre.trim() || !this.apellido.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim())) {
-      this.error.set('Completa tu nombre, apellido y un correo válido.'); return;
+  constructor() {
+    this.registroForm = this.fb.group({
+      idRol: [ID_ROL_VOLUNTARIO, Validators.required],
+      nombre: ['', [Validators.required, Validators.maxLength(100)]],
+      apellido: ['', [Validators.required, Validators.maxLength(100)]],
+      correo: ['', [Validators.required, Validators.email]],
+      contrasena: ['', [Validators.required, Validators.minLength(8)]],
+      repetir: ['', Validators.required],
+      terminos: [false, Validators.requiredTrue],
+    });
+  }
+
+  onSubmit() {
+    if (this.registroForm.invalid) {
+      this.registroForm.markAllAsTouched();
+      return;
     }
-    if (this.clave.length < 8 || this.clave !== this.repetir) {
-      this.error.set('La contraseña debe tener al menos 8 caracteres y coincidir con la confirmación.'); return;
+    if (this.registroForm.value.contrasena !== this.registroForm.value.repetir) {
+      this.snackBar.open('Las contraseñas no coinciden', 'Cerrar', {duration: 4000});
+      return;
     }
-    if (!this.terminos) { this.error.set('Debes aceptar los términos.'); return; }
-    if (this.usuarios.actual()?.email === this.email.trim()) { this.error.set('Ya existe una cuenta con ese correo en este navegador.'); return; }
-    this.cargando.set(true);
-    try {
-      const usuario: Usuario = {
-        nombre: this.nombre.trim(), apellido: this.apellido.trim(), email: this.email.trim(),
-        passwordHash: await this.usuarios.hash(this.clave), rol: this.rol, estado: 'ACTIVO',
-        credencialVerificada: false, onboardingCompletado: false, creadoEn: new Date().toISOString()
-      };
-      this.usuarios.guardar(usuario);
-      this.usuarios.iniciar(usuario);
-      await this.router.navigateByUrl(this.usuarios.destino(usuario));
-    } finally { this.cargando.set(false); }
+    let usuario = new UsuarioRegistro();
+    usuario.idRol = this.registroForm.value.idRol;
+    usuario.nombre = this.registroForm.value.nombre;
+    usuario.apellido = this.registroForm.value.apellido;
+    usuario.correo = this.registroForm.value.correo;
+    usuario.contrasena = this.registroForm.value.contrasena;
+    this.cargando = true;
+    this.authService.registrar(usuario).subscribe({
+      next: data => {
+        console.log('Usuario registrado:', data);
+        this.cargando = false;
+        this.snackBar.open('Cuenta creada. Ahora inicia sesión.', 'Cerrar', {duration: 4000});
+        this.router.navigate(['/login']);
+      },
+      error: err => {
+        console.log('Error en el registro:', err.status);
+        this.cargando = false;
+        let mensaje = 'No se pudo crear la cuenta. Revisa los datos.';
+        if (err.status === 409) {
+          mensaje = 'Ya existe una cuenta con ese correo.';
+        }
+        this.snackBar.open(mensaje, 'Cerrar', {duration: 4000});
+      }
+    });
   }
 }

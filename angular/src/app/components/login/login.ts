@@ -1,38 +1,61 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { UsuarioService } from '../../servicios/usuario.service';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {MatFormField, MatInput, MatLabel, MatError} from '@angular/material/input';
+import {MatButton} from '@angular/material/button';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AuthService} from '../../servicios/auth.service';
+import {Login as LoginDatos} from '../../models/login';
 
-@Component({ selector: 'app-login', imports: [FormsModule, RouterLink], templateUrl: './login.html', styleUrl: './login.css' })
+@Component({
+  selector: 'app-login',
+  imports: [ReactiveFormsModule, RouterLink, MatFormField, MatLabel, MatInput, MatError, MatButton],
+  templateUrl: './login.html',
+  styleUrl: './login.css',
+})
 export class Login {
-  private usuarios = inject(UsuarioService);
-  private router = inject(Router);
-  email = '';
-  clave = '';
-  error = signal('');
-  cargando = signal(false);
+  loginForm: FormGroup;
+  fb: FormBuilder = inject(FormBuilder);
+  authService: AuthService = inject(AuthService);
+  router: Router = inject(Router);
+  snackBar: MatSnackBar = inject(MatSnackBar);
+  cargando: boolean = false;
 
-  async ingresar(): Promise<void> {
-    this.error.set('');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim()) || this.clave.length < 6) {
-      this.error.set('Ingresa un correo válido y tu contraseña.');
+  constructor() {
+    this.loginForm = this.fb.group({
+      correo: ['', [Validators.required, Validators.email]],
+      contrasena: ['', Validators.required],
+    });
+  }
+
+  onSubmit() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
       return;
     }
-    this.cargando.set(true);
-    try {
-      const usuario = this.usuarios.actual();
-      if (!usuario || usuario.email !== this.email.trim() || usuario.passwordHash !== await this.usuarios.hash(this.clave)) {
-        this.error.set('Credenciales inválidas.');
-        return;
+    let login = new LoginDatos();
+    login = this.loginForm.value;
+    this.cargando = true;
+    this.authService.login(login).subscribe({
+      next: data => {
+        console.log('Login correcto, rol:', data.rol);
+        this.authService.guardarSesion(data);
+        this.cargando = false;
+        this.router.navigate([this.destino(data.rol)]);
+      },
+      error: err => {
+        console.log('Error en el login:', err.status);
+        this.cargando = false;
+        this.snackBar.open('Correo o contraseña incorrectos', 'Cerrar', {duration: 4000});
       }
-      if (usuario.estado === 'INACTIVO') {
-        this.error.set('Cuenta inactiva. Contacta al administrador.');
-        return;
-      }
-      this.usuarios.iniciar(usuario);
-      await this.router.navigateByUrl(this.usuarios.destino(usuario));
-    } finally {
-      this.cargando.set(false);
+    });
+  }
+
+  // Panel según el rol que devuelve el backend (ROLE_INVESTIGADOR, ROLE_VOLUNTARIO o ROLE_ADMIN)
+  private destino(rol: string): string {
+    if (rol === 'ROLE_VOLUNTARIO') {
+      return '/panel/voluntario';
     }
+    return '/panel/investigador';
   }
 }

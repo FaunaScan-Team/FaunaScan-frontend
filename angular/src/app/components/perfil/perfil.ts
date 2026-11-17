@@ -13,7 +13,7 @@ export class Perfil {
   mostrarSalida = signal(false);
   mostrarMenu = signal(false);
   error = signal('');
-  readonly propios = computed(() => this.avistamientos.lista().filter(a => a.registradoPorEmail === this.usuarios.actual()?.email));
+  readonly propios = computed(() => this.avistamientos.lista().filter(a => a.registradoPor?.email === this.usuarios.actual()?.email));
   readonly especies = computed(() => new Set(this.propios().map(a => a.especie.nombre)).size);
   readonly zonas = computed(() => new Set(this.propios().map(a => a.area)).size);
   readonly logros = computed(() => {
