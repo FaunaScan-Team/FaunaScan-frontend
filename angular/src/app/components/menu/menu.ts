@@ -14,6 +14,8 @@ export class Menu {
     { ruta: '/catalogo', texto: 'Catálogo' },
     { ruta: '/registrar', texto: 'Registrar avistamiento' },
     { ruta: '/historial', texto: 'Historial' },
+    { ruta: '/perfil', texto: 'Mi perfil' },
+    { ruta: '/login', texto: 'Ingresar' },
   ];
 
   protected alternarMenu(): void {

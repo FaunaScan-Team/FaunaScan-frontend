@@ -1,0 +1,23 @@
+// Tema de Angular Material (igual que en el proyecto del profesor).
+// mat.theme() crea las variables CSS que usan los componentes de Material.
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$green-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Inter,
+      density: 0,
+    )
+  );
+}
+
+// Colores del Style Guide de FaunaScan para los componentes de Material
+:root {
+  --mat-sys-primary: #002D1C;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-tertiary: #F59E0B;
+}
