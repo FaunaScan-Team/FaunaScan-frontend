@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-// Soporte de integración. Cada integrante reemplazará su ruta por su componente real.
+// Página temporal para las secciones que todavía no están disponibles
 @Component({
   selector: 'app-pagina-pendiente',
   imports: [RouterLink],
