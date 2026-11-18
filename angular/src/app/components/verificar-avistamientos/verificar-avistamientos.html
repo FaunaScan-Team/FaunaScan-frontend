@@ -1,30 +1,185 @@
-<section class="verificar-pagina" aria-labelledby="ver-title">
-  <div class="verificar-encabezado"><div><p class="verificar-rotulo">Panel del investigador</p><h1 id="ver-title">Verificar avistamientos</h1>
-    <p class="verificar-subtitulo">Revisa los registros pendientes de otros usuarios.</p></div>
-    <span class="verificar-contador">{{ pendientes.length }} pendientes</span></div>
-  <p class="verificar-aviso-prototipo">Validaciones locales de demostración. La autorización real deberá comprobarse en el backend.</p>
-  @if (mensaje) { <p class="verificar-exito" role="status">{{ mensaje }}</p> }
-  @if (error) { <p class="verificar-error" role="alert">{{ error }}</p> }
-  @if (pendientes.length === 0) {
-    <div class="verificar-vacio">No hay avistamientos pendientes de verificación. Los nuevos registros aparecerán aquí.</div>
-  } @else {
-    <ul class="verificar-lista">
-      @for (av of pendientes; track av.id) {
-        <li class="verificar-tarjeta verificar-avistamiento">
-          <span class="verificar-icono verificar-icono--grande" aria-hidden="true">{{ av.especie.emoji || '🐾' }}</span>
-          <div class="verificar-contenido"><h2>{{ av.especie.nombre }}</h2>
-            <p class="verificar-texto-secundario"><em>{{ av.especie.nombreCientifico }}</em></p>
-            <small>📍 {{ av.area }} · {{ av.fecha | date:'dd/MM/yyyy HH:mm' }}</small>
-            <small>Registrado por {{ av.registradoPor.nombre || 'Usuario no identificado' }}</small>
-            @if (av.descripcion) { <p class="verificar-descripcion">{{ av.descripcion }}</p> }
-          </div>
-          <div class="verificar-acciones-validacion"><span class="verificar-etiqueta verificar-etiqueta--pendiente">Pendiente</span>
-            <a class="verificar-boton verificar-boton--secundario" [routerLink]="['/verificar', av.id]">Ver detalle</a>
-            <button type="button" class="verificar-boton verificar-boton--principal" (click)="resolver(av.id, 'Validado')">Validar</button>
-            <button type="button" class="verificar-boton verificar-boton--peligro" (click)="resolver(av.id, 'Rechazado')">Rechazar</button>
-          </div>
-        </li>
-      }
-    </ul>
+
+<section class="verificar-pagina"
+         aria-labelledby="ver-title">
+
+  <div class="verificar-encabezado">
+    <div>
+      <p class="verificar-rotulo">
+        Panel del investigador
+      </p>
+
+      <h1 id="ver-title">
+        Verificar avistamientos
+      </h1>
+
+      <p class="verificar-subtitulo">
+        Consulta los registros pendientes y
+        valida o rechaza los avistamientos.
+      </p>
+    </div>
+
+    <span class="verificar-contador">
+      {{ dataSource.data.length }} pendientes
+    </span>
+  </div>
+
+  <p class="verificar-aviso-prototipo">
+    Los registros se consultan desde la API de FaunaScan.
+    La validación requiere permisos de investigador.
+  </p>
+
+  <button
+    type="button"
+    class="verificar-boton verificar-boton--secundario"
+    (click)="cargarPendientes()"
+    [disabled]="cargando || procesandoId !== null">
+    Actualizar registros
+  </button>
+
+  @if (cargando) {
+    <p role="status">
+      Cargando avistamientos pendientes...
+    </p>
   }
+
+  @if (error) {
+    <p class="verificar-error" role="alert">
+      {{ error }}
+    </p>
+  }
+
+  <div class="verificar-tabla-contenedor">
+
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      class="verificar-tabla"
+      aria-label="Avistamientos pendientes de validación">
+
+      <ng-container matColumnDef="idAvistamiento">
+        <th mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+          ID
+        </th>
+
+        <td mat-cell *matCellDef="let av">
+          {{ av.idAvistamiento }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombreEspecie">
+        <th mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+          Especie
+        </th>
+
+        <td mat-cell *matCellDef="let av">
+          {{ av.nombreEspecie || 'Sin identificar' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombreUsuario">
+        <th mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+          Registrado por
+        </th>
+
+        <td mat-cell *matCellDef="let av">
+          {{ av.nombreUsuario || 'Usuario no identificado' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaAvistamiento">
+        <th mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+          Fecha
+        </th>
+
+        <td mat-cell *matCellDef="let av">
+          {{ av.fechaAvistamiento
+            ? (av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm')
+            : 'Sin fecha' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estadoValidacion">
+        <th mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header>
+          Estado
+        </th>
+
+        <td mat-cell *matCellDef="let av">
+          <span class="verificar-etiqueta verificar-etiqueta--pendiente">
+            {{ av.estadoValidacion || 'Pendiente' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>
+          Acciones
+        </th>
+
+        <td mat-cell *matCellDef="let av">
+          <div class="verificar-acciones-validacion">
+
+            <a
+              class="verificar-boton verificar-boton--secundario"
+              [routerLink]="['/verificar', av.idAvistamiento]">
+              Ver detalle
+            </a>
+
+            <button
+              type="button"
+              class="verificar-boton verificar-boton--principal"
+              [disabled]="procesandoId !== null"
+              (click)="resolver(av.idAvistamiento, 'validado')">
+              Validar
+            </button>
+
+            <button
+              type="button"
+              class="verificar-boton verificar-boton--peligro"
+              [disabled]="procesandoId !== null"
+              (click)="resolver(av.idAvistamiento, 'rechazado')">
+              Rechazar
+            </button>
+
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row
+          *matHeaderRowDef="columnas">
+      </tr>
+
+      <tr mat-row
+          *matRowDef="let fila; columns: columnas;">
+      </tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell verificar-vacio"
+            [attr.colspan]="columnas.length">
+          @if (!cargando && !error) {
+            No hay avistamientos pendientes.
+          }
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+  <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Paginación de avistamientos">
+  </mat-paginator>
+
 </section>
