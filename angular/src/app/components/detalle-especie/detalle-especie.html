@@ -1,0 +1,41 @@
+<section class="pagina">
+    <a class="back" routerLink="/catalogo">← Volver al catálogo</a>
+
+    @if (especie) {
+        <header>
+            <p class="eyebrow">FICHA DE ESPECIE</p>
+            <h1>{{ especie.nombreComun }}</h1>
+            <p class="scientific">{{ especie.nombreCientifico }}</p>
+        </header>
+
+        <article class="detail">
+            <div class="photo"><img [src]="imagen()" [alt]="especie.nombreComun"></div>
+            <div class="information">
+                <h2>Información de la especie</h2>
+                <dl>
+                    <dt>Nombre común</dt><dd>{{ especie.nombreComun }}</dd>
+                    <dt>Nombre científico</dt><dd><i>{{ especie.nombreCientifico }}</i></dd>
+                    <dt>Familia</dt><dd>{{ especie.nombreFamilia }}</dd>
+                    <dt>Estado de conservación</dt><dd>{{ especie.nombreCategoria }}</dd>
+                </dl>
+            </div>
+        </article>
+
+        @if (guia) {
+            <article class="guia">
+                <h2>Guía de identificación</h2>
+                <p>{{ guia.pistasIdentificacion || 'Esta especie todavía no tiene pistas registradas.' }}</p>
+            </article>
+        }
+
+        <a class="primary" routerLink="/registrar" [queryParams]="{idEspecie: especie.idEspecie}">Registrar un avistamiento de esta especie</a>
+    }
+
+    @if (noEncontrada) {
+        <section class="empty" role="status">
+            <h1>Especie no encontrada</h1>
+            <p>El identificador de la URL no corresponde a ninguna especie del catálogo.</p>
+            <a class="primary" routerLink="/catalogo">Explorar catálogo</a>
+        </section>
+    }
+</section>

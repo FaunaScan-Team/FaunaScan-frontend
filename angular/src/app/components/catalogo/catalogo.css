@@ -1,0 +1,32 @@
+:host { display: block; }
+.pagina { max-width: 1200px; margin: 0 auto; padding: 32px 16px; }
+h1 { font-size: 30px; line-height: 1.2; margin: 8px 0 12px; }
+p { color: #4a6357; line-height: 1.6; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #256a48; }
+.error { color: #991b1b; font-weight: 600; }
+.count { font-size: 13px; }
+
+.toolbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: 28px 0 8px; }
+.toolbar__buscar { flex: 1; min-width: 220px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; }
+.card { background: white; border: 1px solid #dde8e1; border-radius: 20px; overflow: hidden; transition: transform .15s, box-shadow .15s; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px #002d1c12; }
+.image { background: #e8f5ee; height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.image img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.body { padding: 18px 18px 12px; }
+h2 { font-size: 17px; margin: 0 0 7px; }
+.scientific { font-style: italic; font-size: 13px; margin: 0 0 14px; }
+.detail-link { display: block; margin: 0 18px 18px; font-size: 13px; font-weight: 700; color: #176c43; }
+
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 30px; background: #e8f5ee; color: #1a5c35; }
+.badge[data-estado=critico] { background: #fde8e6; color: #991b1b; }
+.badge[data-estado=vulnerable] { background: #fef3c7; color: #785500; }
+.badge[data-estado=casi] { background: #e8f0fe; color: #164d96; }
+.empty { background: white; border: 1px solid #dde8e1; border-radius: 16px; padding: 30px; grid-column: 1 / -1; }
+
+@media (max-width: 500px) {
+    h1 { font-size: 26px; }
+    .grid { grid-template-columns: 1fr; }
+    .toolbar > * { width: 100%; }
+}

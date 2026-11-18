@@ -1,0 +1,59 @@
+<section class="pagina">
+    <header>
+        <p class="eyebrow">BIODIVERSIDAD DEL PERÚ</p>
+        <h1>Catálogo de especies</h1>
+        <p>Conoce nuestra fauna y selecciona una especie para ver su información.</p>
+    </header>
+
+    <form [formGroup]="filtrosForm" class="toolbar">
+        <mat-form-field appearance="fill" class="toolbar__buscar">
+            <mat-label>Buscar especie</mat-label>
+            <input matInput formControlName="texto" placeholder="Nombre común o científico" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Estado de conservación</mat-label>
+            <mat-select formControlName="categoria">
+                <mat-option value="">Todos los estados</mat-option>
+                @for (categoria of categorias; track categoria) {
+                    <mat-option [value]="categoria">{{ categoria }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <button type="button" mat-stroked-button (click)="limpiar()">Limpiar filtros</button>
+    </form>
+
+    @if (cargando) {
+        <p role="status">Cargando especies…</p>
+    }
+    @if (error) {
+        <p class="error" role="alert">{{ error }}</p>
+    }
+
+    <p class="count" aria-live="polite">{{ especiesFiltradas.length }} de {{ especies.length }} especies</p>
+
+    <section class="grid" aria-label="Especies">
+        @for (especie of especiesFiltradas; track especie.idEspecie) {
+            <article class="card">
+                <div class="image">
+                    <img [src]="imagen(especie)" [alt]="especie.nombreComun" loading="lazy">
+                </div>
+                <div class="body">
+                    <h2>{{ especie.nombreComun }}</h2>
+                    <p class="scientific">{{ especie.nombreCientifico }}</p>
+                    <span class="badge" [attr.data-estado]="claseEstado(especie.nombreCategoria)">{{ especie.nombreCategoria }}</span>
+                </div>
+                <a class="detail-link" [routerLink]="['/catalogo', especie.idEspecie]"
+                   [attr.aria-label]="'Ver detalle de ' + especie.nombreComun">Ver detalle →</a>
+            </article>
+        } @empty {
+            @if (!cargando && !error) {
+                <div class="empty">
+                    <h2>No se encontraron especies</h2>
+                    <p>Prueba otro nombre o cambia el estado de conservación.</p>
+                </div>
+            }
+        }
+    </section>
+</section>
