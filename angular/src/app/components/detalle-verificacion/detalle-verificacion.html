@@ -1,0 +1,149 @@
+
+<section class="detalle-pagina" aria-labelledby="det-title">
+
+  <div class="detalle-encabezado">
+    <div>
+      <p class="detalle-rotulo">Revisión científica</p>
+      <h1 id="det-title">Detalle de verificación</h1>
+      <p class="detalle-subtitulo">
+        Consulta los datos reales del avistamiento antes de decidir.
+      </p>
+    </div>
+
+    <a
+      class="detalle-boton detalle-boton--secundario"
+      routerLink="/verificar">
+      ← Volver a pendientes
+    </a>
+  </div>
+
+  @if (cargando) {
+    <p role="status">Cargando información del avistamiento...</p>
+  }
+
+  @if (error) {
+    <p class="detalle-error" role="alert">{{ error }}</p>
+  }
+
+  @if (registro; as av) {
+    <div class="detalle-columnas">
+
+      <article class="detalle-tarjeta detalle-panel">
+        <h2>Información del avistamiento</h2>
+
+        <p>
+          <strong>ID del registro:</strong>
+          {{ av.idAvistamiento }}
+        </p>
+
+        <p>
+          <strong>Especie:</strong>
+          {{ av.nombreEspecie || 'Sin identificar' }}
+        </p>
+
+        <p>
+          <strong>ID de especie:</strong>
+          {{ av.idEspecie }}
+        </p>
+
+        <p>
+          <strong>Ubicación (ID):</strong>
+          {{ av.idUbicacion }}
+        </p>
+
+        <p>
+          <strong>Fecha del avistamiento:</strong>
+          {{ av.fechaAvistamiento
+            ? (av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm')
+            : 'No registrada' }}
+        </p>
+
+        <h3>Observaciones</h3>
+        <p>{{ av.observaciones || 'Sin observaciones.' }}</p>
+
+        <h3>Condiciones del entorno</h3>
+        <p>{{ av.condicionesEntorno || 'No registradas.' }}</p>
+
+      </article>
+
+      <article class="detalle-tarjeta detalle-panel">
+        <h2>Información de validación</h2>
+
+        <span
+          class="detalle-etiqueta"
+          [class.detalle-etiqueta--pendiente]="
+            av.estadoValidacion?.toLowerCase() === 'pendiente'
+          ">
+          {{ av.estadoValidacion || 'Sin estado' }}
+        </span>
+
+        <p>
+          <strong>Registrado por:</strong>
+          {{ av.nombreUsuario || 'Usuario no identificado' }}
+        </p>
+
+        <p>
+          <strong>ID del usuario:</strong>
+          {{ av.idUsuario ?? 'No disponible' }}
+        </p>
+
+        <p>
+          <strong>Fecha de registro:</strong>
+          {{ av.fechaRegistro
+            ? (av.fechaRegistro | date:'dd/MM/yyyy HH:mm')
+            : 'No registrada' }}
+        </p>
+
+        @if (av.fechaValidacion) {
+          <p>
+            <strong>Fecha de validación:</strong>
+            {{ av.fechaValidacion | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+        }
+
+        @if (av.idInvestigadorValidador) {
+          <p>
+            <strong>ID del investigador validador:</strong>
+            {{ av.idInvestigadorValidador }}
+          </p>
+        }
+
+        @if (av.estadoValidacion?.toLowerCase() === 'pendiente') {
+          <div class="detalle-acciones">
+
+            <button
+              type="button"
+              class="detalle-boton detalle-boton--principal"
+              [disabled]="procesando"
+              (click)="resolver('validado')">
+              Validar
+            </button>
+
+            <button
+              type="button"
+              class="detalle-boton detalle-boton--peligro"
+              [disabled]="procesando"
+              (click)="resolver('rechazado')">
+              Rechazar
+            </button>
+
+          </div>
+        } @else {
+          <p class="detalle-nota">
+            Este registro no admite nuevas validaciones.
+          </p>
+        }
+
+        @if (procesando) {
+          <p role="status">Guardando decisión...</p>
+        }
+
+      </article>
+    </div>
+  } @else if (!cargando && !error) {
+    <div class="detalle-vacio">
+      No se encontró información del avistamiento.
+    </div>
+  }
+
+</section>

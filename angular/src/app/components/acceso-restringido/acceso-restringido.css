@@ -1,0 +1,18 @@
+/* Estilos de acceso-restringido. No modifica otras pantallas. */
+:host { display: block; color: var(--color-text-primary, #0f2318); }
+.acceso-pagina { width: min(1180px, 100%); margin-inline: auto; padding: calc(var(--nav-height, 68px) + 36px) 24px 72px; min-height: 65vh; }
+h1, h2, h3 { font-family: var(--font-heading, 'Poppins', sans-serif); line-height: 1.3; }
+h1 { font-size: clamp(26px, 3.5vw, 34px); color: #002d1c; }
+h2 { font-size: 19px; }
+h3 { font-size: 16px; }
+.acceso-acciones { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.acceso-boton { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 9px 16px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; text-align: center; border: 1px solid transparent; text-decoration: none; }
+.acceso-boton--principal { background: #002d1c; color: #fff; }
+.acceso-boton:hover { filter: brightness(.94); }
+.acceso-contenido-acceso { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+.acceso-contenido-acceso__icono { display: grid; place-items: center; border-radius: 50%; width: 96px; height: 96px; background: #e8eef5; font-size: 46px; }
+.acceso-contenido-acceso h2 { max-width: 590px; font-size: 23px; }
+.acceso-contenido-acceso p { max-width: 590px; color: #53685e; line-height: 1.7; }
+@media (max-width: 600px) {
+.acceso-pagina { padding: calc(var(--nav-height, 68px) + 22px) 16px 50px; }
+}

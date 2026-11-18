@@ -1,0 +1,29 @@
+<section class="configuracion-pagina" aria-labelledby="conf-title">
+  <div class="configuracion-encabezado">
+    <div><p class="configuracion-rotulo">Preferencias personales</p><h1 id="conf-title">Configuración de notificaciones</h1>
+      <p class="configuracion-subtitulo">Elige qué tipos de avisos deseas recibir.</p></div>
+    <a class="configuracion-boton configuracion-boton--secundario" routerLink="/notificaciones">← Volver</a>
+  </div>
+  <p class="configuracion-aviso-prototipo">Estas preferencias se guardan en este navegador para la cuenta: <strong>{{ email }}</strong>.</p>
+  <div class="configuracion-columnas">
+    <form class="configuracion-tarjeta configuracion-columna" (submit)="guardar($event)">
+      <h2>Categorías de notificaciones</h2>
+      @for (opcion of opciones; track opcion.clave) {
+        <label class="configuracion-ajuste">
+          <span class="configuracion-icono" aria-hidden="true">{{ opcion.icono }}</span>
+          <span class="configuracion-contenido"><strong>{{ opcion.titulo }}</strong><small>{{ opcion.descripcion }}</small></span>
+          <input type="checkbox" [checked]="borrador[opcion.clave]"
+            (change)="cambiar(opcion.clave, $event)" [attr.aria-label]="opcion.titulo" />
+        </label>
+      }
+      <button type="submit" class="configuracion-boton configuracion-boton--principal">Guardar preferencias</button>
+      @if (mensaje) { <p role="status" [class.configuracion-error]="!guardado">{{ mensaje }}</p> }
+    </form>
+    <aside class="configuracion-tarjeta configuracion-panel">
+      <h2>Vista previa</h2>
+      <p>Actualmente tienes <strong>{{ categoriasActivas }}</strong> de 6 categorías habilitadas.</p>
+      <p>Solo se mostrarán avisos cuando exista un evento real correspondiente a la categoría.</p>
+      <p class="configuracion-nota">Todavía no hay backend de notificaciones ni sincronización offline: estos controles preparan las preferencias del prototipo.</p>
+    </aside>
+  </div>
+</section>
