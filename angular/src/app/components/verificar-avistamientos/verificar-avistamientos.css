@@ -43,3 +43,73 @@ h3 { font-size: 16px; }
 .verificar-acciones-validacion .verificar-boton { flex: 1; }
 .verificar-tarjeta { padding: 15px; }
 }
+
+
+/* SCRUM-61: Tabla de validación conectada a la API */
+
+.verificar-tabla-contenedor {
+  width: 100%;
+  margin-top: 20px;
+  overflow-x: auto;
+  border: 1px solid #dde8e1;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.verificar-tabla {
+  width: 100%;
+  min-width: 790px;
+  background: #ffffff;
+}
+
+.verificar-tabla th {
+  background: #edf5ef;
+  color: #17472e;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.verificar-tabla td {
+  color: #344e40;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.verificar-tabla tr:hover td {
+  background: #f7faf8;
+}
+
+.verificar-tabla .verificar-acciones-validacion {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  min-width: 260px;
+}
+
+.verificar-tabla .verificar-boton {
+  font-size: 12px;
+  min-height: 36px;
+  padding: 7px 11px;
+}
+
+.verificar-boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+mat-paginator {
+  margin-top: 12px;
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .verificar-tabla-contenedor {
+    border-radius: 10px;
+  }
+
+  .verificar-tabla {
+    min-width: 790px;
+  }
+}

@@ -1,50 +1,149 @@
+
 <section class="detalle-pagina" aria-labelledby="det-title">
-  <div class="detalle-encabezado"><div><p class="detalle-rotulo">Revisión científica</p><h1 id="det-title">Detalle de verificación</h1>
-    <p class="detalle-subtitulo">Examina la información antes de decidir.</p></div>
-    <a class="detalle-boton detalle-boton--secundario" routerLink="/verificar">← Volver a pendientes</a></div>
-  @if (error) { <p class="detalle-error" role="alert">{{ error }}</p> }
-  @if (avistamiento; as av) {
+
+  <div class="detalle-encabezado">
+    <div>
+      <p class="detalle-rotulo">Revisión científica</p>
+      <h1 id="det-title">Detalle de verificación</h1>
+      <p class="detalle-subtitulo">
+        Consulta los datos reales del avistamiento antes de decidir.
+      </p>
+    </div>
+
+    <a
+      class="detalle-boton detalle-boton--secundario"
+      routerLink="/verificar">
+      ← Volver a pendientes
+    </a>
+  </div>
+
+  @if (cargando) {
+    <p role="status">Cargando información del avistamiento...</p>
+  }
+
+  @if (error) {
+    <p class="detalle-error" role="alert">{{ error }}</p>
+  }
+
+  @if (registro; as av) {
     <div class="detalle-columnas">
+
       <article class="detalle-tarjeta detalle-panel">
-        <div class="detalle-foto" role="img" aria-label="No hay fotografía adjunta al registro Angular">{{ av.especie.emoji || '🐾' }}</div>
-        <p class="detalle-texto-secundario">La fotografía se integrará cuando esté disponible el módulo «Adjuntar foto».</p>
-        <h2>Ubicación del avistamiento</h2>
-        <p>📍 {{ av.area }}</p>
-        @if (av.latitud !== null && av.longitud !== null) {
-          <p>Latitud: <strong>{{ av.latitud }}</strong></p>
-          <p>Longitud: <strong>{{ av.longitud }}</strong></p>
-          <a class="detalle-enlace" [href]="urlMapa(av.latitud, av.longitud)" target="_blank" rel="noopener noreferrer">Ver en OpenStreetMap ↗</a>
-        } @else { <p class="detalle-texto-secundario">Este registro no incluye coordenadas.</p> }
-      </article>
-      <article class="detalle-tarjeta detalle-panel">
-        <span class="detalle-etiqueta" [class.detalle-etiqueta--pendiente]="av.estadoValidacion === 'Pendiente'">{{ av.estadoValidacion }}</span>
-        <h2>{{ av.especie.nombre }}</h2>
-        <p class="detalle-texto-secundario"><em>{{ av.especie.nombreCientifico }}</em></p>
-        <p><strong>Registrado por:</strong> {{ av.registradoPor.nombre || 'Usuario no identificado' }}</p>
-        <p><strong>Fecha:</strong> {{ av.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Descripción:</strong> {{ av.descripcion || 'Sin descripción' }}</p>
+        <h2>Información del avistamiento</h2>
+
+        <p>
+          <strong>ID del registro:</strong>
+          {{ av.idAvistamiento }}
+        </p>
+
+        <p>
+          <strong>Especie:</strong>
+          {{ av.nombreEspecie || 'Sin identificar' }}
+        </p>
+
+        <p>
+          <strong>ID de especie:</strong>
+          {{ av.idEspecie }}
+        </p>
+
+        <p>
+          <strong>Ubicación (ID):</strong>
+          {{ av.idUbicacion }}
+        </p>
+
+        <p>
+          <strong>Fecha del avistamiento:</strong>
+          {{ av.fechaAvistamiento
+            ? (av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm')
+            : 'No registrada' }}
+        </p>
+
         <h3>Observaciones</h3>
-        @if (av.observaciones; as obs) {
-          <div class="detalle-metricas"><div>Clima<strong>{{ obs.clima || '—' }}</strong></div>
-            <div>Temperatura<strong>{{ obs.temperatura ?? '—' }} °C</strong></div>
-            <div>Humedad<strong>{{ obs.humedad ?? '—' }} %</strong></div>
-            <div>Individuos<strong>{{ obs.individuos ?? '—' }}</strong></div></div>
-          <p>{{ obs.notas || 'Sin notas adicionales.' }}</p>
-          <div class="detalle-etiquetas">@for (etiqueta of obs.etiquetas; track etiqueta) { <span class="detalle-etiqueta">{{ etiqueta }}</span> }</div>
-        } @else { <p class="detalle-texto-secundario">Sin observaciones adicionales.</p> }
-        @if (av.estadoValidacion === 'Pendiente' && av.registradoPor.email.toLowerCase() !== usuarioEmail) {
+        <p>{{ av.observaciones || 'Sin observaciones.' }}</p>
+
+        <h3>Condiciones del entorno</h3>
+        <p>{{ av.condicionesEntorno || 'No registradas.' }}</p>
+
+      </article>
+
+      <article class="detalle-tarjeta detalle-panel">
+        <h2>Información de validación</h2>
+
+        <span
+          class="detalle-etiqueta"
+          [class.detalle-etiqueta--pendiente]="
+            av.estadoValidacion?.toLowerCase() === 'pendiente'
+          ">
+          {{ av.estadoValidacion || 'Sin estado' }}
+        </span>
+
+        <p>
+          <strong>Registrado por:</strong>
+          {{ av.nombreUsuario || 'Usuario no identificado' }}
+        </p>
+
+        <p>
+          <strong>ID del usuario:</strong>
+          {{ av.idUsuario ?? 'No disponible' }}
+        </p>
+
+        <p>
+          <strong>Fecha de registro:</strong>
+          {{ av.fechaRegistro
+            ? (av.fechaRegistro | date:'dd/MM/yyyy HH:mm')
+            : 'No registrada' }}
+        </p>
+
+        @if (av.fechaValidacion) {
+          <p>
+            <strong>Fecha de validación:</strong>
+            {{ av.fechaValidacion | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+        }
+
+        @if (av.idInvestigadorValidador) {
+          <p>
+            <strong>ID del investigador validador:</strong>
+            {{ av.idInvestigadorValidador }}
+          </p>
+        }
+
+        @if (av.estadoValidacion?.toLowerCase() === 'pendiente') {
           <div class="detalle-acciones">
-            <button type="button" class="detalle-boton detalle-boton--principal" (click)="resolver('Validado')">Validar</button>
-            <button type="button" class="detalle-boton detalle-boton--peligro" (click)="resolver('Rechazado')">Rechazar</button>
+
+            <button
+              type="button"
+              class="detalle-boton detalle-boton--principal"
+              [disabled]="procesando"
+              (click)="resolver('validado')">
+              Validar
+            </button>
+
+            <button
+              type="button"
+              class="detalle-boton detalle-boton--peligro"
+              [disabled]="procesando"
+              (click)="resolver('rechazado')">
+              Rechazar
+            </button>
+
           </div>
         } @else {
-          <p class="detalle-nota">Este registro no admite nuevas validaciones: ya fue resuelto o pertenece al investigador actual.</p>
-          @if (av.validadoPor) { <p><strong>Validado por:</strong> {{ av.validadoPor }}</p> }
-          @if (av.validadoEn) { <p><strong>Fecha de validación:</strong> {{ av.validadoEn | date:'dd/MM/yyyy HH:mm' }}</p> }
+          <p class="detalle-nota">
+            Este registro no admite nuevas validaciones.
+          </p>
         }
+
+        @if (procesando) {
+          <p role="status">Guardando decisión...</p>
+        }
+
       </article>
     </div>
-  } @else {
-    <div class="detalle-vacio">No se encontró el avistamiento solicitado. <a routerLink="/verificar">Volver a la cola</a>.</div>
+  } @else if (!cargando && !error) {
+    <div class="detalle-vacio">
+      No se encontró información del avistamiento.
+    </div>
   }
+
 </section>
