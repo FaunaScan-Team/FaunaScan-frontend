@@ -1,0 +1,83 @@
+<div class="auth-split">
+  <aside class="auth-split__left">
+    <a routerLink="/" class="auth-split__logo">
+      <img src="assets/images/LogoFaunaScan.png" alt="Logo de FaunaScan" class="auth-split__logo-img">
+      <span class="auth-split__logo-text">FaunaScan</span>
+    </a>
+    <div class="auth-split__content">
+      <h1 class="auth-split__headline">Únete a<br><span>FaunaScan</span></h1>
+      <p class="auth-split__desc">Registra avistamientos y contribuye a la conservación de la fauna silvestre del Perú.</p>
+      <div class="auth-split__features">
+        <div class="auth-split__feature"><span class="auth-split__feature-icon">🔍</span><span>Explora especies del catálogo</span></div>
+        <div class="auth-split__feature"><span class="auth-split__feature-icon">🗺️</span><span>Consulta el mapa de avistamientos</span></div>
+        <div class="auth-split__feature"><span class="auth-split__feature-icon">🔔</span><span>Infórmate sobre especies vulnerables</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="auth-split__right">
+    <div class="auth-card">
+      <h2 class="auth-card__title">Crear cuenta</h2>
+      <p class="auth-card__subtitle">Completa los datos para comenzar a monitorear la fauna</p>
+
+      <form [formGroup]="registroForm" class="auth-card__form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <span class="form-label" id="rol-label">Tipo de usuario</span>
+          <div class="role-selector" role="group" aria-labelledby="rol-label">
+            <label class="role-card" [class.selected]="registroForm.value.idRol === rolInvestigador">
+              <input type="radio" formControlName="idRol" [value]="rolInvestigador">
+              <span class="role-card__icon">🔬</span>
+              <span class="role-card__title">Investigador</span>
+              <span class="role-card__sub">Científico o académico</span>
+            </label>
+            <label class="role-card" [class.selected]="registroForm.value.idRol === rolVoluntario">
+              <input type="radio" formControlName="idRol" [value]="rolVoluntario">
+              <span class="role-card__icon">🌿</span>
+              <span class="role-card__title">Voluntario</span>
+              <span class="role-card__sub">Ciudadano colaborador</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" autocomplete="given-name" />
+            <mat-error>El nombre es obligatorio</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="apellido" autocomplete="family-name" />
+            <mat-error>El apellido es obligatorio</mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" formControlName="correo" autocomplete="email" />
+          <mat-error>Ingresa un correo válido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="contrasena" autocomplete="new-password" />
+          <mat-error>Mínimo 8 caracteres</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input matInput type="password" formControlName="repetir" autocomplete="new-password" />
+          <mat-error>Repite tu contraseña</mat-error>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="terminos">Acepto los términos de uso</mat-checkbox>
+
+        <button type="submit" mat-flat-button class="btn-full" [disabled]="cargando">
+          {{ cargando ? 'Creando cuenta…' : 'Crear cuenta' }}
+        </button>
+      </form>
+
+      <p class="auth-card__footer">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+    </div>
+  </div>
+</div>

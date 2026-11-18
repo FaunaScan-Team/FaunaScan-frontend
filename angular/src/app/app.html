@@ -1,6 +1,6 @@
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-<app-menu />
+@if (!pantallaCompleta()) { <app-menu /> }
 <main id="contenido" tabindex="-1">
   <router-outlet />
 </main>
-<app-pie-pagina />
+@if (!pantallaCompleta()) { <app-pie-pagina /> }

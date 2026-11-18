@@ -1,5 +1,6 @@
-import { Component, HostListener, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, HostListener, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../servicios/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -8,6 +9,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './menu.css',
 })
 export class Menu {
+  protected readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly abierto = signal(false);
   protected readonly enlaces = [
     { ruta: '/', texto: 'Inicio' },
@@ -22,6 +25,13 @@ export class Menu {
 
   protected cerrarMenu(): void {
     this.abierto.set(false);
+  }
+
+  // HU-08: borra el token y vuelve al inicio
+  protected cerrarSesion(): void {
+    this.authService.logout();
+    this.cerrarMenu();
+    this.router.navigate(['/']);
   }
 
   @HostListener('document:keydown.escape')

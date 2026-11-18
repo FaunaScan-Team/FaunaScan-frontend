@@ -1,0 +1,19 @@
+.cuenta { min-height: 75vh; display: grid; grid-template-columns: minmax(260px, 1fr) minmax(320px, 1fr); background: #fff; }
+.cuenta__panel { background: #002d1c; color: #fff; padding: clamp(2rem, 6vw, 6rem); display: flex; flex-direction: column; justify-content: space-between; gap: 4rem; }
+.cuenta__panel h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.15; }
+.cuenta__panel p { max-width: 35rem; line-height: 1.7; }
+.cuenta__marca { font-weight: 800; font-size: 1.4rem; }
+.cuenta__tarjeta { width: min(100%, 520px); margin: auto; padding: 3rem 2rem; }
+.cuenta__tarjeta h2 { font-size: 2rem; margin-bottom: .5rem; }
+.cuenta__tarjeta > p { color: #4a6357; margin-bottom: 1.5rem; }
+.cuenta__tarjeta form { display: grid; gap: .7rem; }
+.cuenta__tarjeta label, .cuenta__tarjeta legend { font-weight: 600; }
+.cuenta__tarjeta input:not([type=checkbox]):not([type=radio]), .cuenta__tarjeta textarea { width: 100%; padding: .8rem; border: 1px solid #b7c9bd; border-radius: 8px; background: #fff; }
+.cuenta__tarjeta textarea { min-height: 7rem; }
+.cuenta__tarjeta fieldset { display: flex; gap: 1.5rem; border: 1px solid #dde8e1; border-radius: 8px; padding: 1rem; }
+.cuenta__tarjeta a { color: #065f46; text-decoration: underline; }
+.cuenta__boton { display: inline-block; width: 100%; padding: .9rem; background: #002d1c; color: #fff; border-radius: 8px; font-weight: 700; margin-top: .8rem; }
+.cuenta__boton:disabled { opacity: .6; cursor: wait; }
+.cuenta__error { color: #991b1b; font-weight: 600; }
+.cuenta__nota { padding: 1rem; background: #fff7e6; border-left: 3px solid #f59e0b; margin: 1rem 0; }
+@media (max-width: 700px) { .cuenta { grid-template-columns: 1fr; } .cuenta__panel { padding: 2rem; gap: 1rem; } .cuenta__tarjeta { padding: 2rem 1.25rem; } }

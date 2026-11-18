@@ -39,6 +39,8 @@ export interface UsuarioAvistamiento {
 export interface Avistamiento {
   /** ID de registro: string, no confundir con el ID numérico de la especie. */
   id: string;
+  /** Cuenta que creó el registro en la demostración local. Los registros anteriores pueden no tenerla. */
+  registradoPorEmail?: string;
   especie: EspecieResumen;
   /** ISO de la fecha del avistamiento. */
   fecha: string;
