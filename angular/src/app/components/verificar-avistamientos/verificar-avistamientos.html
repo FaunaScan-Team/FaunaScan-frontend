@@ -1,0 +1,30 @@
+<section class="verificar-pagina" aria-labelledby="ver-title">
+  <div class="verificar-encabezado"><div><p class="verificar-rotulo">Panel del investigador</p><h1 id="ver-title">Verificar avistamientos</h1>
+    <p class="verificar-subtitulo">Revisa los registros pendientes de otros usuarios.</p></div>
+    <span class="verificar-contador">{{ pendientes.length }} pendientes</span></div>
+  <p class="verificar-aviso-prototipo">Validaciones locales de demostración. La autorización real deberá comprobarse en el backend.</p>
+  @if (mensaje) { <p class="verificar-exito" role="status">{{ mensaje }}</p> }
+  @if (error) { <p class="verificar-error" role="alert">{{ error }}</p> }
+  @if (pendientes.length === 0) {
+    <div class="verificar-vacio">No hay avistamientos pendientes de verificación. Los nuevos registros aparecerán aquí.</div>
+  } @else {
+    <ul class="verificar-lista">
+      @for (av of pendientes; track av.id) {
+        <li class="verificar-tarjeta verificar-avistamiento">
+          <span class="verificar-icono verificar-icono--grande" aria-hidden="true">{{ av.especie.emoji || '🐾' }}</span>
+          <div class="verificar-contenido"><h2>{{ av.especie.nombre }}</h2>
+            <p class="verificar-texto-secundario"><em>{{ av.especie.nombreCientifico }}</em></p>
+            <small>📍 {{ av.area }} · {{ av.fecha | date:'dd/MM/yyyy HH:mm' }}</small>
+            <small>Registrado por {{ av.registradoPor.nombre || 'Usuario no identificado' }}</small>
+            @if (av.descripcion) { <p class="verificar-descripcion">{{ av.descripcion }}</p> }
+          </div>
+          <div class="verificar-acciones-validacion"><span class="verificar-etiqueta verificar-etiqueta--pendiente">Pendiente</span>
+            <a class="verificar-boton verificar-boton--secundario" [routerLink]="['/verificar', av.id]">Ver detalle</a>
+            <button type="button" class="verificar-boton verificar-boton--principal" (click)="resolver(av.id, 'Validado')">Validar</button>
+            <button type="button" class="verificar-boton verificar-boton--peligro" (click)="resolver(av.id, 'Rechazado')">Rechazar</button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

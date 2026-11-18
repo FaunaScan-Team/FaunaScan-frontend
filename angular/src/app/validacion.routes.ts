@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { authGuard, investigadorGuard } from './guards/auth.guard';
-import { AccesoRestringido } from './components/nohelia/acceso-restringido';
-import { Notificaciones } from './components/nohelia/notificaciones';
-import { ConfiguracionNotificaciones } from './components/nohelia/configuracion-notificaciones';
-import { ActividadesRecientes } from './components/nohelia/actividades-recientes';
-import { VerificarAvistamientos } from './components/nohelia/verificar-avistamientos';
-import { DetalleVerificacion } from './components/nohelia/detalle-verificacion';
+import { AccesoRestringido } from './components/acceso-restringido/acceso-restringido';
+import { Notificaciones } from './components/notificaciones/notificaciones';
+import { ConfiguracionNotificaciones } from './components/configuracion-notificaciones/configuracion-notificaciones';
+import { ActividadesRecientes } from './components/actividades-recientes/actividades-recientes';
+import { VerificarAvistamientos } from './components/verificar-avistamientos/verificar-avistamientos';
+import { DetalleVerificacion } from './components/detalle-verificacion/detalle-verificacion';
 
 // Rutas de validación, notificaciones y actividad de la comunidad
 export const rutasValidacion: Routes = [

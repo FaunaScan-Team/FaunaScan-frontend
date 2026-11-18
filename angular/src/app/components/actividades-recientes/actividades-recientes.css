@@ -1,0 +1,39 @@
+/* Estilos de actividades-recientes. No modifica otras pantallas. */
+:host { display: block; color: var(--color-text-primary, #0f2318); }
+.actividades-pagina { width: min(1180px, 100%); margin-inline: auto; padding: calc(var(--nav-height, 68px) + 36px) 24px 72px; min-height: 65vh; }
+.actividades-encabezado { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+.actividades-rotulo { font-size: 13px; font-weight: 700; color: #1b6e49; letter-spacing: .04em; margin-bottom: 8px; }
+h1, h2, h3 { font-family: var(--font-heading, 'Poppins', sans-serif); line-height: 1.3; }
+h1 { font-size: clamp(26px, 3.5vw, 34px); color: #002d1c; }
+h2 { font-size: 19px; }
+h3 { font-size: 16px; }
+.actividades-subtitulo, .actividades-texto-secundario, .actividades-tarjeta small { color: #53685e; }
+.actividades-subtitulo { margin-top: 9px; line-height: 1.6; }
+.actividades-aviso-prototipo { background: #edf5ef; color: #305842; border: 1px solid #ccdfd1; border-radius: 10px; padding: 12px 16px; margin: 0 0 22px; font-size: 13px; }
+.actividades-tarjeta { border: 1px solid #dde8e1; background: #fff; border-radius: 18px; padding: 20px; box-shadow: 0 2px 12px #1a3c2e0a; }
+.actividades-tarjeta p { line-height: 1.65; }
+.actividades-tarjeta small { display: block; font-size: 13px; line-height: 1.5; margin-top: 4px; }
+.actividades-columna { display: flex; flex-direction: column; gap: 14px; }
+.actividades-vacio { padding: 44px 22px; background: #fff; border: 1px dashed #b9d2c2; border-radius: 16px; text-align: center; color: #53685e; }
+.actividades-vacio a, .actividades-enlace { color: #0b6541; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.actividades-icono { width: 44px; height: 44px; flex: none; border-radius: 14px; display: grid; place-items: center; background: #e9f4ec; font-size: 23px; }
+.actividades-contenido { min-width: 0; flex: 1; }
+.actividades-acciones { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.actividades-enlace { cursor: pointer; background: none; border: none; padding: 0; font: inherit; font-size: 13px; }
+.actividades-boton { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 9px 16px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; text-align: center; border: 1px solid transparent; text-decoration: none; }
+.actividades-boton--secundario { background: #fff; border-color: #1d6b4b; color: #12492f; }
+.actividades-boton:hover { filter: brightness(.94); }
+.actividades-columnas { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(290px, 1fr); align-items: start; gap: 22px; }
+.actividades-columnas--actividad { grid-template-columns: minmax(0, 1fr) minmax(300px, 1.2fr); }
+.actividades-panel { display: flex; flex-direction: column; gap: 14px; }
+.actividades-elemento-actividad { display: flex; align-items: center; gap: 14px; width: 100%; color: inherit; text-align: left; cursor: pointer; }
+.actividades-elemento-actividad--seleccionado { border-color: #26774f; background: #f0f9f2; }
+@media (max-width: 850px) {
+.actividades-columnas, .actividades-columnas--actividad { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+.actividades-pagina { padding: calc(var(--nav-height, 68px) + 22px) 16px 50px; }
+.actividades-encabezado { flex-direction: column; }
+.actividades-icono { width: 38px; height: 38px; font-size: 20px; }
+.actividades-tarjeta { padding: 15px; }
+}
