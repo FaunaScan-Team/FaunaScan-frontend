@@ -1,10 +1,11 @@
-export interface Especie {
-    id: number;
-    nombre: string;
-    nombreCientifico: string;
-    estado: string;
-    estadoLabel: string;
-    familia: string;
-    imagen: string;
-    emoji: string;
+export class Especie {
+    idEspecie: number = 0;
+    idFamilia: number = 0;
+    nombreFamilia: string = '';
+    idCategoria: number = 0;
+    nombreCategoria: string = '';
+    nombreComun: string = '';
+    nombreCientifico: string = '';
+    imagenReferencia: string = '';
+    pistasIdentificacion: string = '';
 }

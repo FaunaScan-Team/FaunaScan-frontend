@@ -5,45 +5,37 @@
         <p>Busca y selecciona la especie observada.</p>
     </header>
 
-    <input
-        #buscador
-        type="search"
-        placeholder="Buscar por nombre común o científico..."
-        [value]="busqueda()"
-        (input)="busqueda.set(buscador.value)"
-    />
+    <form [formGroup]="busquedaForm">
+        <mat-form-field appearance="fill" class="buscador">
+            <mat-label>Buscar especie</mat-label>
+            <input matInput formControlName="texto" placeholder="Nombre común o científico (mínimo 2 letras)" />
+        </mat-form-field>
+    </form>
 
-    <p class="contador">
-        {{ especiesFiltradas().length }} especies encontradas
-    </p>
+    <p class="contador">{{ especies.length }} especies encontradas</p>
 
     <section class="lista-especies">
-        @for (especie of especiesFiltradas(); track especie.id) {
-            <button
-                    type="button"
-                    class="tarjeta"
-                    [class.seleccionada]="seleccionada()?.id === especie.id"
-                    (click)="seleccionar(especie)"
-            >
-                <img [src]="especie.imagen" [alt]="especie.nombre" />
-
-                <strong>{{ especie.nombre }}</strong>
-
+        @for (especie of especies; track especie.idEspecie) {
+            <button type="button" class="tarjeta"
+                    [class.seleccionada]="seleccionada?.idEspecie === especie.idEspecie"
+                    (click)="seleccionar(especie)">
+                <img [src]="imagen(especie)" [alt]="especie.nombreComun" />
+                <strong>{{ especie.nombreComun }}</strong>
                 <small>{{ especie.nombreCientifico }}</small>
-
-                <span>{{ especie.estadoLabel }}</span>
+                <span>{{ especie.nombreCategoria }}</span>
             </button>
         } @empty {
             <p>No se encontraron especies con esa búsqueda.</p>
         }
     </section>
 
-    @if (seleccionada(); as especie) {
+    @if (seleccionada) {
         <section class="resultado">
             <p>Especie seleccionada</p>
-            <h2>{{ especie.nombre }}</h2>
-            <p><i>{{ especie.nombreCientifico }}</i></p>
-            <span>{{ especie.estadoLabel }}</span>
+            <h2>{{ seleccionada.nombreComun }}</h2>
+            <p><i>{{ seleccionada.nombreCientifico }}</i></p>
+            <span>{{ seleccionada.nombreCategoria }}</span>
+            <button type="button" mat-flat-button (click)="usarEspecie()">Usar esta especie</button>
         </section>
     }
 </section>
