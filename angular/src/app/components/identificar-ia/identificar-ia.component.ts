@@ -1,11 +1,20 @@
 import { Component, signal } from '@angular/core';
-import { Especie } from '../../models/especie';
 
+
+interface EspecieSimulada {
+    id: number;
+    nombre: string;
+    nombreCientifico: string;
+    estado: string;
+    estadoLabel: string;
+    familia: string;
+    imagen: string;
+    emoji: string;
+}
 interface SugerenciaIa {
-    especie: Especie;
+    especie: EspecieSimulada;
     confianza: number;
 }
-
 @Component({
     selector: 'app-identificar-ia',
     standalone: true,
@@ -17,7 +26,7 @@ export class IdentificarIaComponent {
     readonly sugerencias = signal<SugerenciaIa[]>([]);
     readonly mensaje = signal('');
 
-    readonly especies: Especie[] = [
+    readonly especies: EspecieSimulada[] = [
         {
             id: 1,
             nombre: 'Cóndor andino',
