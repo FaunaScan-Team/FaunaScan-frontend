@@ -56,4 +56,21 @@ export class AuthService {
   estaLogueado(): boolean {
     return this.token() != null;
   }
+
+  // Panel según el rol que devuelve el backend (ROLE_INVESTIGADOR, ROLE_VOLUNTARIO o ROLE_ADMIN)
+  panelSegunRol(): string {
+    if (this.rol() === 'ROLE_VOLUNTARIO') {
+      return '/panel/voluntario';
+    }
+    return '/panel/investigador';
+  }
+
+  // El tutorial de bienvenida se muestra solo la primera vez que entra cada usuario
+  onboardingVisto(): boolean {
+    return localStorage.getItem('onboarding' + this.idUsuario()) != null;
+  }
+
+  marcarOnboardingVisto() {
+    localStorage.setItem('onboarding' + this.idUsuario(), 'visto');
+  }
 }

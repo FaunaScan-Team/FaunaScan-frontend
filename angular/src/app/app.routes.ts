@@ -16,12 +16,14 @@ import { Catalogo } from './components/catalogo/catalogo';
 import { DetalleEspecie } from './components/detalle-especie/detalle-especie';
 import { SeleccionarEspecieComponent } from './components/seleccionar-especie/seleccionar-especie.component';
 import { IdentificarIaComponent } from './components/identificar-ia/identificar-ia.component';
+import { Bienvenida } from './components/bienvenida/bienvenida';
 export const routes: Routes = [
   { path: '', component: Inicio, title: 'Inicio | FaunaScan Perú' },
   { path: 'login', component: Login, title: 'Iniciar sesión | FaunaScan Perú' },
   { path: 'registro', component: Registro, title: 'Crear cuenta | FaunaScan Perú' },
   { path: 'recuperar', component: Recuperar, title: 'Recuperar contraseña | FaunaScan Perú' },
   { path: 'verificacion-investigador', component: VerificacionInvestigador, canActivate: [investigadorGuard], title: 'Verificación | FaunaScan Perú' },
+  { path: 'bienvenida', component: Bienvenida, canActivate: [authGuard], title: 'Bienvenida | FaunaScan Perú' },
   { path: 'perfil', component: Perfil, canActivate: [authGuard], title: 'Mi perfil | FaunaScan Perú' },
   { path: 'mapa', component: MapaComponent, canActivate: [authGuard], title: 'Mapa | FaunaScan Perú' },
   { path: 'catalogo', component: Catalogo, canActivate: [authGuard], title: 'Catálogo | FaunaScan Perú' },
