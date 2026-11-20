@@ -1,0 +1,29 @@
+<section class="bienvenida" aria-labelledby="tutorial-titulo">
+  <mat-card class="bienvenida__tarjeta">
+    <mat-card-content>
+      <p class="bienvenida__contador">Paso {{ pasoActual + 1 }} de {{ pasos.length }}</p>
+
+      <div class="bienvenida__icono" aria-hidden="true">{{ pasos[pasoActual].icono }}</div>
+      <h1 class="bienvenida__titulo" id="tutorial-titulo">{{ pasos[pasoActual].titulo }}</h1>
+      <p class="bienvenida__descripcion" aria-live="polite">{{ pasos[pasoActual].descripcion }}</p>
+
+      <div class="bienvenida__puntos" aria-hidden="true">
+        @for (paso of pasos; track paso.titulo; let i = $index) {
+          <span class="bienvenida__punto" [class.bienvenida__punto--activo]="i === pasoActual"></span>
+        }
+      </div>
+
+      <div class="bienvenida__acciones">
+        <button mat-button type="button" (click)="terminar()">Saltar tutorial</button>
+        <div class="bienvenida__navegacion">
+          <button mat-stroked-button type="button" (click)="anterior()" [disabled]="pasoActual === 0">Anterior</button>
+          @if (esUltimo()) {
+            <button mat-flat-button type="button" (click)="terminar()">Empezar</button>
+          } @else {
+            <button mat-flat-button type="button" (click)="siguiente()">Siguiente</button>
+          }
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
