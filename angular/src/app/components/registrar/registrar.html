@@ -6,7 +6,7 @@
 
   @if (guardado()) {
     <p class="aviso aviso--exito" role="status">
-      ¡Avistamiento guardado correctamente! Te llevamos a tu historial…
+      ¡Avistamiento guardado correctamente!{{ edicion() ? ' Te llevamos a tu historial…' : ' Ahora agrega las observaciones…' }}
     </p>
   }
   @if (errorApi()) {
@@ -46,7 +46,7 @@
             Agregar observaciones detalladas
           </a>
         } @else {
-          <p class="aviso aviso--info">Podrás agregarlas desde el detalle después de guardar el avistamiento.</p>
+          <p class="aviso aviso--info">Al guardar el avistamiento pasarás a agregar el clima (Open-Meteo) y las notas, también por voz.</p>
         }
       </div>
     </div>

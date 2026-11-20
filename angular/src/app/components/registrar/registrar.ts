@@ -177,10 +177,13 @@ export class Registrar implements OnInit, OnDestroy {
           : this.avistamientoService.insert(av);
       }),
     ).subscribe({
-      next: () => {
+      next: (guardado) => {
         this.guardado.set(true);
         this.guardando.set(false);
-        this.temporizador = setTimeout(() => this.router.navigate(['/historial']), 1200);
+        // Nuevo registro: sigue con las observaciones (clima y notas). Edición: vuelve al historial.
+        this.temporizador = setTimeout(() => this.edicion()
+          ? this.router.navigate(['/historial'])
+          : this.router.navigate(['/observaciones'], { queryParams: { id: guardado.idAvistamiento } }), 1200);
       },
       error: (err) => {
         this.guardando.set(false);

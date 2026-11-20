@@ -43,6 +43,12 @@ export class AvistamientoService {
     return this.httpClient.delete(this.url + '/avistamientos/' + id);
   }
 
+  // HU-09 y HU-55: notas del observador y condiciones del entorno
+  actualizarObservaciones(id: number, observaciones: string, condicionesEntorno: string): Observable<AvistamientoDTO> {
+    return this.httpClient.put<AvistamientoDTO>(this.url + '/avistamientos/' + id + '/observaciones',
+      {observaciones: observaciones, condicionesEntorno: condicionesEntorno});
+  }
+
   // El avistamiento guarda idUbicacion: primero se crea la ubicación con latitud y longitud
   insertUbicacion(ubicacion: Ubicacion): Observable<Ubicacion> {
     const nueva = {latitud: ubicacion.latitud, longitud: ubicacion.longitud, direccion: ubicacion.direccion};
