@@ -5,6 +5,8 @@ import {environment} from '../../environments/environment';
 import {Login} from '../models/login';
 import {AuthResponse} from '../models/auth-response';
 import {UsuarioRegistro} from '../models/usuario-registro';
+import {RecuperarContrasena} from '../models/recuperar-contrasena';
+import {ContrasenaTemporal} from '../models/contrasena-temporal';
 
 const CLAVE_TOKEN = 'token';
 const CLAVE_ID_USUARIO = 'idUsuario';
@@ -21,6 +23,10 @@ export class AuthService {
 
   registrar(usuario: UsuarioRegistro) {
     return this.httpClient.post(this.url + '/auth/registrar', usuario);
+  }
+
+  recuperarContrasena(datos: RecuperarContrasena): Observable<ContrasenaTemporal> {
+    return this.httpClient.post<ContrasenaTemporal>(this.url + '/auth/recuperar-password', datos);
   }
 
   guardarSesion(respuesta: AuthResponse) {
