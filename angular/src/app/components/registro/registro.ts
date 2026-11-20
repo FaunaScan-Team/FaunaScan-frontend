@@ -67,7 +67,8 @@ export class Registro {
         console.log('Error en el registro:', err.status);
         this.cargando = false;
         let mensaje = 'No se pudo crear la cuenta. Revisa los datos.';
-        if (err.status === 409) {
+        // El backend responde 400 con este mensaje cuando el correo ya está registrado
+        if (err.status === 400 && err.error.message === 'Ya existe una cuenta registrada con ese correo') {
           mensaje = 'Ya existe una cuenta con ese correo.';
         }
         this.snackBar.open(mensaje, 'Cerrar', {duration: 4000});
