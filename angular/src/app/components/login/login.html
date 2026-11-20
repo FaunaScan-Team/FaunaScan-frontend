@@ -38,8 +38,8 @@
 
         <div class="auth-card__forgot"><a routerLink="/recuperar">¿Olvidaste tu contraseña?</a></div>
 
-        <button type="submit" mat-flat-button class="btn-full" [disabled]="cargando">
-          {{ cargando ? 'Iniciando sesión…' : 'Iniciar sesión' }}
+        <button type="submit" mat-flat-button class="btn-full" [disabled]="cargando()">
+          {{ cargando() ? 'Iniciando sesión…' : 'Iniciar sesión' }}
         </button>
       </form>
 

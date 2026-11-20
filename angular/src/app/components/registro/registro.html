@@ -72,8 +72,8 @@
 
         <mat-checkbox formControlName="terminos">Acepto los términos de uso</mat-checkbox>
 
-        <button type="submit" mat-flat-button class="btn-full" [disabled]="cargando">
-          {{ cargando ? 'Creando cuenta…' : 'Crear cuenta' }}
+        <button type="submit" mat-flat-button class="btn-full" [disabled]="cargando()">
+          {{ cargando() ? 'Creando cuenta…' : 'Crear cuenta' }}
         </button>
       </form>
 
