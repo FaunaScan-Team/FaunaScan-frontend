@@ -7,8 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AvistamientosService } from '../../servicios/avistamientos.service';
-import { ESPECIES_REGISTRO } from './especies-registro';
+import { switchMap } from 'rxjs';
+import { AvistamientoService } from '../../servicios/avistamiento.service';
+import { EspecieService } from '../../servicios/especie.service';
+import { AvistamientoDTO } from '../../models/avistamiento-dto';
+import { Especie } from '../../models/especie';
+import { Ubicacion } from '../../models/ubicacion';
 
 /** Valida que la fecha elegida no sea posterior al momento actual. */
 function fechaNoFutura(control: AbstractControl<string>): ValidationErrors | null {
@@ -32,40 +36,78 @@ function ahoraLocal(): string {
 export class Registrar implements OnInit, OnDestroy {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly router = inject(Router);
-  private readonly ruta = inject(ActivatedRoute);
-  protected readonly servicio = inject(AvistamientosService);
+  protected readonly ruta = inject(ActivatedRoute);
+  private readonly avistamientoService = inject(AvistamientoService);
+  private readonly especieService = inject(EspecieService);
 
-  protected readonly especies = ESPECIES_REGISTRO;
+  protected readonly especies = signal<Especie[]>([]);
   protected readonly guardado = signal(false);
+  protected readonly guardando = signal(false);
+  protected readonly errorApi = signal('');
   protected readonly ubicando = signal(false);
   protected readonly errorUbicacion = signal('');
   protected readonly maxFecha = ahoraLocal();
+
+  // Modo edición: /registrar/:id (HU-48)
+  protected readonly edicion = signal(false);
+  private avistamiento: AvistamientoDTO = new AvistamientoDTO();
+  private idUbicacion = 0;
   private temporizador?: ReturnType<typeof setTimeout>;
 
   protected readonly formulario = this.fb.group({
     especieId: this.fb.control<number | null>(null, Validators.required),
     fecha: [ahoraLocal(), [Validators.required, fechaNoFutura]],
     area: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    latitud: this.fb.control<number | null>(null, [Validators.min(-90), Validators.max(90)]),
-    longitud: this.fb.control<number | null>(null, [Validators.min(-180), Validators.max(180)]),
+    latitud: this.fb.control<number | null>(null, [Validators.required, Validators.min(-90), Validators.max(90)]),
+    longitud: this.fb.control<number | null>(null, [Validators.required, Validators.min(-180), Validators.max(180)]),
     descripcion: ['', Validators.maxLength(500)],
   });
 
   ngOnInit(): void {
-    const borrador = this.servicio.borrador();
-    if (borrador) {
-      this.formulario.patchValue(borrador);
+    this.especieService.list().subscribe({
+      next: (data) => this.especies.set(data),
+      error: () => this.errorApi.set('No se pudo cargar la lista de especies.'),
+    });
+
+    // Contrato con la selección de especie: /registrar?idEspecie=ID
+    const idEspecie = Number(this.ruta.snapshot.queryParamMap.get('idEspecie'));
+    if (idEspecie > 0) {
+      this.formulario.controls.especieId.setValue(idEspecie);
     }
 
-    // Permite llegar desde el detalle de especie: /registrar?especie=3
-    const especieUrl = Number(this.ruta.snapshot.queryParamMap.get('especie'));
-    if (this.especies.some((especie) => especie.id === especieUrl)) {
-      this.formulario.controls.especieId.setValue(especieUrl);
+    const id = Number(this.ruta.snapshot.paramMap.get('id'));
+    if (id > 0) {
+      this.edicion.set(true);
+      this.cargarAvistamiento(id);
     }
   }
 
   ngOnDestroy(): void {
     clearTimeout(this.temporizador);
+  }
+
+  private cargarAvistamiento(id: number): void {
+    this.avistamientoService.listId(id).subscribe({
+      next: (data) => {
+        this.avistamiento = data;
+        this.idUbicacion = data.idUbicacion;
+        this.formulario.patchValue({
+          especieId: data.idEspecie,
+          fecha: data.fechaAvistamiento ? data.fechaAvistamiento.slice(0, 16) : ahoraLocal(),
+          descripcion: data.observaciones ?? '',
+        });
+        if (data.idUbicacion) {
+          this.avistamientoService.listUbicacion(data.idUbicacion).subscribe({
+            next: (u) => this.formulario.patchValue({
+              area: u.direccion ?? '',
+              latitud: u.latitud,
+              longitud: u.longitud,
+            }),
+          });
+        }
+      },
+      error: () => this.errorApi.set('No se encontró el avistamiento o no tienes permiso para editarlo.'),
+    });
   }
 
   protected seleccionarEspecie(id: number): void {
@@ -101,33 +143,51 @@ export class Registrar implements OnInit, OnDestroy {
     );
   }
 
-  /** Guarda lo escrito y abre la pantalla de observaciones detalladas. */
-  protected irAObservaciones(): void {
-    this.servicio.borrador.set(this.formulario.getRawValue());
-    this.router.navigate(['/observaciones']);
-  }
-
   protected guardar(): void {
-    if (this.formulario.invalid || this.guardado()) {
+    if (this.formulario.invalid || this.guardando()) {
       this.formulario.markAllAsTouched();
       return;
     }
+    this.guardando.set(true);
+    this.errorApi.set('');
 
     const valores = this.formulario.getRawValue();
-    const especie = this.especies.find((item) => item.id === valores.especieId);
-    if (!especie) return;
 
-    this.servicio.registrar({
-      especie: { ...especie },
-      fecha: new Date(valores.fecha).toISOString(),
-      area: valores.area.trim(),
-      latitud: valores.latitud,
-      longitud: valores.longitud,
-      descripcion: valores.descripcion.trim(),
-      observaciones: this.servicio.observacionesBorrador(),
+    // 1) Ubicación (el backend guarda el avistamiento con idUbicacion)
+    const ubicacion = new Ubicacion();
+    ubicacion.idUbicacion = this.idUbicacion;
+    ubicacion.latitud = valores.latitud!;
+    ubicacion.longitud = valores.longitud!;
+    ubicacion.direccion = valores.area.trim();
+    const peticionUbicacion = this.edicion() && this.idUbicacion
+      ? this.avistamientoService.updateUbicacion(ubicacion)
+      : this.avistamientoService.insertUbicacion(ubicacion);
+
+    // 2) Avistamiento
+    peticionUbicacion.pipe(
+      switchMap((u) => {
+        const av = this.avistamiento;
+        av.idEspecie = valores.especieId!;
+        av.idUbicacion = u.idUbicacion;
+        // El backend usa LocalDateTime: "2026-11-19T10:30:00", sin zona horaria
+        av.fechaAvistamiento = valores.fecha + ':00';
+        av.observaciones = valores.descripcion.trim();
+        return this.edicion()
+          ? this.avistamientoService.update(av)
+          : this.avistamientoService.insert(av);
+      }),
+    ).subscribe({
+      next: () => {
+        this.guardado.set(true);
+        this.guardando.set(false);
+        this.temporizador = setTimeout(() => this.router.navigate(['/historial']), 1200);
+      },
+      error: (err) => {
+        this.guardando.set(false);
+        this.errorApi.set(err.status === 400
+          ? 'Revisa los datos: la API rechazó el registro.'
+          : 'No se pudo guardar el avistamiento. Intenta de nuevo.');
+      },
     });
-
-    this.guardado.set(true);
-    this.temporizador = setTimeout(() => this.router.navigate(['/historial']), 1200);
   }
 }

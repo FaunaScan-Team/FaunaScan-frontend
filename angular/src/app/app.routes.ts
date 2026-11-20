@@ -31,6 +31,7 @@ export const routes: Routes = [
   { path: 'seleccionar-especie', component: SeleccionarEspecieComponent, canActivate: [authGuard], title: 'Seleccionar especie | FaunaScan Perú' },
   { path: 'identificar-ia', component: IdentificarIaComponent, canActivate: [authGuard], title: 'Identificar con IA | FaunaScan Perú' },
   { path: 'registrar', component: Registrar, canActivate: [authGuard], title: 'Registrar | FaunaScan Perú' },
+  { path: 'registrar/:id', component: Registrar, canActivate: [authGuard], title: 'Editar avistamiento | FaunaScan Perú' },
   { path: 'observaciones', component: Observaciones, canActivate: [authGuard], title: 'Observaciones | FaunaScan Perú' },
   ...rutasPaneles,
   ...rutasValidacion,
