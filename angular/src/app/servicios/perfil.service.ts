@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {PerfilUsuario} from '../models/perfil-usuario';
 import {ProgresoUsuario} from '../models/progreso-usuario';
+import {UsuarioDTO} from '../models/usuario-dto';
+import {Credencial} from '../models/credencial';
 
 @Service()
 export class PerfilService {
@@ -22,5 +24,14 @@ export class PerfilService {
 
   progreso(idUsuario: number): Observable<ProgresoUsuario> {
     return this.httpClient.get<ProgresoUsuario>(this.url + '/usuarios/' + idUsuario + '/progreso');
+  }
+
+  listId(idUsuario: number): Observable<UsuarioDTO> {
+    return this.httpClient.get<UsuarioDTO>(this.url + '/usuarios/' + idUsuario);
+  }
+
+  registrarCredencial(idUsuario: number, credencial: Credencial): Observable<UsuarioDTO> {
+    console.log(credencial);
+    return this.httpClient.post<UsuarioDTO>(this.url + '/usuarios/' + idUsuario + '/credencial', credencial);
   }
 }
