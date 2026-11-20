@@ -11,7 +11,7 @@ import { Recuperar } from './components/recuperar/recuperar';
 import { VerificacionInvestigador } from './components/verificacion-investigador/verificacion-investigador';
 import { Perfil } from './components/perfil/perfil';
 import { MapaComponent } from './components/mapa/mapa.component';
-import { authGuard } from './guards/auth.guard';
+import { authGuard, investigadorGuard } from './guards/auth.guard';
 import { Catalogo } from './components/catalogo/catalogo';
 import { DetalleEspecie } from './components/detalle-especie/detalle-especie';
 import { SeleccionarEspecieComponent } from './components/seleccionar-especie/seleccionar-especie.component';
@@ -21,7 +21,7 @@ export const routes: Routes = [
   { path: 'login', component: Login, title: 'Iniciar sesión | FaunaScan Perú' },
   { path: 'registro', component: Registro, title: 'Crear cuenta | FaunaScan Perú' },
   { path: 'recuperar', component: Recuperar, title: 'Recuperar contraseña | FaunaScan Perú' },
-  { path: 'verificacion-investigador', component: VerificacionInvestigador, canActivate: [authGuard], title: 'Verificación | FaunaScan Perú' },
+  { path: 'verificacion-investigador', component: VerificacionInvestigador, canActivate: [investigadorGuard], title: 'Verificación | FaunaScan Perú' },
   { path: 'perfil', component: Perfil, canActivate: [authGuard], title: 'Mi perfil | FaunaScan Perú' },
   { path: 'mapa', component: MapaComponent, canActivate: [authGuard], title: 'Mapa | FaunaScan Perú' },
   { path: 'catalogo', component: Catalogo, canActivate: [authGuard], title: 'Catálogo | FaunaScan Perú' },
