@@ -1,41 +1,72 @@
-import { Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
-import { UsuarioService } from '../../servicios/usuario.service';
+import {Component, inject, signal} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {MatFormField, MatInput, MatLabel, MatError, MatHint} from '@angular/material/input';
+import {MatButton} from '@angular/material/button';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AuthService} from '../../servicios/auth.service';
+import {PerfilService} from '../../servicios/perfil.service';
+import {Credencial} from '../../models/credencial';
 
-@Component({ selector: 'app-verificacion-investigador', imports: [RouterLink], templateUrl: './verificacion-investigador.html', styleUrl: './verificacion-investigador.css' })
+@Component({
+  selector: 'app-verificacion-investigador',
+  imports: [ReactiveFormsModule, RouterLink, MatFormField, MatLabel, MatInput, MatError, MatHint, MatButton],
+  templateUrl: './verificacion-investigador.html',
+  styleUrl: './verificacion-investigador.css',
+})
 export class VerificacionInvestigador {
-  private usuarios = inject(UsuarioService);
-  private router = inject(Router);
-  nombre = signal('');
-  error = signal('');
+  credencialForm: FormGroup;
+  fb: FormBuilder = inject(FormBuilder);
+  perfilService: PerfilService = inject(PerfilService);
+  authService: AuthService = inject(AuthService);
+  router: Router = inject(Router);
+  snackBar: MatSnackBar = inject(MatSnackBar);
+  credencialActual = signal('');
+  guardando = signal(false);
 
-  limpiar(input: HTMLInputElement): void {
-    input.value = '';
-    this.nombre.set('');
-    this.error.set('');
+  constructor() {
+    this.credencialForm = this.fb.group({
+      urlCredencial: ['', [Validators.required, Validators.maxLength(255), Validators.pattern('^https?://.+')]],
+    });
   }
 
-  async salir(): Promise<void> {
-    this.usuarios.salir();
-    await this.router.navigateByUrl('/login');
+  ngOnInit() {
+    this.perfilService.listId(this.authService.idUsuario()).subscribe({
+      next: data => {
+        console.log('Usuario traído por API:', data);
+        if (data.urlCredencial) {
+          this.credencialActual.set(data.urlCredencial);
+          this.credencialForm.patchValue({urlCredencial: data.urlCredencial});
+        }
+      }
+    });
   }
 
-  seleccionar(evento: Event): void {
-    const archivo = (evento.target as HTMLInputElement).files?.[0];
-    this.error.set(''); this.nombre.set('');
-    if (!archivo) return;
-    if (!['application/pdf', 'image/jpeg', 'image/png'].includes(archivo.type)) { this.error.set('Formato permitido: PDF, JPG o PNG.'); return; }
-    if (archivo.size > 5 * 1024 * 1024) { this.error.set('El archivo debe pesar 5 MB o menos.'); return; }
-    this.nombre.set(archivo.name);
+  onSubmit() {
+    if (this.credencialForm.invalid) {
+      this.credencialForm.markAllAsTouched();
+      return;
+    }
+    let credencial = new Credencial();
+    credencial = this.credencialForm.value;
+    this.guardando.set(true);
+    this.perfilService.registrarCredencial(this.authService.idUsuario(), credencial).subscribe({
+      next: data => {
+        console.log('Credencial registrada:', data);
+        this.guardando.set(false);
+        this.snackBar.open('Credencial registrada', 'Cerrar', {duration: 3000});
+        this.router.navigate(['/panel/investigador']);
+      },
+      error: err => {
+        console.log('Error al registrar la credencial:', err.status);
+        this.guardando.set(false);
+        this.snackBar.open('No se pudo registrar la credencial. Revisa el enlace.', 'Cerrar', {duration: 4000});
+      }
+    });
   }
 
-  async continuar(): Promise<void> {
-    const usuario = this.usuarios.actual();
-    if (!usuario || usuario.rol !== 'investigador' || !this.nombre()) return;
-    // Solo marca el estado local para la demostración; no sube ni valida el documento.
-    const actualizado = { ...usuario, credencialVerificada: true };
-    this.usuarios.guardar(actualizado);
-    await this.router.navigateByUrl(this.usuarios.destino(actualizado));
+  cerrarSesion() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

@@ -5,6 +5,8 @@ import {environment} from '../../environments/environment';
 import {Login} from '../models/login';
 import {AuthResponse} from '../models/auth-response';
 import {UsuarioRegistro} from '../models/usuario-registro';
+import {RecuperarContrasena} from '../models/recuperar-contrasena';
+import {ContrasenaTemporal} from '../models/contrasena-temporal';
 
 const CLAVE_TOKEN = 'token';
 const CLAVE_ID_USUARIO = 'idUsuario';
@@ -21,6 +23,10 @@ export class AuthService {
 
   registrar(usuario: UsuarioRegistro) {
     return this.httpClient.post(this.url + '/auth/registrar', usuario);
+  }
+
+  recuperarContrasena(datos: RecuperarContrasena): Observable<ContrasenaTemporal> {
+    return this.httpClient.post<ContrasenaTemporal>(this.url + '/auth/recuperar-password', datos);
   }
 
   guardarSesion(respuesta: AuthResponse) {
@@ -49,5 +55,22 @@ export class AuthService {
 
   estaLogueado(): boolean {
     return this.token() != null;
+  }
+
+  // Panel según el rol que devuelve el backend (ROLE_INVESTIGADOR, ROLE_VOLUNTARIO o ROLE_ADMIN)
+  panelSegunRol(): string {
+    if (this.rol() === 'ROLE_VOLUNTARIO') {
+      return '/panel/voluntario';
+    }
+    return '/panel/investigador';
+  }
+
+  // El tutorial de bienvenida se muestra solo la primera vez que entra cada usuario
+  onboardingVisto(): boolean {
+    return localStorage.getItem('onboarding' + this.idUsuario()) != null;
+  }
+
+  marcarOnboardingVisto() {
+    localStorage.setItem('onboarding' + this.idUsuario(), 'visto');
   }
 }

@@ -1,38 +1,170 @@
+
 <section class="actividades-pagina" aria-labelledby="act-title">
-  <div class="actividades-encabezado"><div><p class="actividades-rotulo">Comunidad FaunaScan</p><h1 id="act-title">Actividades recientes</h1>
-  <p class="actividades-subtitulo">Avistamientos registrados recientemente por la comunidad.</p></div></div>
-  <p class="actividades-aviso-prototipo">Los registros mostrados provienen del almacenamiento local compartido por el prototipo Angular.</p>
-  @if (registros.length === 0) {
-    <div class="actividades-vacio">Todavía no hay avistamientos registrados. <a routerLink="/registrar">Registrar uno</a>.</div>
-  } @else {
+
+  <div class="actividades-encabezado">
+    <div>
+      <p class="actividades-rotulo">
+        Comunidad FaunaScan
+      </p>
+
+      <h1 id="act-title">
+        Actividades recientes
+      </h1>
+
+      <p class="actividades-subtitulo">
+        Avistamientos registrados recientemente por
+        otros usuarios de la comunidad.
+      </p>
+    </div>
+  </div>
+
+  <p class="actividades-aviso-prototipo">
+    Los registros mostrados se consultan desde
+    la API REST de FaunaScan.
+  </p>
+
+  <div class="actividades-acciones">
+    <button
+      type="button"
+      class="actividades-boton actividades-boton--secundario"
+      [disabled]="cargando"
+      (click)="cargarActividades()">
+      Actualizar actividades
+    </button>
+  </div>
+
+  @if (error) {
+    <p class="actividades-aviso-prototipo" role="alert">
+      {{ error }}
+    </p>
+  }
+
+  @if (cargando) {
+
+    <div class="actividades-vacio" role="status">
+      Cargando actividades recientes...
+    </div>
+
+  } @else if (!error && registros.length === 0) {
+
+    <div class="actividades-vacio" role="status">
+      Todavía no hay avistamientos recientes
+      de otros usuarios.
+    </div>
+
+  } @else if (registros.length > 0) {
+
     <div class="actividades-columnas actividades-columnas--actividad">
-      <div class="actividades-columna" role="group" aria-label="Actividad de la comunidad">
-        @for (av of registros; track av.id) {
-          <button type="button" class="actividades-tarjeta actividades-elemento-actividad"
-            [class.actividades-elemento-actividad--seleccionado]="seleccionado?.id === av.id"
-            [attr.aria-pressed]="seleccionado?.id === av.id" (click)="seleccionar(av)">
-            <span class="actividades-icono" aria-hidden="true">{{ av.especie.emoji || '🐾' }}</span>
-            <span class="actividades-contenido"><strong>{{ av.especie.nombre }}</strong>
-              <small>📍 {{ av.area }} · {{ av.fecha | date:'dd/MM/yyyy' }}</small>
-              <small>Estado: {{ av.estadoValidacion }}</small></span>
+
+      <div
+        class="actividades-columna"
+        role="group"
+        aria-label="Actividad de la comunidad">
+
+        @for (av of registros; track av.idAvistamiento) {
+
+          <button
+            type="button"
+            class="actividades-tarjeta actividades-elemento-actividad"
+            [class.actividades-elemento-actividad--seleccionado]="
+              seleccionado?.idAvistamiento === av.idAvistamiento
+            "
+            [attr.aria-pressed]="
+              seleccionado?.idAvistamiento === av.idAvistamiento
+            "
+            (click)="seleccionar(av)">
+
+            <span class="actividades-icono" aria-hidden="true">
+              🐾
+            </span>
+
+            <span class="actividades-contenido">
+
+              <strong>{{ av.nombreComun }}</strong>
+
+              <small>
+                📍 {{ av.direccion || 'Ubicación no disponible' }}
+              </small>
+
+              <small>
+                {{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}
+              </small>
+
+              <small>
+                Conservación:
+                {{ av.estadoConservacion || 'No especificado' }}
+              </small>
+
+            </span>
+
           </button>
         }
+
       </div>
+
       @if (seleccionado; as av) {
+
         <article class="actividades-tarjeta actividades-panel">
-          <h2>{{ av.especie.emoji }} {{ av.especie.nombre }}</h2>
-          <p class="actividades-texto-secundario"><em>{{ av.especie.nombreCientifico }}</em></p>
-          <p><strong>Registrado por:</strong> {{ av.registradoPor.nombre || 'Usuario no identificado' }}</p>
-          <p><strong>Fecha:</strong> {{ av.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
-          <p><strong>Zona:</strong> {{ av.area }}</p>
-          <p><strong>Descripción:</strong> {{ av.descripcion || 'Sin descripción' }}</p>
+
+          <h2>🐾 {{ av.nombreComun }}</h2>
+
+          <p>
+            <strong>Registrado por:</strong>
+            {{ nombreCompleto(av) }}
+          </p>
+
+          <p>
+            <strong>Fecha:</strong>
+            {{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+
+          <p>
+            <strong>Zona:</strong>
+            {{ av.direccion || 'Ubicación no disponible' }}
+          </p>
+
+          <p>
+            <strong>Estado de conservación:</strong>
+            {{ av.estadoConservacion || 'No especificado' }}
+          </p>
+
           @if (av.latitud !== null && av.longitud !== null) {
-            <p><strong>Coordenadas:</strong> {{ av.latitud }}, {{ av.longitud }}</p>
-            <a class="actividades-enlace" [href]="urlMapa(av)" target="_blank" rel="noopener noreferrer">Ver ubicación en OpenStreetMap ↗</a>
-          } @else { <p class="actividades-texto-secundario">Este registro no incluye coordenadas.</p> }
-          <div class="actividades-acciones"><a [routerLink]="['/avistamientos', av.id]" class="actividades-boton actividades-boton--secundario">Ver historial detallado</a></div>
+
+            <p>
+              <strong>Coordenadas:</strong>
+              {{ av.latitud }}, {{ av.longitud }}
+            </p>
+
+            <a
+              class="actividades-enlace"
+              [href]="urlMapa(av)"
+              target="_blank"
+              rel="noopener noreferrer">
+              Ver ubicación en OpenStreetMap
+            </a>
+
+          } @else {
+
+            <p class="actividades-texto-secundario">
+              Este registro no incluye coordenadas.
+            </p>
+
+          }
+
+          <div class="actividades-acciones">
+
+            <a
+              [routerLink]="['/avistamientos', av.idAvistamiento]"
+              class="actividades-boton actividades-boton--secundario">
+              Ver avistamiento
+            </a>
+
+          </div>
+
         </article>
       }
+
     </div>
   }
+
 </section>

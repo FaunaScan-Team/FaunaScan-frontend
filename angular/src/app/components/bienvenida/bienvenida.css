@@ -1,0 +1,18 @@
+.bienvenida { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem 1rem; background: #002D1C; }
+.bienvenida__tarjeta { width: 100%; max-width: 520px; text-align: center; padding: 1.5rem 1rem; }
+.bienvenida__contador { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #4a6357; }
+.bienvenida__icono { width: 88px; height: 88px; margin: 1.25rem auto; border-radius: 24px; background: #ECFDF5; display: flex; align-items: center; justify-content: center; font-size: 2.75rem; }
+.bienvenida__titulo { font-family: 'Poppins', 'Inter', sans-serif; font-size: 1.5rem; font-weight: 700; color: #002D1C; }
+.bienvenida__descripcion { font-size: 1rem; line-height: 1.6; color: #4a6357; margin: 0.75rem 0 1.5rem; min-height: 4.8em; }
+
+.bienvenida__puntos { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+.bienvenida__punto { width: 10px; height: 10px; border-radius: 50%; background: #dde8e1; }
+.bienvenida__punto--activo { background: #F59E0B; }
+
+.bienvenida__acciones { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+.bienvenida__navegacion { display: flex; gap: 0.5rem; }
+
+@media (max-width: 480px) {
+  .bienvenida__acciones { flex-direction: column-reverse; }
+  .bienvenida__navegacion { width: 100%; justify-content: center; }
+}

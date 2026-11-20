@@ -1,11 +1,18 @@
-import { Component, inject } from '@angular/core';
+
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CategoriaPreferencia, PreferenciasNotificaciones } from '../../models/notificacion';
-import { PreferenciasNotificacionesService } from '../../servicios/preferencias-notificaciones.service';
+
+import { AuthService } from '../../servicios/auth.service';
 import { SesionConsultaService } from '../../servicios/sesion-consulta.service';
+import {
+  PreferenciasApi,
+  PreferenciasApiService
+} from '../../servicios/preferencias-api.service';
+
+type CategoriaPreferenciaApi = keyof PreferenciasApi;
 
 interface OpcionPreferencia {
-  clave: CategoriaPreferencia;
+  clave: CategoriaPreferenciaApi;
   icono: string;
   titulo: string;
   descripcion: string;
@@ -17,38 +24,143 @@ interface OpcionPreferencia {
   templateUrl: './configuracion-notificaciones.html',
   styleUrl: './configuracion-notificaciones.css',
 })
-export class ConfiguracionNotificaciones {
-  private readonly preferenciasService = inject(PreferenciasNotificacionesService);
+export class ConfiguracionNotificaciones implements OnInit {
+
+  private readonly authService = inject(AuthService);
+  private readonly preferenciasApi = inject(PreferenciasApiService);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly sesionService = inject(SesionConsultaService);
 
   email = this.sesionService.usuarioActual()?.email ?? '';
-  borrador: PreferenciasNotificaciones = this.preferenciasService.obtener(this.email);
+
+  borrador: PreferenciasApi = {
+    criticas: true,
+    sistema: true,
+    alertas: true
+  };
+
   mensaje = '';
   guardado = false;
+  cargando = false;
+  guardando = false;
 
   readonly opciones: OpcionPreferencia[] = [
-    { clave: 'vulnerables', icono: '🔔', titulo: 'Alertas de especies vulnerables', descripcion: 'Nuevos avistamientos críticos cuando exista información confiable de conservación.' },
-    { clave: 'ausencia', icono: '🧬', titulo: 'Ausencia prolongada de especie', descripcion: 'Alertas cuando existan umbrales científicos configurados.' },
-    { clave: 'bd', icono: '📚', titulo: 'Actualizaciones de base de datos', descripcion: 'Cambios verificados del catálogo de especies.' },
-    { clave: 'validacion', icono: '✔️', titulo: 'Validación de mis registros', descripcion: 'Avisos cuando un investigador valide o rechace un avistamiento tuyo.' },
-    { clave: 'sync', icono: '📡', titulo: 'Sincronización offline', descripcion: 'Avisos de sincronización cuando el módulo esté disponible.' },
-    { clave: 'mantenimiento', icono: '🛠️', titulo: 'Mantenimiento del sistema', descripcion: 'Avisos cuando exista un mantenimiento programado.' },
+    {
+      clave: 'criticas',
+      icono: '🚨',
+      titulo: 'Alertas críticas',
+      descripcion: 'Avisos relacionados con especies vulnerables y eventos críticos.'
+    },
+    {
+      clave: 'sistema',
+      icono: '⚙️',
+      titulo: 'Notificaciones del sistema',
+      descripcion: 'Actualizaciones, cambios y mantenimiento de FaunaScan.'
+    },
+    {
+      clave: 'alertas',
+      icono: '🔔',
+      titulo: 'Alertas y recordatorios',
+      descripcion: 'Novedades y recordatorios relacionados con tu participación.'
+    }
   ];
+
+  ngOnInit(): void {
+    this.cargarPreferencias();
+  }
+
+
+cargarPreferencias(): void {
+  const idUsuario = this.authService.idUsuario();
+
+  if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+    this.cargando = false;
+    this.guardado = false;
+    this.mensaje = 'Debes iniciar sesión para consultar tus preferencias.';
+    this.cdr.markForCheck();
+    return;
+  }
+
+  this.cargando = true;
+  this.mensaje = '';
+
+  this.preferenciasApi.obtener(idUsuario).subscribe({
+    next: (preferencias) => {
+      this.borrador = {
+        criticas: preferencias.criticas ?? true,
+        sistema: preferencias.sistema ?? true,
+        alertas: preferencias.alertas ?? true
+      };
+
+      this.cargando = false;
+      this.cdr.markForCheck();
+    },
+    error: () => {
+      this.cargando = false;
+      this.guardado = false;
+      this.mensaje = 'No se pudieron cargar las preferencias desde la API.';
+      this.cdr.markForCheck();
+    }
+  });
+}
+
 
   get categoriasActivas(): number {
     return Object.values(this.borrador).filter(Boolean).length;
   }
 
-  cambiar(clave: CategoriaPreferencia, evento: Event): void {
-    this.borrador = { ...this.borrador, [clave]: (evento.target as HTMLInputElement).checked };
+  cambiar(clave: CategoriaPreferenciaApi, evento: Event): void {
+    const activo = (evento.target as HTMLInputElement).checked;
+
+    this.borrador = {
+      ...this.borrador,
+      [clave]: activo
+    };
+
+    this.guardado = false;
     this.mensaje = '';
   }
 
-  guardar(evento: Event): void {
-    evento.preventDefault();
-    this.guardado = this.preferenciasService.guardar(this.email, this.borrador);
-    this.mensaje = this.guardado
-      ? 'Preferencias guardadas para tu cuenta.'
-      : 'No se pudieron guardar las preferencias en este navegador.';
+  
+guardar(evento: Event): void {
+  evento.preventDefault();
+
+  if (this.cargando || this.guardando) {
+    return;
   }
+
+  const idUsuario = this.authService.idUsuario();
+
+  if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+    this.guardado = false;
+    this.mensaje = 'Debes iniciar sesión para guardar tus preferencias.';
+    this.cdr.markForCheck();
+    return;
+  }
+
+  this.guardando = true;
+  this.guardado = false;
+  this.mensaje = '';
+
+  this.preferenciasApi.guardar(idUsuario, this.borrador).subscribe({
+    next: (preferencias) => {
+      this.borrador = {
+        criticas: preferencias.criticas ?? true,
+        sistema: preferencias.sistema ?? true,
+        alertas: preferencias.alertas ?? true
+      };
+
+      this.guardando = false;
+      this.guardado = true;
+      this.mensaje = 'Preferencias guardadas correctamente en FaunaScan.';
+      this.cdr.markForCheck();
+    },
+    error: () => {
+      this.guardando = false;
+      this.guardado = false;
+      this.mensaje = 'No se pudieron guardar las preferencias en el servidor.';
+      this.cdr.markForCheck();
+    }
+  });
+}
 }

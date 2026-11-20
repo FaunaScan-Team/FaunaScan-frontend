@@ -1,13 +1,16 @@
 <section class="container registrar" aria-labelledby="titulo-registrar">
   <header class="registrar__encabezado">
-    <h1 id="titulo-registrar">Nuevo avistamiento</h1>
+    <h1 id="titulo-registrar">{{ edicion() ? 'Editar avistamiento' : 'Nuevo avistamiento' }}</h1>
     <p>Completa los datos del animal que observaste. Los campos con * son obligatorios.</p>
   </header>
 
   @if (guardado()) {
     <p class="aviso aviso--exito" role="status">
-      ¡Avistamiento guardado correctamente! Te llevamos a tu historial…
+      ¡Avistamiento guardado correctamente!{{ edicion() ? ' Te llevamos a tu historial…' : ' Ahora agrega las observaciones…' }}
     </p>
+  }
+  @if (errorApi()) {
+    <p class="error" role="alert">{{ errorApi() }}</p>
   }
 
   <form class="registrar__layout" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
@@ -15,16 +18,17 @@
       <div class="card" role="group" aria-labelledby="titulo-especie">
         <h2 class="card__title" id="titulo-especie">Especie observada *</h2>
         <div class="chips" role="radiogroup" aria-label="Especie observada">
-          @for (especie of especies; track especie.id) {
+          @for (especie of especies(); track especie.idEspecie) {
             <button
               type="button"
               class="chip"
               role="radio"
-              [class.chip--activa]="formulario.controls.especieId.value === especie.id"
-              [attr.aria-checked]="formulario.controls.especieId.value === especie.id"
-              (click)="seleccionarEspecie(especie.id)"
+              [class.chip--activa]="formulario.controls.especieId.value === especie.idEspecie"
+              [attr.aria-checked]="formulario.controls.especieId.value === especie.idEspecie"
+              [title]="especie.nombreCientifico"
+              (click)="seleccionarEspecie(especie.idEspecie)"
             >
-              <span aria-hidden="true">{{ especie.emoji }}</span> {{ especie.nombre }}
+              {{ especie.nombreComun }}
             </button>
           }
         </div>
@@ -37,14 +41,13 @@
       <div class="card">
         <h2 class="card__title">Observaciones detalladas</h2>
         <p class="texto-suave">Clima, temperatura, número de individuos y notas del observador.</p>
-        @if (servicio.observacionesBorrador(); as obs) {
-          <p class="aviso aviso--info">
-            Observaciones agregadas{{ obs.clima ? ': ' + obs.clima : '' }}{{ obs.individuos ? ' · ' + obs.individuos + ' individuo(s)' : '' }}
-          </p>
+        @if (edicion()) {
+          <a class="btn btn-outline btn-full" routerLink="/observaciones" [queryParams]="{ id: ruta.snapshot.paramMap.get('id') }">
+            Agregar observaciones detalladas
+          </a>
+        } @else {
+          <p class="aviso aviso--info">Al guardar el avistamiento pasarás a agregar el clima (Open-Meteo) y las notas, también por voz.</p>
         }
-        <button type="button" class="btn btn-outline btn-full" (click)="irAObservaciones()">
-          {{ servicio.observacionesBorrador() ? 'Editar observaciones' : 'Agregar observaciones detalladas' }}
-        </button>
       </div>
     </div>
 
@@ -89,17 +92,17 @@
         <h2 class="card__title">Ubicación</h2>
         <div class="fila">
           <div class="campo">
-            <label for="latitud">Latitud</label>
+            <label for="latitud">Latitud *</label>
             <input id="latitud" class="input" type="number" step="0.000001" formControlName="latitud" placeholder="-12.0464" />
             @if (tieneError('latitud')) {
-              <p class="error">Debe estar entre -90 y 90.</p>
+              <p class="error">Obligatoria, entre -90 y 90.</p>
             }
           </div>
           <div class="campo">
-            <label for="longitud">Longitud</label>
+            <label for="longitud">Longitud *</label>
             <input id="longitud" class="input" type="number" step="0.000001" formControlName="longitud" placeholder="-77.0428" />
             @if (tieneError('longitud')) {
-              <p class="error">Debe estar entre -180 y 180.</p>
+              <p class="error">Obligatoria, entre -180 y 180.</p>
             }
           </div>
         </div>
@@ -111,8 +114,8 @@
         }
       </div>
 
-      <button type="submit" class="btn btn-primary btn-lg btn-full" [disabled]="guardado()">
-        {{ guardado() ? 'Guardado' : 'Guardar avistamiento' }}
+      <button type="submit" class="btn btn-primary btn-lg btn-full" [disabled]="guardado() || guardando()">
+        {{ guardado() ? 'Guardado' : guardando() ? 'Guardando…' : (edicion() ? 'Guardar cambios' : 'Guardar avistamiento') }}
       </button>
     </div>
   </form>

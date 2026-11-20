@@ -17,7 +17,7 @@ export class App {
   constructor() {
     this.router.events.pipe(filter(evento => evento instanceof NavigationEnd)).subscribe(() => {
       const ruta = this.router.url.split('?')[0];
-      this.pantallaCompleta.set(['/login', '/registro', '/recuperar', '/verificacion-investigador', '/perfil'].includes(ruta));
+      this.pantallaCompleta.set(['/login', '/registro', '/recuperar', '/verificacion-investigador', '/bienvenida'].includes(ruta));
     });
   }
 }
