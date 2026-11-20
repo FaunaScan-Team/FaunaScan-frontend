@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {MatFormField, MatInput, MatLabel, MatError} from '@angular/material/input';
@@ -24,7 +24,8 @@ export class Registro {
   authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
   snackBar: MatSnackBar = inject(MatSnackBar);
-  cargando: boolean = false;
+  // En signal para que el botón se actualice cuando responde la API
+  cargando = signal(false);
   rolInvestigador = ID_ROL_INVESTIGADOR;
   rolVoluntario = ID_ROL_VOLUNTARIO;
 
@@ -55,17 +56,17 @@ export class Registro {
     usuario.apellido = this.registroForm.value.apellido;
     usuario.correo = this.registroForm.value.correo;
     usuario.contrasena = this.registroForm.value.contrasena;
-    this.cargando = true;
+    this.cargando.set(true);
     this.authService.registrar(usuario).subscribe({
       next: data => {
         console.log('Usuario registrado:', data);
-        this.cargando = false;
+        this.cargando.set(false);
         this.snackBar.open('Cuenta creada. Ahora inicia sesión.', 'Cerrar', {duration: 4000});
         this.router.navigate(['/login']);
       },
       error: err => {
         console.log('Error en el registro:', err.status);
-        this.cargando = false;
+        this.cargando.set(false);
         let mensaje = 'No se pudo crear la cuenta. Revisa los datos.';
         // El backend responde 400 con este mensaje cuando el correo ya está registrado
         if (err.status === 400 && err.error.message === 'Ya existe una cuenta registrada con ese correo') {
