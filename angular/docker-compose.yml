@@ -1,0 +1,9 @@
+# Uso: docker compose up --build (crea la imagen faunascan-front)
+services:
+  frontend:
+    image: 'faunascan-front:latest'
+    build:
+      context: .
+    container_name: faunascan-front
+    ports:
+      - "4200:80"
