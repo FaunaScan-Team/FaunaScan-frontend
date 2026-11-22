@@ -62,4 +62,8 @@ export class HistorialService {
   compartidosRecibidos(idUsuario: number): Observable<AvistamientoCompartido[]> {
     return this.httpClient.get<AvistamientoCompartido[]>(this.url + '/avistamientos/compartidos/recibidos/' + idUsuario);
   }
+
+  compartidosEnviados(idUsuario: number): Observable<AvistamientoCompartido[]> {
+    return this.httpClient.get<AvistamientoCompartido[]>(this.url + '/avistamientos/compartidos/enviados/' + idUsuario);
+  }
 }

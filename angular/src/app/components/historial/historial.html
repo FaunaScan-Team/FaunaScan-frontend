@@ -125,5 +125,17 @@
         <p class="apagado">Ningún colega te ha compartido avistamientos todavía.</p>
       }
     </section>
+
+    <section class="tarjeta">
+      <h2>Compartidos por mí</h2>
+      @for (c of compartidosEnviados; track c.idCompartido) {
+        <p class="fila">
+          {{ c.mensaje || 'Sin mensaje' }} · {{ c.fechaCompartido | date:'dd/MM/yyyy' }}
+          <a [routerLink]="['/avistamientos', c.idAvistamiento]">Ver avistamiento</a>
+        </p>
+      } @empty {
+        <p class="apagado">Todavía no compartiste avistamientos con tus colegas.</p>
+      }
+    </section>
   }
 </section>

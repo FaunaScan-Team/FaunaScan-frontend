@@ -41,6 +41,7 @@ export class Historial {
   todos: AvistamientoDTO[] = [];
   idsFavoritos: number[] = [];
   compartidos: AvistamientoCompartido[] = [];
+  compartidosEnviados: AvistamientoCompartido[] = [];
   cargando: boolean = true;
   filtrosForm: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
@@ -100,6 +101,10 @@ export class Historial {
     this.historialService.compartidosRecibidos(this.idUsuario).subscribe({
       next: data => this.compartidos = data,
       error: err => console.log('Error al cargar compartidos:', err.status)
+    });
+    this.historialService.compartidosEnviados(this.idUsuario).subscribe({
+      next: data => this.compartidosEnviados = data,
+      error: err => console.log('Error al cargar compartidos enviados:', err.status)
     });
   }
 
