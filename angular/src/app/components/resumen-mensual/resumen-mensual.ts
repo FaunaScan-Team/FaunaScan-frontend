@@ -1,123 +1,75 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { AvistamientosService } from '../../servicios/avistamientos.service';
-import {
-  ResumenMes,
-  agruparPorMes,
-  alertasDelMes,
-  conteoPorZona,
-  especiesDistintas,
-  zonasDistintas,
-} from '../compartido/estadisticas-avistamientos';
+import {Component, inject} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {ReporteMensual} from '../../models/reporte-mensual';
+import {ResumenMes} from '../../models/resumen-mes';
+import {PanelesService} from '../../servicios/paneles.service';
 
-/** Migración de public/resumen.html. Módulo de historial y reportes. */
+const MESES = [
+  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+];
+
+// HU-19: resumen mensual de biodiversidad con los datos de GET /reportes/mensuales
 @Component({
   selector: 'app-resumen-mensual',
   imports: [RouterLink],
-  template: `
-    <section class="fs-page" aria-labelledby="fs-resumen-title">
-      <div class="fs-heading">
-        <div>
-          <p class="fs-eyebrow">Reportes</p>
-          <h1 id="fs-resumen-title">Resumen mensual</h1>
-          <p class="fs-subtitle">Actividad de la comunidad agrupada por mes: registros, especies, zonas y avisos.</p>
-        </div>
-        <a class="fs-btn fs-btn--outline" routerLink="/historial">Ir al historial</a>
-      </div>
-
-      <p class="fs-demo">Los avisos se calculan con reglas del prototipo, no con el estado de conservación de cada especie.</p>
-
-      @if (meses().length === 0) {
-        <p class="fs-empty">Todavía no hay avistamientos registrados. <a routerLink="/registrar">Registra el primero</a>.</p>
-      } @else {
-        <div class="fs-columns">
-          <aside class="fs-card">
-            <h2 class="fs-card__title">Meses</h2>
-            <div class="fs-meses">
-              @for (mes of meses(); track mes.clave) {
-                <button type="button" class="fs-mes" [class.fs-mes--activo]="mes.clave === claveElegida()"
-                  [attr.aria-current]="mes.clave === claveElegida() ? 'true' : null"
-                  (click)="claveElegida.set(mes.clave)">
-                  {{ mes.etiqueta }} <small>· {{ mes.avistamientos.length }}</small>
-                </button>
-              }
-            </div>
-          </aside>
-
-          <div>
-            @if (mesActual(); as mes) {
-              <div class="fs-banner">
-                <div>
-                  <h2>{{ mes.etiqueta }}</h2>
-                  <p>{{ mes.avistamientos.length }} registro(s) en este período.</p>
-                </div>
-              </div>
-
-              <div class="fs-stats">
-                <div class="fs-stat"><strong>{{ mes.avistamientos.length }}</strong><span>Registros</span></div>
-                <div class="fs-stat"><strong>{{ especies() }}</strong><span>Especies</span></div>
-                <div class="fs-stat"><strong>{{ zonas() }}</strong><span>Zonas</span></div>
-                <div class="fs-stat"><strong>{{ alertas().length }}</strong><span>Avisos</span></div>
-              </div>
-
-              <div class="fs-card">
-                <h2 class="fs-card__title">Zonas monitoreadas</h2>
-                @if (zonasDelMes().length === 0) {
-                  <p class="fs-muted">Sin áreas registradas para este período.</p>
-                } @else {
-                  <div class="fs-logros">
-                    @for (zona of zonasDelMes(); track zona.zona) {
-                      <div class="fs-logro">
-                        <strong>{{ zona.zona }}</strong>
-                        <small>{{ zona.total }} avistamiento(s)</small>
-                      </div>
-                    }
-                  </div>
-                }
-              </div>
-
-              <div class="fs-card">
-                <h2 class="fs-card__title">Avisos del mes</h2>
-                @if (alertas().length === 0) {
-                  <p class="fs-muted">Sin avisos: no hubo variaciones relevantes respecto al mes anterior.</p>
-                } @else {
-                  @for (alerta of alertas(); track alerta) {
-                    <p class="fs-aviso">{{ alerta }}</p>
-                  }
-                }
-              </div>
-            }
-          </div>
-        </div>
-      }
-    </section>
-  `,
+  templateUrl: './resumen-mensual.html',
   styleUrl: '../compartido/paneles.css',
 })
 export class ResumenMensual {
-  private readonly servicio = inject(AvistamientosService);
+  reporte: ReporteMensual = new ReporteMensual();
+  indiceElegido: number = 0;
+  cargando: boolean = true;
+  error: string = '';
+  panelesService: PanelesService = inject(PanelesService);
 
-  protected readonly meses = computed<ResumenMes[]>(() => agruparPorMes(this.servicio.lista()));
-  /** Mes elegido por el usuario; vacío significa "el más reciente". */
-  protected readonly claveElegida = signal('');
+  ngOnInit() {
+    this.panelesService.resumenMensual().subscribe({
+      next: data => {
+        console.log('Resumen mensual traído por API:', data);
+        this.reporte = data;
+        this.cargando = false;
+      },
+      error: err => {
+        console.log('Error al cargar el resumen:', err.status);
+        this.error = 'No se pudo cargar el resumen mensual.';
+        this.cargando = false;
+      }
+    });
+  }
 
-  protected readonly mesActual = computed(() => {
-    const lista = this.meses();
-    return lista.find((mes) => mes.clave === this.claveElegida()) ?? lista[0];
-  });
+  elegir(indice: number) {
+    this.indiceElegido = indice;
+  }
 
-  private readonly mesAnterior = computed(() => {
-    const lista = this.meses();
-    const indice = lista.findIndex((mes) => mes.clave === this.mesActual()?.clave);
-    return indice >= 0 ? lista[indice + 1] : undefined;
-  });
+  mesActual(): ResumenMes {
+    return this.reporte.meses[this.indiceElegido];
+  }
 
-  protected readonly especies = computed(() => especiesDistintas(this.mesActual()?.avistamientos ?? []));
-  protected readonly zonas = computed(() => zonasDistintas(this.mesActual()?.avistamientos ?? []));
-  protected readonly zonasDelMes = computed(() => conteoPorZona(this.mesActual()?.avistamientos ?? []));
+  etiqueta(mes: ResumenMes): string {
+    return MESES[mes.mes - 1] + ' ' + mes.anio;
+  }
 
-  protected readonly alertas = computed(() => {
-    const mes = this.mesActual();
-    return mes ? alertasDelMes(mes, this.mesAnterior()) : [];
-  });
+  // La lista viene del mes más reciente al más antiguo, así que el mes anterior es el siguiente índice
+  avisos(): string[] {
+    const avisos: string[] = [];
+    const actual = this.reporte.meses[this.indiceElegido];
+    const anterior = this.reporte.meses[this.indiceElegido + 1];
+    if (!actual) {
+      return avisos;
+    }
+    if (anterior && anterior.totalAvistamientos > 0) {
+      const variacion = Math.round(((actual.totalAvistamientos - anterior.totalAvistamientos) / anterior.totalAvistamientos) * 100);
+      if (variacion <= -30) {
+        avisos.push('Los registros validados bajaron ' + Math.abs(variacion) + '% respecto a ' + this.etiqueta(anterior) + '.');
+      }
+      if (variacion >= 50) {
+        avisos.push('Los registros validados subieron ' + variacion + '% respecto a ' + this.etiqueta(anterior) + '.');
+      }
+    }
+    if (actual.totalEspecies === 1) {
+      avisos.push('En este mes solo se validó una especie.');
+    }
+    return avisos;
+  }
 }

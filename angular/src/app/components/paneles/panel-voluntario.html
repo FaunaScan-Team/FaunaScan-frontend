@@ -1,0 +1,56 @@
+<section class="fs-page" aria-labelledby="fs-voluntario-title">
+  <div class="fs-banner">
+    <div>
+      <p class="fs-eyebrow fs-eyebrow--banner">Panel del voluntario</p>
+      <h1 id="fs-voluntario-title">Hola, {{ dashboard.nombre || 'voluntario' }}</h1>
+      <p>Tu monitoreo contribuye a la preservación de la fauna peruana.</p>
+    </div>
+    <div class="fs-banner__dato">
+      <p>{{ hoy | date:'dd/MM/yyyy' }}</p>
+      <strong>{{ dashboard.progreso.totalAvistamientos }}</strong>
+      <p>avistamientos registrados</p>
+    </div>
+  </div>
+
+  @if (error) {
+    <p class="fs-error" role="alert">{{ error }}</p>
+  }
+
+  <nav class="fs-acciones-rapidas" aria-label="Acciones rápidas">
+    <a class="fs-accion fs-accion--principal" routerLink="/registrar"><span aria-hidden="true">➕</span> Nuevo registro</a>
+    <a class="fs-accion" routerLink="/catalogo"><span aria-hidden="true">📘</span> Catálogo</a>
+    <a class="fs-accion" routerLink="/mapa"><span aria-hidden="true">🗺️</span> Mapa</a>
+    <a class="fs-accion" routerLink="/historial"><span aria-hidden="true">🕑</span> Historial</a>
+    <a class="fs-accion" routerLink="/mi-contribucion"><span aria-hidden="true">🌱</span> Mi contribución</a>
+  </nav>
+
+  @if (cargando) {
+    <p class="fs-muted">Cargando tu panel...</p>
+  } @else {
+    <div class="fs-columns fs-columns--iguales">
+      <div class="fs-stack">
+        <app-panel-progreso [progreso]="dashboard.progreso" [validados]="validados" />
+      </div>
+      <app-panel-actividad [recientes]="recientes" />
+    </div>
+
+    <section class="fs-card fs-guias" aria-labelledby="fs-guias-title">
+      <h2 class="fs-card__title" id="fs-guias-title">Guías de identificación</h2>
+      @if (dashboard.guias.length === 0) {
+        <p class="fs-muted">Todavía no hay especies con pistas de identificación en el catálogo.</p>
+      } @else {
+        @for (guia of dashboard.guias; track guia.idEspecie) {
+          <div class="fs-item">
+            <span class="fs-avatar" aria-hidden="true">📘</span>
+            <div class="fs-grow">
+              <strong>{{ guia.nombreComun }}</strong>
+              <small><em>{{ guia.nombreCientifico }}</em> · {{ guia.familia }} · {{ guia.estadoConservacion }}</small>
+              <small>{{ guia.pistasIdentificacion }}</small>
+            </div>
+            <a class="fs-link" [routerLink]="['/catalogo', guia.idEspecie]">Ver especie</a>
+          </div>
+        }
+      }
+    </section>
+  }
+</section>

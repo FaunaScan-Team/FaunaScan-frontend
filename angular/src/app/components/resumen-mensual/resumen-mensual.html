@@ -1,0 +1,66 @@
+<section class="fs-page" aria-labelledby="fs-resumen-title">
+  <div class="fs-heading">
+    <div>
+      <p class="fs-eyebrow">Reportes</p>
+      <h1 id="fs-resumen-title">Resumen mensual</h1>
+      <p class="fs-subtitle">Avistamientos validados de la comunidad, agrupados por mes.</p>
+    </div>
+    <a class="fs-btn fs-btn--outline" routerLink="/historial">Ir al historial</a>
+  </div>
+
+  @if (error) {
+    <p class="fs-error" role="alert">{{ error }}</p>
+  }
+
+  @if (cargando) {
+    <p class="fs-muted">Cargando el resumen...</p>
+  } @else if (reporte.meses.length === 0) {
+    <p class="fs-empty">Todavía no hay avistamientos validados. <a routerLink="/verificar">Ir a verificar</a>.</p>
+  } @else {
+    <div class="fs-stats">
+      <div class="fs-stat"><strong>{{ reporte.totalRegistros }}</strong><span>registros validados en total</span></div>
+      <div class="fs-stat"><strong>{{ reporte.totalEspecies }}</strong><span>especies validadas</span></div>
+      <div class="fs-stat"><strong>{{ reporte.meses.length }}</strong><span>meses con registros</span></div>
+    </div>
+
+    <div class="fs-columns">
+      <aside class="fs-card">
+        <h2 class="fs-card__title">Meses</h2>
+        <div class="fs-meses">
+          @for (mes of reporte.meses; track mes.anio + '-' + mes.mes; let i = $index) {
+            <button type="button" class="fs-mes" [class.fs-mes--activo]="i === indiceElegido"
+              [attr.aria-current]="i === indiceElegido ? 'true' : null" (click)="elegir(i)">
+              {{ etiqueta(mes) }} <small>· {{ mes.totalAvistamientos }}</small>
+            </button>
+          }
+        </div>
+      </aside>
+
+      <div>
+        <div class="fs-banner">
+          <div>
+            <h2>{{ etiqueta(mesActual()) }}</h2>
+            <p>{{ mesActual().totalAvistamientos }} registro(s) validados en este período.</p>
+          </div>
+        </div>
+
+        <div class="fs-stats">
+          <div class="fs-stat"><strong>{{ mesActual().totalAvistamientos }}</strong><span>Registros</span></div>
+          <div class="fs-stat"><strong>{{ mesActual().totalEspecies }}</strong><span>Especies</span></div>
+          <div class="fs-stat"><strong>{{ avisos().length }}</strong><span>Avisos</span></div>
+        </div>
+
+        <div class="fs-card">
+          <h2 class="fs-card__title">Avisos del mes</h2>
+          @if (avisos().length === 0) {
+            <p class="fs-muted">Sin avisos: no hubo variaciones relevantes respecto al mes anterior.</p>
+          } @else {
+            @for (aviso of avisos(); track aviso) {
+              <p class="fs-aviso">{{ aviso }}</p>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>

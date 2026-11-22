@@ -1,0 +1,45 @@
+<section class="fs-page" aria-labelledby="fs-investigador-title">
+  <div class="fs-banner fs-banner--info">
+    <div>
+      <p class="fs-eyebrow fs-eyebrow--banner-info">Panel del investigador</p>
+      <h1 id="fs-investigador-title">Hola, {{ dashboard.nombre || 'investigador' }}</h1>
+      <p>Tu validación mantiene confiables los registros de la comunidad.</p>
+      <span class="fs-banner__badge">✓ Investigador verificado</span>
+    </div>
+    <div class="fs-banner__dato">
+      <p>{{ hoy | date:'dd/MM/yyyy' }}</p>
+      <strong>{{ dashboard.pendientesValidacion }}</strong>
+      <p>pendientes de verificar</p>
+    </div>
+  </div>
+
+  @if (error) {
+    <p class="fs-error" role="alert">{{ error }}</p>
+  }
+
+  <nav class="fs-acciones-rapidas" aria-label="Acciones rápidas">
+    <a class="fs-accion fs-accion--principal" routerLink="/registrar"><span aria-hidden="true">➕</span> Nuevo registro</a>
+    <a class="fs-accion" routerLink="/verificar"><span aria-hidden="true">✅</span> Verificar</a>
+    <a class="fs-accion" routerLink="/resumen"><span aria-hidden="true">📊</span> Resumen mensual</a>
+    <a class="fs-accion" routerLink="/catalogo"><span aria-hidden="true">📘</span> Catálogo</a>
+    <a class="fs-accion" routerLink="/historial"><span aria-hidden="true">🕑</span> Historial</a>
+  </nav>
+
+  @if (cargando) {
+    <p class="fs-muted">Cargando tu panel...</p>
+  } @else {
+    <div class="fs-stats">
+      <div class="fs-stat"><strong>{{ dashboard.pendientesValidacion }}</strong><span>pendientes de validación</span></div>
+      <div class="fs-stat"><strong>{{ dashboard.validadosPorMi }}</strong><span>validados por mí</span></div>
+      <div class="fs-stat"><strong>{{ dashboard.reportesGenerados }}</strong><span>reportes generados</span></div>
+      <div class="fs-stat"><strong>{{ progreso.totalAvistamientos }}</strong><span>avistamientos propios</span></div>
+    </div>
+
+    <div class="fs-columns fs-columns--iguales">
+      <div class="fs-stack">
+        <app-panel-progreso [progreso]="progreso" [validados]="validados" />
+      </div>
+      <app-panel-actividad [recientes]="recientes" />
+    </div>
+  }
+</section>
