@@ -1,0 +1,40 @@
+<main class="fs-reportes" aria-labelledby="tendencias-titulo">
+  <div class="fs-reportes__encabezado">
+    <div>
+      <p class="fs-reportes__ceja">FaunaScan Perú · Análisis</p>
+      <h1 id="tendencias-titulo">Tendencias de biodiversidad</h1>
+      <p>Conoce la evolución mensual y las zonas de mayor actividad registradas en la plataforma.</p>
+    </div>
+    <a class="fs-reportes__link" routerLink="/reportes">Generar reporte</a>
+  </div>
+  <section class="fs-reportes__panel" aria-label="Filtrar tendencias">
+    <div class="fs-reportes__filtros fs-reportes__filtros--cortos">
+      <mat-form-field appearance="outline">
+        <mat-label>Especie</mat-label>
+        <mat-select [value]="especie()" (selectionChange)="seleccionarEspecie($event.value)">
+          <mat-option value="">Todas las especies</mat-option>
+          @for (nombre of especies(); track nombre) { <mat-option [value]="nombre">{{ nombre }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+      <button class="fs-reportes__boton" type="button" [disabled]="cargando()" (click)="actualizar()">
+        {{ cargando() ? 'Consultando…' : 'Actualizar datos' }}
+      </button>
+    </div>
+    @if (error()) { <p class="fs-reportes__error" role="alert">{{ error() }}</p> }
+  </section>
+  <div class="fs-reportes__cuadricula">
+    <section class="fs-reportes__panel" aria-labelledby="mensual-titulo">
+      <h2 id="mensual-titulo">Avistamientos por mes</h2>
+      <p>La selección de especie actualiza este gráfico sin simular datos.</p>
+      <div class="fs-reportes__grafico"><canvas #lienzoMeses role="img" aria-label="Gráfico de línea de avistamientos mensuales"></canvas></div>
+      @if (!tendencias()?.porEspecie?.length) { <p class="fs-reportes__estado">No hay tendencias mensuales disponibles.</p> }
+    </section>
+    <section class="fs-reportes__panel" aria-labelledby="zona-titulo">
+      <h2 id="zona-titulo">Zonas con más actividad</h2>
+      <p>Ranking global de zonas, hasta diez ubicaciones con avistamientos validados.</p>
+      <div class="fs-reportes__grafico"><canvas #lienzoZonas role="img" aria-label="Gráfico de barras de las zonas con más avistamientos"></canvas></div>
+      @if (!tendencias()?.zonasMasActivas?.length) { <p class="fs-reportes__estado">No hay zonas disponibles.</p> }
+    </section>
+  </div>
+  <p class="fs-reportes__nota">El endpoint actual de tendencias devuelve datos agregados globalmente. El filtro de especie afecta al gráfico mensual, pero no al ranking global de zonas.</p>
+</main>

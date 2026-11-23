@@ -6,6 +6,8 @@ import { MiContribucion } from './components/mi-contribucion/mi-contribucion';
 import { PanelInvestigador } from './components/paneles/panel-investigador';
 import { PanelVoluntario } from './components/paneles/panel-voluntario';
 import { ResumenMensual } from './components/resumen-mensual/resumen-mensual';
+import { ReportesBiodiversidad } from './components/reportes-api/reportes-biodiversidad';
+import { TendenciasBiodiversidad } from './components/reportes-api/tendencias-biodiversidad';
 
 // Rutas de historial, paneles y reportes
 export const rutasPaneles: Routes = [
@@ -14,5 +16,7 @@ export const rutasPaneles: Routes = [
   { path: 'panel/voluntario', component: PanelVoluntario, canActivate: [authGuard], title: 'Panel del voluntario | FaunaScan Perú' },
   { path: 'panel/investigador', component: PanelInvestigador, canActivate: [investigadorGuard], title: 'Panel del investigador | FaunaScan Perú' },
   { path: 'resumen', component: ResumenMensual, canActivate: [investigadorGuard], title: 'Resumen mensual | FaunaScan Perú' },
+  { path: 'reportes', component: ReportesBiodiversidad, canActivate: [investigadorGuard], title: 'Reportes | FaunaScan Perú' },
+{ path: 'tendencias', component: TendenciasBiodiversidad, canActivate: [investigadorGuard], title: 'Tendencias | FaunaScan Perú' },
   { path: 'mi-contribucion', component: MiContribucion, canActivate: [authGuard], title: 'Mi contribución | FaunaScan Perú' },
 ];
