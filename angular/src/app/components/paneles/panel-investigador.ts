@@ -33,6 +33,7 @@ import { PanelProgreso } from './panel-progreso';
         <a class="fs-accion fs-accion--principal" routerLink="/registrar"><span aria-hidden="true">➕</span> Nuevo registro</a>
         <a class="fs-accion" routerLink="/verificar"><span aria-hidden="true">✅</span> Verificar</a>
         <a class="fs-accion" routerLink="/resumen"><span aria-hidden="true">📊</span> Resumen mensual</a>
+        <a class="fs-accion" routerLink="/mis-reportes"><span aria-hidden="true">📄</span> Mis reportes</a>
         <a class="fs-accion" routerLink="/catalogo"><span aria-hidden="true">📘</span> Catálogo</a>
         <a class="fs-accion" routerLink="/historial"><span aria-hidden="true">🕑</span> Historial</a>
       </nav>
