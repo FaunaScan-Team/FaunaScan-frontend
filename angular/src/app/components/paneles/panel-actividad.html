@@ -1,0 +1,21 @@
+<section class="fs-card" aria-labelledby="fs-actividad-title">
+  <h2 class="fs-card__title" id="fs-actividad-title">Actividad reciente de la comunidad</h2>
+  @if (visibles().length === 0) {
+    <p class="fs-muted">Todavía no hay avistamientos de otros usuarios.</p>
+  } @else {
+    @for (av of visibles(); track av.idAvistamiento) {
+      <div class="fs-item">
+        <span class="fs-avatar" aria-hidden="true">🐾</span>
+        <div class="fs-grow">
+          <strong>{{ av.nombreComun }}</strong>
+          <small>{{ av.nombreUsuario }} {{ av.apellidoUsuario }} · 📍 {{ av.direccion || 'Sin zona' }}</small>
+          <small>{{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}</small>
+        </div>
+        <a class="fs-link" [routerLink]="['/avistamientos', av.idAvistamiento]">Ver</a>
+      </div>
+    }
+    <div class="fs-actions">
+      <a class="fs-link" routerLink="/actividades">Ver más actividad</a>
+    </div>
+  }
+</section>
