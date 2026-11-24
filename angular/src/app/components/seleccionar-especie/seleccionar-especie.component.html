@@ -1,18 +1,18 @@
 <section class="pagina">
     <header>
-        <p class="etiqueta">REGISTRO DE AVISTAMIENTO</p>
-        <h1>Seleccionar especie</h1>
-        <p>Busca y selecciona la especie observada.</p>
+        <p class="etiqueta">{{ idioma.t('seleccionar.eyebrow') }}</p>
+        <h1>{{ idioma.t('seleccionar.titulo') }}</h1>
+        <p>{{ idioma.t('seleccionar.subtitulo') }}</p>
     </header>
 
     <form [formGroup]="busquedaForm">
         <mat-form-field appearance="fill" class="buscador">
-            <mat-label>Buscar especie</mat-label>
-            <input matInput formControlName="texto" placeholder="Nombre común o científico (mínimo 2 letras)" />
+            <mat-label>{{ idioma.t('seleccionar.buscar') }}</mat-label>
+            <input matInput formControlName="texto" [placeholder]="idioma.t('seleccionar.placeholder')" />
         </mat-form-field>
     </form>
 
-    <p class="contador">{{ especies.length }} especies encontradas</p>
+    <p class="contador">{{ especies.length }} {{ idioma.t('seleccionar.encontradas') }}</p>
 
     <section class="lista-especies">
         @for (especie of especies; track especie.idEspecie) {
@@ -25,17 +25,17 @@
                 <span>{{ especie.nombreCategoria }}</span>
             </button>
         } @empty {
-            <p>No se encontraron especies con esa búsqueda.</p>
+            <p>{{ idioma.t('seleccionar.vacio') }}</p>
         }
     </section>
 
     @if (seleccionada) {
         <section class="resultado">
-            <p>Especie seleccionada</p>
+            <p>{{ idioma.t('seleccionar.seleccionada') }}</p>
             <h2>{{ seleccionada.nombreComun }}</h2>
             <p><i>{{ seleccionada.nombreCientifico }}</i></p>
             <span>{{ seleccionada.nombreCategoria }}</span>
-            <button type="button" mat-flat-button (click)="usarEspecie()">Usar esta especie</button>
+            <button type="button" mat-flat-button (click)="usarEspecie()">{{ idioma.t('seleccionar.usar') }}</button>
         </section>
     }
 </section>

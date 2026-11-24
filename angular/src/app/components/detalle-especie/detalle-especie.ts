@@ -3,6 +3,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Especie} from '../../models/especie';
 import {GuiaIdentificacion} from '../../models/guia-identificacion';
 import {EspecieService} from '../../servicios/especie.service';
+import {IdiomaService} from '../../servicios/idioma.service';
 
 @Component({
     selector: 'app-detalle-especie',
@@ -17,6 +18,7 @@ export class DetalleEspecie {
     id: number = 0;
     route: ActivatedRoute = inject(ActivatedRoute);
     especieService: EspecieService = inject(EspecieService);
+    idioma: IdiomaService = inject(IdiomaService);
 
     ngOnInit() {
         this.route.params.subscribe(params => {
