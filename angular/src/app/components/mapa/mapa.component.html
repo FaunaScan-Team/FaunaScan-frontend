@@ -1,14 +1,14 @@
 <section class="pagina">
     <header>
-        <p class="etiqueta">AVISTAMIENTOS</p>
-        <h1>Mapa de avistamientos</h1>
+        <p class="etiqueta">{{ idioma.t('mapa.eyebrow') }}</p>
+        <h1>{{ idioma.t('mapa.titulo') }}</h1>
     </header>
 
     <form [formGroup]="filtroForm" class="toolbar">
         <mat-form-field appearance="fill">
-            <mat-label>Estado de conservación</mat-label>
+            <mat-label>{{ idioma.t('mapa.estado') }}</mat-label>
             <mat-select formControlName="estado">
-                <mat-option value="">Todos los estados</mat-option>
+                <mat-option value="">{{ idioma.t('mapa.todos') }}</mat-option>
                 @for (estado of estados; track estado) {
                     <mat-option [value]="estado">{{ estado }}</mat-option>
                 }
@@ -20,7 +20,7 @@
         <p class="mensaje">{{ error }}</p>
     }
 
-    <div id="mapa" role="region" aria-label="Mapa de avistamientos"></div>
+    <div id="mapa" role="region" [attr.aria-label]="idioma.t('mapa.titulo')"></div>
 
     <section class="lista">
         @for (a of lista; track a.idAvistamiento) {
@@ -30,7 +30,7 @@
                 <small>{{ a.latitud }}, {{ a.longitud }}</small>
             </article>
         } @empty {
-            <p>No hay avistamientos con ese estado.</p>
+            <p>{{ idioma.t('mapa.vacio') }}</p>
         }
     </section>
 </section>
