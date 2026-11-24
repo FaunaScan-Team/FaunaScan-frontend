@@ -6,6 +6,8 @@ import { MiContribucion } from './components/mi-contribucion/mi-contribucion';
 import { PanelInvestigador } from './components/paneles/panel-investigador';
 import { PanelVoluntario } from './components/paneles/panel-voluntario';
 import { ResumenMensual } from './components/resumen-mensual/resumen-mensual';
+import { ReportesBiodiversidad } from './components/reportes-api/reportes-biodiversidad';
+import { TendenciasBiodiversidad } from './components/reportes-api/tendencias-biodiversidad';
 import { MisReportes } from './components/mis-reportes-api/mis-reportes';
 import { ReporteCompartido } from './components/mis-reportes-api/reporte-compartido';
 
@@ -16,6 +18,8 @@ export const rutasPaneles: Routes = [
   { path: 'panel/voluntario', component: PanelVoluntario, canActivate: [authGuard], title: 'Panel del voluntario | FaunaScan Perú' },
   { path: 'panel/investigador', component: PanelInvestigador, canActivate: [investigadorGuard], title: 'Panel del investigador | FaunaScan Perú' },
   { path: 'resumen', component: ResumenMensual, canActivate: [investigadorGuard], title: 'Resumen mensual | FaunaScan Perú' },
+  { path: 'reportes', component: ReportesBiodiversidad, canActivate: [investigadorGuard], title: 'Reportes | FaunaScan Perú' },
+{ path: 'tendencias', component: TendenciasBiodiversidad, canActivate: [investigadorGuard], title: 'Tendencias | FaunaScan Perú' },
   { path: 'mis-reportes', component: MisReportes, canActivate: [investigadorGuard], title: 'Mis reportes | FaunaScan Perú' },
   { path: 'reportes/compartido/:token', component: ReporteCompartido, canActivate: [authGuard], title: 'Reporte compartido | FaunaScan Perú' },
   { path: 'mi-contribucion', component: MiContribucion, canActivate: [authGuard], title: 'Mi contribución | FaunaScan Perú' },
