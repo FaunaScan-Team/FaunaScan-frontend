@@ -1,86 +1,67 @@
-import { DatePipe } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { AvistamientosService } from '../../servicios/avistamientos.service';
-import { SesionConsultaService } from '../../servicios/sesion-consulta.service';
-import { especiesDistintas, zonasDistintas } from '../compartido/estadisticas-avistamientos';
-import { PanelActividad } from './panel-actividad';
-import { PanelProgreso } from './panel-progreso';
+import {DatePipe} from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {DashboardInvestigador} from '../../models/dashboard-investigador';
+import {ProgresoUsuario} from '../../models/progreso-usuario';
+import {PanelesService} from '../../servicios/paneles.service';
+import {PerfilService} from '../../servicios/perfil.service';
+import {AuthService} from '../../servicios/auth.service';
+import {ActividadesApiService, ActividadRecienteApi} from '../../servicios/actividades-api.service';
+import {PanelActividad} from './panel-actividad';
+import {PanelProgreso} from './panel-progreso';
 
-/** Migración de public/dashboard-investigador.html. Módulo de historial y reportes. */
+// HU-52: panel principal del investigador con los datos de GET /dashboard/investigador
 @Component({
   selector: 'app-panel-investigador',
   imports: [DatePipe, RouterLink, PanelProgreso, PanelActividad],
-  template: `
-    <section class="fs-page" aria-labelledby="fs-investigador-title">
-      <div class="fs-banner fs-banner--info">
-        <div>
-          <p class="fs-eyebrow" style="color:#bcd9f5;">Panel del investigador</p>
-          <h1 id="fs-investigador-title">Hola, {{ nombre() }}</h1>
-          <p>Tu validación mantiene confiables los registros de la comunidad.</p>
-          <span class="fs-banner__badge">✓ Investigador verificado</span>
-        </div>
-        <div class="fs-banner__dato">
-          <p>{{ hoy | date:'dd/MM/yyyy' }}</p>
-          <strong>{{ pendientes().length }}</strong>
-          <p>pendientes de verificar</p>
-        </div>
-      </div>
-
-      <p class="fs-demo">Datos locales de demostración. La autorización real deberá comprobarse en el backend.</p>
-
-      <nav class="fs-acciones-rapidas" aria-label="Acciones rápidas">
-        <a class="fs-accion fs-accion--principal" routerLink="/registrar"><span aria-hidden="true">➕</span> Nuevo registro</a>
-        <a class="fs-accion" routerLink="/verificar"><span aria-hidden="true">✅</span> Verificar</a>
-        <a class="fs-accion" routerLink="/resumen"><span aria-hidden="true">📊</span> Resumen mensual</a>
-        <a class="fs-accion" routerLink="/reportes"><span aria-hidden="true">📈</span> Reportes de biodiversidad</a>
-<a class="fs-accion" routerLink="/tendencias"><span aria-hidden="true">📉</span> Tendencias de biodiversidad</a>
-        <a class="fs-accion" routerLink="/mis-reportes"><span aria-hidden="true">📄</span> Mis reportes</a>
-        <a class="fs-accion" routerLink="/catalogo"><span aria-hidden="true">📘</span> Catálogo</a>
-        <a class="fs-accion" routerLink="/historial"><span aria-hidden="true">🕑</span> Historial</a>
-      </nav>
-
-      <div class="fs-stats">
-        <div class="fs-stat"><strong>{{ todos().length }}</strong><span>registros de la comunidad</span></div>
-        <div class="fs-stat"><strong>{{ validadosPorMi().length }}</strong><span>validados por mí</span></div>
-        <div class="fs-stat"><strong>{{ especies() }}</strong><span>especies en la plataforma</span></div>
-        <div class="fs-stat"><strong>{{ zonas() }}</strong><span>zonas monitoreadas</span></div>
-      </div>
-
-      <div class="fs-columns fs-columns--iguales">
-        <div class="fs-stack">
-          <app-panel-progreso [avistamientos]="mios()" />
-        </div>
-        <app-panel-actividad [avistamientos]="todos()" />
-      </div>
-    </section>
-  `,
+  templateUrl: './panel-investigador.html',
   styleUrl: '../compartido/paneles.css',
 })
 export class PanelInvestigador {
-  private readonly servicio = inject(AvistamientosService);
-  private readonly sesion = inject(SesionConsultaService);
+  hoy: Date = new Date();
+  dashboard: DashboardInvestigador = new DashboardInvestigador();
+  progreso: ProgresoUsuario = new ProgresoUsuario();
+  recientes: ActividadRecienteApi[] = [];
+  validados: number = 0;
+  cargando: boolean = true;
+  error: string = '';
+  panelesService: PanelesService = inject(PanelesService);
+  perfilService: PerfilService = inject(PerfilService);
+  actividadesService: ActividadesApiService = inject(ActividadesApiService);
+  authService: AuthService = inject(AuthService);
 
-  protected readonly hoy = new Date();
-  protected readonly nombre = computed(() => this.sesion.usuarioActual()?.nombre || 'investigador');
-  protected readonly todos = this.servicio.lista;
+  ngOnInit() {
+    const idUsuario = this.authService.idUsuario();
 
-  protected readonly mios = computed(() => {
-    const email = this.sesion.usuarioActual()?.email.toLowerCase();
-    if (!email) return this.servicio.lista();
-    return this.servicio.lista().filter((av) => av.registradoPor.email.toLowerCase() === email);
-  });
+    this.panelesService.dashboardInvestigador().subscribe({
+      next: data => {
+        console.log('Panel del investigador traído por API:', data);
+        this.dashboard = data;
+        this.cargando = false;
+      },
+      error: err => {
+        console.log('Error al cargar el panel:', err.status);
+        // El endpoint solo acepta ROLE_INVESTIGADOR; un admin recibe 403
+        this.error = err.status === 403
+          ? 'Este panel es solo para investigadores.'
+          : 'No se pudo cargar tu panel. Intenta de nuevo en unos segundos.';
+        this.cargando = false;
+      }
+    });
 
-  protected readonly pendientes = computed(() =>
-    this.servicio.lista().filter((av) => av.estadoValidacion === 'Pendiente'),
-  );
+    this.perfilService.progreso(idUsuario).subscribe({
+      next: data => this.progreso = data,
+      error: err => console.log('Error al cargar el progreso:', err.status)
+    });
 
-  protected readonly validadosPorMi = computed(() => {
-    const email = this.sesion.usuarioActual()?.email.toLowerCase();
-    if (!email) return [];
-    return this.servicio.lista().filter((av) => av.validadoPor?.toLowerCase() === email);
-  });
+    this.panelesService.contribucion(idUsuario).subscribe({
+      next: data => this.validados = data.avistamientosValidados,
+      error: err => console.log('Error al cargar la contribución:', err.status)
+    });
 
-  protected readonly especies = computed(() => especiesDistintas(this.todos()));
-  protected readonly zonas = computed(() => zonasDistintas(this.todos()));
+    this.actividadesService.obtenerRecientes().subscribe({
+      next: data => this.recientes = data,
+      error: err => console.log('Error al cargar la actividad reciente:', err.status)
+    });
+  }
 }

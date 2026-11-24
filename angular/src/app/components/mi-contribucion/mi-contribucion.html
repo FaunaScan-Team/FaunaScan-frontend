@@ -1,0 +1,65 @@
+<section class="fs-page" aria-labelledby="fs-contrib-title">
+  <div class="fs-heading">
+    <div>
+      <p class="fs-eyebrow">Mi actividad</p>
+      <h1 id="fs-contrib-title">Mi contribución a la conservación</h1>
+      <p class="fs-subtitle">Lo que has aportado con tus registros y cómo van sus validaciones.</p>
+    </div>
+    <a class="fs-btn fs-btn--primary" routerLink="/registrar">Registrar avistamiento</a>
+  </div>
+
+  @if (error) {
+    <p class="fs-error" role="alert">{{ error }}</p>
+  }
+
+  @if (cargando) {
+    <p class="fs-muted">Cargando tu contribución...</p>
+  } @else {
+    <div class="fs-stats">
+      <div class="fs-stat"><strong>{{ contribucion.totalAvistamientos }}</strong><span>avistamientos registrados</span></div>
+      <div class="fs-stat"><strong>{{ progreso.especiesRegistradas }}</strong><span>especies distintas identificadas</span></div>
+      <div class="fs-stat"><strong>{{ progreso.zonasVisitadas }}</strong><span>zonas visitadas</span></div>
+      <div class="fs-stat"><strong>{{ contribucion.avistamientosValidados }}</strong><span>registros validados</span></div>
+    </div>
+
+    <div class="fs-card">
+      <h2 class="fs-card__title">Estado de mis registros</h2>
+      <div class="fs-metrics">
+        <div>Validados <strong>{{ contribucion.avistamientosValidados }}</strong></div>
+        <div>Pendientes <strong>{{ contribucion.avistamientosPendientes }}</strong></div>
+        <div>Rechazados <strong>{{ contribucion.avistamientosRechazados }}</strong></div>
+      </div>
+    </div>
+
+    <div class="fs-card">
+      <h2 class="fs-card__title">Mis últimos avistamientos</h2>
+      @if (ultimos.length === 0) {
+        <p class="fs-empty">Aún no tienes avistamientos registrados. <a routerLink="/registrar">Registra el primero</a>.</p>
+      } @else {
+        @for (av of ultimos; track av.idAvistamiento) {
+          <div class="fs-item">
+            <span class="fs-avatar" aria-hidden="true">🐾</span>
+            <div class="fs-grow">
+              <strong>{{ av.nombreEspecie }}</strong>
+              <small>{{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}</small>
+              <span class="fs-badge" [class]="'fs-badge ' + claseEstado(av.estadoValidacion)">{{ etiquetaEstado(av.estadoValidacion) }}</span>
+            </div>
+            <a class="fs-link" [routerLink]="['/avistamientos', av.idAvistamiento]">Ver detalle</a>
+          </div>
+        }
+        <div class="fs-actions">
+          <a class="fs-link" routerLink="/historial">Ver todo el historial</a>
+        </div>
+      }
+    </div>
+
+    <div class="fs-card">
+      <h2 class="fs-card__title">🌱 Tu progreso</h2>
+      <p>{{ mensajeMeta() }}</p>
+      <div class="fs-progreso" role="img" [attr.aria-label]="'Progreso: ' + porcentaje() + '%'">
+        <div class="fs-progreso__relleno" [style.width.%]="porcentaje()"></div>
+      </div>
+      <small>{{ contribucion.totalAvistamientos }} de {{ meta() }} avistamientos hacia la siguiente insignia.</small>
+    </div>
+  }
+</section>
