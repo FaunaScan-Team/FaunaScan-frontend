@@ -1,46 +1,40 @@
 <section class="pagina">
     <header>
-        <p class="etiqueta">IDENTIFICACIÓN SIMULADA</p>
+        <p class="etiqueta">IDENTIFICACIÓN CON IA</p>
         <h1>Identificar especie con IA</h1>
         <p>Sube una imagen para recibir sugerencias de especies.</p>
     </header>
 
-    <input
-            type="file"
-            accept="image/*"
-            (change)="seleccionarImagen($event)"
-    />
+    <input type="file" accept="image/*" (change)="seleccionarImagen($event)" aria-label="Seleccionar imagen" />
 
-    @if (imagen(); as vistaPrevia) {
-        <img
-                class="vista-previa"
-                [src]="vistaPrevia"
-                alt="Vista previa de la imagen seleccionada"
-        />
-
-        <button type="button" (click)="analizar()">
-            Analizar imagen
+    @if (imagen) {
+        <img class="vista-previa" [src]="imagen" alt="Vista previa de la imagen seleccionada" />
+        <button type="button" mat-raised-button color="primary" [disabled]="cargando" (click)="analizar()">
+            {{ cargando ? 'Analizando...' : 'Analizar imagen' }}
         </button>
     }
 
-    @if (mensaje()) {
-        <p class="mensaje">{{ mensaje() }}</p>
+    @if (mensaje) {
+        <p class="mensaje">{{ mensaje }}</p>
     }
 
-    @if (sugerencias().length > 0) {
+    @if (resultado) {
         <section class="sugerencias">
             <h2>Especies sugeridas</h2>
+            <p>{{ resultado.mensaje }}</p>
+            <small>Modelo: {{ resultado.modelo }} · {{ resultado.tiempoProcesamientoMs }} ms</small>
 
-            @for (sugerencia of sugerencias(); track sugerencia.especie.id) {
+            @for (s of resultado.sugerencias; track s.idEspecie) {
                 <article class="sugerencia">
-                    <span class="emoji">{{ sugerencia.especie.emoji }}</span>
-
                     <div>
-                        <h3>{{ sugerencia.especie.nombre }}</h3>
-                        <p><i>{{ sugerencia.especie.nombreCientifico }}</i></p>
-                        <strong>Confianza: {{ sugerencia.confianza }}%</strong>
+                        <h3>{{ s.nombreComun }}</h3>
+                        <p><i>{{ s.nombreCientifico }}</i></p>
+                        <strong>Confianza: {{ (s.confianza * 100).toFixed(0) }}%</strong>
                     </div>
+                    <button type="button" mat-stroked-button (click)="usarEspecie(s)">Usar esta especie</button>
                 </article>
+            } @empty {
+                <p>La IA no encontró coincidencias.</p>
             }
         </section>
     }

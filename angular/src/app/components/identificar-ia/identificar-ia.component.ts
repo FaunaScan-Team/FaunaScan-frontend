@@ -1,97 +1,60 @@
-import { Component, signal } from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {MatButton} from '@angular/material/button';
+import {ResultadoIdentificacion, SugerenciaEspecie} from '../../models/resultado-identificacion';
+import {IaService} from '../../servicios/ia.service';
 
-
-interface EspecieSimulada {
-    id: number;
-    nombre: string;
-    nombreCientifico: string;
-    estado: string;
-    estadoLabel: string;
-    familia: string;
-    imagen: string;
-    emoji: string;
-}
-interface SugerenciaIa {
-    especie: EspecieSimulada;
-    confianza: number;
-}
 @Component({
     selector: 'app-identificar-ia',
-    standalone: true,
+    imports: [MatButton],
     templateUrl: './identificar-ia.component.html',
     styleUrl: './identificar-ia.component.css'
 })
 export class IdentificarIaComponent {
-    readonly imagen = signal<string | null>(null);
-    readonly sugerencias = signal<SugerenciaIa[]>([]);
-    readonly mensaje = signal('');
+    imagen: string = '';
+    resultado: ResultadoIdentificacion | null = null;
+    cargando: boolean = false;
+    mensaje: string = '';
+    iaService: IaService = inject(IaService);
+    router: Router = inject(Router);
 
-    readonly especies: EspecieSimulada[] = [
-        {
-            id: 1,
-            nombre: 'Cóndor andino',
-            nombreCientifico: 'Vultur gryphus',
-            estado: 'vulnerable',
-            estadoLabel: 'Vulnerable',
-            familia: 'ave',
-            imagen: '',
-            emoji: '🦅'
-        },
-        {
-            id: 2,
-            nombre: 'Oso de anteojos',
-            nombreCientifico: 'Tremarctos ornatus',
-            estado: 'vulnerable',
-            estadoLabel: 'Vulnerable',
-            familia: 'mamifero',
-            imagen: '',
-            emoji: '🐻'
-        },
-        {
-            id: 3,
-            nombre: 'Jaguar',
-            nombreCientifico: 'Panthera onca',
-            estado: 'critico',
-            estadoLabel: 'En peligro crítico',
-            familia: 'mamifero',
-            imagen: '',
-            emoji: '🐆'
-        }
-    ];
-
-    seleccionarImagen(evento: Event): void {
+    seleccionarImagen(evento: Event) {
         const input = evento.target as HTMLInputElement;
         const archivo = input.files?.[0];
-
         if (!archivo) {
             return;
         }
-
         const lector = new FileReader();
-
         lector.onload = () => {
-            this.imagen.set(String(lector.result));
-            this.sugerencias.set([]);
-            this.mensaje.set('');
+            this.imagen = String(lector.result);
+            this.resultado = null;
+            this.mensaje = '';
         };
-
         lector.readAsDataURL(archivo);
     }
 
-    analizar(): void {
-        if (!this.imagen()) {
-            this.mensaje.set('Selecciona una imagen primero.');
+    analizar() {
+        if (!this.imagen) {
+            this.mensaje = 'Selecciona una imagen primero.';
             return;
         }
+        this.cargando = true;
+        this.iaService.identificar(this.imagen).subscribe({
+            next: data => {
+                console.log('Resultado de la IA:', data);
+                this.resultado = data;
+                this.cargando = false;
+            },
+            error: err => {
+                console.log('Error en la IA:', err.status);
+                this.cargando = false;
+                this.mensaje = 'No se pudo analizar la imagen. Intenta más tarde.';
+            }
+        });
+    }
 
-        this.sugerencias.set([
-            { especie: this.especies[0], confianza: 86 },
-            { especie: this.especies[1], confianza: 72 },
-            { especie: this.especies[2], confianza: 61 }
-        ]);
-
-        this.mensaje.set(
-            'Resultado simulado: esta pantalla todavía no usa una IA real.'
-        );
+    // Lleva la especie sugerida al registro de avistamiento
+    usarEspecie(sugerencia: SugerenciaEspecie) {
+        this.router.navigate(['/registrar'], {queryParams: {idEspecie: sugerencia.idEspecie}});
     }
 }

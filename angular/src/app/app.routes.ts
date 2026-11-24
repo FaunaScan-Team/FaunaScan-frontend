@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Inicio } from './components/inicio/inicio';
-import { PaginaPendiente } from './components/pagina-pendiente/pagina-pendiente';
+//import { PaginaPendiente } from './components/pagina-pendiente/pagina-pendiente';
 import { Registrar } from './components/registrar/registrar';
 import { Observaciones } from './components/observaciones/observaciones';
 import { rutasValidacion } from './validacion.routes';
@@ -17,6 +17,7 @@ import { DetalleEspecie } from './components/detalle-especie/detalle-especie';
 import { SeleccionarEspecieComponent } from './components/seleccionar-especie/seleccionar-especie.component';
 import { IdentificarIaComponent } from './components/identificar-ia/identificar-ia.component';
 import { Bienvenida } from './components/bienvenida/bienvenida';
+import { Terminos } from './components/terminos/terminos';
 export const routes: Routes = [
   { path: '', component: Inicio, title: 'Inicio | FaunaScan Perú' },
   { path: 'login', component: Login, title: 'Iniciar sesión | FaunaScan Perú' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
   { path: 'registrar', component: Registrar, canActivate: [authGuard], title: 'Registrar | FaunaScan Perú' },
   { path: 'registrar/:id', component: Registrar, canActivate: [authGuard], title: 'Editar avistamiento | FaunaScan Perú' },
   { path: 'observaciones', component: Observaciones, canActivate: [authGuard], title: 'Observaciones | FaunaScan Perú' },
+  { path: 'terminos', component: Terminos, title: 'Términos y condiciones | FaunaScan Perú' },
   ...rutasPaneles,
   ...rutasValidacion,
   { path: '**', redirectTo: '' },
