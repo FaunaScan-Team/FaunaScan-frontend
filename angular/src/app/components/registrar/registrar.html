@@ -4,7 +4,11 @@
     <p>Completa los datos del animal que observaste. Los campos con * son obligatorios.</p>
   </header>
 
-  @if (guardado()) {
+  @if (guardadoOffline()) {
+    <p class="aviso aviso--exito" role="status">
+      Sin conexión: el avistamiento se guardó en este dispositivo y se enviará solo cuando vuelva el internet.
+    </p>
+  } @else if (guardado()) {
     <p class="aviso aviso--exito" role="status">
       ¡Avistamiento guardado correctamente!{{ edicion() ? ' Te llevamos a tu historial…' : ' Ahora agrega las observaciones…' }}
     </p>
