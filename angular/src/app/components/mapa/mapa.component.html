@@ -14,6 +14,14 @@
                 }
             </mat-select>
         </mat-form-field>
+
+        <mat-slide-toggle [checked]="calorActivo" (change)="cambiarCalor($event.checked)">
+            {{ idioma.t('mapa.calor') }}
+        </mat-slide-toggle>
+
+        <button type="button" class="boton-ubicacion" (click)="irAMiUbicacion()" [disabled]="buscandoUbicacion">
+            <span aria-hidden="true">📍</span> {{ idioma.t('mapa.ubicacion') }}
+        </button>
     </form>
 
     @if (error) {

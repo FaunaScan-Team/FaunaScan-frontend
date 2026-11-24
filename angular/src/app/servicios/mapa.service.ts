@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {MapaAvistamiento} from '../models/mapa-avistamiento';
+import {Coordenada} from '../models/coordenada';
 
 @Service()
 export class MapaService {
@@ -15,5 +16,10 @@ export class MapaService {
             return this.httpClient.get<MapaAvistamiento[]>(this.url + '/avistamientos/mapa', {params: {estado: estado}});
         }
         return this.httpClient.get<MapaAvistamiento[]>(this.url + '/avistamientos/mapa');
+    }
+
+    // HU-15: coordenadas de los avistamientos validados para la capa de calor
+    densidad(): Observable<Coordenada[]> {
+        return this.httpClient.get<Coordenada[]>(this.url + '/avistamientos/densidad');
     }
 }
