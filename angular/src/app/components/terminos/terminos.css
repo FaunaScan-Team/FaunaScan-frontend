@@ -1,0 +1,18 @@
+.pagina {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+    color: #123524;
+}
+
+.etiqueta {
+    margin: 0;
+    color: #28714c;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+article {
+    margin-top: 20px;
+}

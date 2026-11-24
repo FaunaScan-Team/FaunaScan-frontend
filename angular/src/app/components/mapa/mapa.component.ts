@@ -1,65 +1,74 @@
-import { Component, computed, signal } from '@angular/core';
-
-interface AvistamientoMapa {
-    id: string;
-    especie: string;
-    fecha: string;
-    latitud: number;
-    longitud: number;
-    estadoValidacion: 'Pendiente' | 'Validado' | 'Rechazado';
-}
+import {Component, inject} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {MatFormField, MatLabel} from '@angular/material/input';
+import {MatSelect, MatOption} from '@angular/material/select';
+import * as L from 'leaflet';
+import {MapaAvistamiento} from '../../models/mapa-avistamiento';
+import {MapaService} from '../../servicios/mapa.service';
+import {IdiomaService} from '../../servicios/idioma.service';
 
 @Component({
     selector: 'app-mapa',
-    standalone: true,
+    imports: [ReactiveFormsModule, MatFormField, MatLabel, MatSelect, MatOption],
     templateUrl: './mapa.component.html',
     styleUrl: './mapa.component.css'
 })
 export class MapaComponent {
-    readonly filtroEstado = signal('');
+    lista: MapaAvistamiento[] = [];
+    estados: string[] = [];
+    error: string = '';
+    mapa!: L.Map;
+    marcadores: L.LayerGroup = L.layerGroup();
+    filtroForm: FormGroup;
+    fb: FormBuilder = inject(FormBuilder);
+    mapaService: MapaService = inject(MapaService);
+    idioma: IdiomaService = inject(IdiomaService);
 
-    readonly avistamientos = signal<AvistamientoMapa[]>([
-        {
-            id: 'AV-001',
-            especie: 'Cóndor andino',
-            fecha: '2026-11-08',
-            latitud: -13.1631,
-            longitud: -72.545,
-            estadoValidacion: 'Validado'
-        },
-        {
-            id: 'AV-002',
-            especie: 'Oso de anteojos',
-            fecha: '2026-11-07',
-            latitud: -6.232,
-            longitud: -77.871,
-            estadoValidacion: 'Pendiente'
-        },
-        {
-            id: 'AV-003',
-            especie: 'Delfín rosado',
-            fecha: '2026-11-06',
-            latitud: -3.743,
-            longitud: -73.251,
-            estadoValidacion: 'Validado'
-        }
-    ]);
-
-    readonly visibles = computed(() => {
-        const estado = this.filtroEstado();
-
-        return this.avistamientos().filter((avistamiento) =>
-            !estado || avistamiento.estadoValidacion === estado
-        );
-    });
-
-    posicionHorizontal(longitud: number): string {
-        const posicion = ((longitud + 82) / 14) * 100;
-        return `${Math.max(8, Math.min(92, posicion))}%`;
+    constructor() {
+        this.filtroForm = this.fb.group({
+            estado: [''],
+        });
     }
 
-    posicionVertical(latitud: number): string {
-        const posicion = ((0 - latitud) / 19) * 100;
-        return `${Math.max(8, Math.min(92, posicion))}%`;
+    ngAfterViewInit() {
+        // Mapa de OpenStreetMap centrado en Perú
+        this.mapa = L.map('mapa').setView([-9.19, -75.01], 5);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(this.mapa);
+        this.marcadores.addTo(this.mapa);
+        this.cargarMapa('');
+        this.filtroForm.get('estado')?.valueChanges.subscribe(estado => this.cargarMapa(estado));
+    }
+
+    ngOnDestroy() {
+        this.mapa.remove();
+    }
+
+    private cargarMapa(estado: string) {
+        this.mapaService.list(estado).subscribe({
+            next: data => {
+                console.log('Avistamientos del mapa:', data);
+                this.lista = data;
+                if (estado === '') {
+                    this.estados = [...new Set(data.map(a => a.estadoConservacion))];
+                }
+                this.dibujar();
+            },
+            error: err => {
+                console.log('Error al cargar el mapa:', err.status);
+                this.error = 'No se pudo cargar el mapa. Intenta más tarde.';
+            }
+        });
+    }
+
+    private dibujar() {
+        this.marcadores.clearLayers();
+        this.lista.forEach(a => {
+            L.circleMarker([a.latitud, a.longitud], {radius: 8})
+                .bindPopup('<strong>' + a.nombreComun + '</strong><br>' + a.estadoConservacion)
+                .addTo(this.marcadores);
+        });
     }
 }

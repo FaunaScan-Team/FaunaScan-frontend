@@ -6,6 +6,7 @@ import {MatButton} from '@angular/material/button';
 import {debounceTime} from 'rxjs';
 import {Especie} from '../../models/especie';
 import {EspecieService} from '../../servicios/especie.service';
+import {IdiomaService} from '../../servicios/idioma.service';
 
 @Component({
     selector: 'app-seleccionar-especie',
@@ -20,6 +21,7 @@ export class SeleccionarEspecieComponent {
     fb: FormBuilder = inject(FormBuilder);
     especieService: EspecieService = inject(EspecieService);
     router: Router = inject(Router);
+    idioma: IdiomaService = inject(IdiomaService);
 
     constructor() {
         this.busquedaForm = this.fb.group({

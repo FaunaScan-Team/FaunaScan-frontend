@@ -1,0 +1,66 @@
+<section class="mrs-pagina" aria-labelledby="mrs-titulo">
+  <header class="mrs-cabecera">
+    <div>
+      <p class="mrs-etiqueta">FAUNASCAN PERÚ · REPORTES</p>
+      <h1 id="mrs-titulo">Mis reportes</h1>
+      <p>Consulta tus reportes guardados, descarga el PDF y comparte un enlace con otros usuarios de FaunaScan.</p>
+    </div>
+    <a class="mrs-enlace" routerLink="/panel/investigador">Volver al panel</a>
+  </header>
+
+  <div class="mrs-acciones">
+    <button type="button" class="mrs-boton" [disabled]="cargando()" (click)="actualizar()">
+      {{ cargando() ? 'Cargando...' : 'Actualizar lista' }}
+    </button>
+  </div>
+
+  @if (error()) { <p class="mrs-error" role="alert">{{ error() }}</p> }
+  @if (aviso()) { <p class="mrs-aviso" role="status">{{ aviso() }}</p> }
+
+  @if (cargando()) {
+    <p class="mrs-vacio" role="status">Consultando reportes guardados...</p>
+  } @else if (!error() && lista().length === 0) {
+    <p class="mrs-vacio">Todavía no tienes reportes guardados. Genera un reporte de biodiversidad para verlo aquí.</p>
+  } @else if (!error()) {
+    <div class="mrs-tabla-scroll" role="region" aria-label="Tabla de mis reportes" tabindex="0">
+      <table mat-table [dataSource]="lista()" class="mrs-tabla">
+        <ng-container matColumnDef="idReporte">
+          <th mat-header-cell *matHeaderCellDef>N.º</th>
+          <td mat-cell *matCellDef="let reporte">#{{ reporte.idReporte }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let reporte">{{ nombreTipo(reporte.tipo) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="area">
+          <th mat-header-cell *matHeaderCellDef>Área</th>
+          <td mat-cell *matCellDef="let reporte">{{ reporte.area || 'Todas' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="periodo">
+          <th mat-header-cell *matHeaderCellDef>Período</th>
+          <td mat-cell *matCellDef="let reporte">{{ periodo(reporte) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fechaGeneracion">
+          <th mat-header-cell *matHeaderCellDef>Generado</th>
+          <td mat-cell *matCellDef="let reporte">{{ reporte.fechaGeneracion | date:'dd/MM/yyyy HH:mm' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let reporte">
+            <div class="mrs-fila-acciones">
+              <button type="button" class="mrs-boton mrs-boton--pequeno"
+                [disabled]="procesando() !== null" (click)="exportarPdf(reporte)"
+                [attr.aria-label]="'Descargar PDF del reporte ' + reporte.idReporte">Descargar PDF</button>
+              <button type="button" class="mrs-boton mrs-boton--secundario mrs-boton--pequeno"
+                [disabled]="procesando() !== null" (click)="compartir(reporte)"
+                [attr.aria-label]="'Copiar enlace del reporte ' + reporte.idReporte">Compartir enlace</button>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let fila; columns: columnas;"></tr>
+      </table>
+    </div>
+  }
+  <p class="mrs-ayuda">Los enlaces compartidos requieren que el destinatario inicie sesión en FaunaScan, según la configuración actual del backend.</p>
+</section>

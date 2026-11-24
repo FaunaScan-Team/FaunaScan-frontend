@@ -6,6 +6,7 @@ import {MatSelect, MatOption} from '@angular/material/select';
 import {MatButton} from '@angular/material/button';
 import {Especie} from '../../models/especie';
 import {EspecieService} from '../../servicios/especie.service';
+import {IdiomaService} from '../../servicios/idioma.service';
 
 @Component({
     selector: 'app-catalogo',
@@ -22,6 +23,7 @@ export class Catalogo {
     filtrosForm: FormGroup;
     fb: FormBuilder = inject(FormBuilder);
     especieService: EspecieService = inject(EspecieService);
+    idioma: IdiomaService = inject(IdiomaService);
 
     constructor() {
         this.filtrosForm = this.fb.group({

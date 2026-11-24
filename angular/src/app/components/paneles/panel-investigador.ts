@@ -35,6 +35,7 @@ import { PanelProgreso } from './panel-progreso';
         <a class="fs-accion" routerLink="/resumen"><span aria-hidden="true">📊</span> Resumen mensual</a>
         <a class="fs-accion" routerLink="/reportes"><span aria-hidden="true">📈</span> Reportes de biodiversidad</a>
 <a class="fs-accion" routerLink="/tendencias"><span aria-hidden="true">📉</span> Tendencias de biodiversidad</a>
+        <a class="fs-accion" routerLink="/mis-reportes"><span aria-hidden="true">📄</span> Mis reportes</a>
         <a class="fs-accion" routerLink="/catalogo"><span aria-hidden="true">📘</span> Catálogo</a>
         <a class="fs-accion" routerLink="/historial"><span aria-hidden="true">🕑</span> Historial</a>
       </nav>
