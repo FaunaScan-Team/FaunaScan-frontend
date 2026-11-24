@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {ResultadoIdentificacion, SugerenciaEspecie} from '../../models/resultado-identificacion';
 import {IaService} from '../../servicios/ia.service';
+import {IdiomaService} from '../../servicios/idioma.service';
 
 @Component({
     selector: 'app-identificar-ia',
@@ -17,6 +18,7 @@ export class IdentificarIaComponent {
     mensaje: string = '';
     iaService: IaService = inject(IaService);
     router: Router = inject(Router);
+    idioma: IdiomaService = inject(IdiomaService);
 
     seleccionarImagen(evento: Event) {
         const input = evento.target as HTMLInputElement;

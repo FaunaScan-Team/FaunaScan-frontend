@@ -5,6 +5,7 @@ import {MatSelect, MatOption} from '@angular/material/select';
 import * as L from 'leaflet';
 import {MapaAvistamiento} from '../../models/mapa-avistamiento';
 import {MapaService} from '../../servicios/mapa.service';
+import {IdiomaService} from '../../servicios/idioma.service';
 
 @Component({
     selector: 'app-mapa',
@@ -21,6 +22,7 @@ export class MapaComponent {
     filtroForm: FormGroup;
     fb: FormBuilder = inject(FormBuilder);
     mapaService: MapaService = inject(MapaService);
+    idioma: IdiomaService = inject(IdiomaService);
 
     constructor() {
         this.filtroForm = this.fb.group({
