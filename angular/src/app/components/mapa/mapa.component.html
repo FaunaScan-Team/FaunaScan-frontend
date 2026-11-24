@@ -2,43 +2,32 @@
     <header>
         <p class="etiqueta">AVISTAMIENTOS</p>
         <h1>Mapa de avistamientos</h1>
-
     </header>
 
-    <label>
-        Filtrar por estado
+    <form [formGroup]="filtroForm" class="toolbar">
+        <mat-form-field appearance="fill">
+            <mat-label>Estado de conservación</mat-label>
+            <mat-select formControlName="estado">
+                <mat-option value="">Todos los estados</mat-option>
+                @for (estado of estados; track estado) {
+                    <mat-option [value]="estado">{{ estado }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </form>
 
-        <select #estado (change)="filtroEstado.set(estado.value)">
-            <option value="">Todos los estados</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="Validado">Validado</option>
-            <option value="Rechazado">Rechazado</option>
-        </select>
-    </label>
+    @if (error) {
+        <p class="mensaje">{{ error }}</p>
+    }
 
-    <section class="mapa" aria-label="Mapa simulado de avistamientos">
-        @for (avistamiento of visibles(); track avistamiento.id) {
-            <span
-                    class="marcador"
-                    [class.pendiente]="avistamiento.estadoValidacion === 'Pendiente'"
-                    [style.left]="posicionHorizontal(avistamiento.longitud)"
-                    [style.top]="posicionVertical(avistamiento.latitud)"
-                    [title]="avistamiento.especie"
-            >
-        ●
-      </span>
-        }
-    </section>
+    <div id="mapa" role="region" aria-label="Mapa de avistamientos"></div>
 
     <section class="lista">
-        @for (avistamiento of visibles(); track avistamiento.id) {
+        @for (a of lista; track a.idAvistamiento) {
             <article>
-                <strong>{{ avistamiento.especie }}</strong>
-                <span>{{ avistamiento.estadoValidacion }}</span>
-                <small>
-                    {{ avistamiento.fecha }} ·
-                    {{ avistamiento.latitud }}, {{ avistamiento.longitud }}
-                </small>
+                <strong>{{ a.nombreComun }}</strong>
+                <span>{{ a.estadoConservacion }}</span>
+                <small>{{ a.latitud }}, {{ a.longitud }}</small>
             </article>
         } @empty {
             <p>No hay avistamientos con ese estado.</p>
