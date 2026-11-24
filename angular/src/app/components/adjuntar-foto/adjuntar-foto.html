@@ -1,0 +1,42 @@
+<div class="card" role="group" aria-labelledby="titulo-foto">
+  <h2 class="card__title" id="titulo-foto">Fotografías</h2>
+  <p class="texto-suave">JPG, PNG o WEBP de hasta 5 MB. Se guardan en Cloudinary.</p>
+
+  @if (imagenes().length > 0) {
+    <ul class="galeria">
+      @for (imagen of imagenes(); track imagen.idImagen) {
+        <li class="galeria__item">
+          <img [src]="imagen.rutaImagen" alt="Foto del avistamiento" loading="lazy" />
+          @if (imagen.esPrincipal) {
+            <span class="principal">Principal</span>
+          }
+          <button type="button" class="quitar" (click)="eliminar(imagen)" aria-label="Eliminar foto">×</button>
+        </li>
+      }
+    </ul>
+  }
+
+  @if (vistaPrevia()) {
+    <div class="previa">
+      <img [src]="vistaPrevia()" alt="Vista previa de la foto seleccionada" />
+      <div class="previa__acciones">
+        <button type="button" class="btn btn-primary" (click)="subir()" [disabled]="subiendo()">
+          {{ subiendo() ? 'Subiendo…' : 'Subir foto' }}
+        </button>
+        <button type="button" class="btn btn-outline" (click)="cancelar()" [disabled]="subiendo()">Cancelar</button>
+      </div>
+    </div>
+  } @else {
+    <label class="selector" for="foto">
+      📷 Elegir o tomar foto
+      <input id="foto" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" (change)="elegir($event)" />
+    </label>
+  }
+
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+  @if (mensaje()) {
+    <p class="aviso aviso--exito" role="status">{{ mensaje() }}</p>
+  }
+</div>

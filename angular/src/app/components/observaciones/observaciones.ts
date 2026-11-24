@@ -6,6 +6,7 @@ import { Clima } from '../../models/avistamiento';
 import { AvistamientoDTO } from '../../models/avistamiento-dto';
 import { AvistamientoService } from '../../servicios/avistamiento.service';
 import { ClimaService } from '../../servicios/clima.service';
+import { AdjuntarFoto } from '../adjuntar-foto/adjuntar-foto';
 
 interface OpcionClima {
   valor: Clima;
@@ -24,7 +25,7 @@ function climaDesdeCodigo(codigo: number, temperatura: number): Clima {
 
 @Component({
   selector: 'app-observaciones',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, AdjuntarFoto],
   templateUrl: './observaciones.html',
   styleUrl: './observaciones.css',
 })
