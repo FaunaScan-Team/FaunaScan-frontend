@@ -1,0 +1,16 @@
+@if (!cola.enLinea()) {
+  <div class="indicador indicador--offline" role="status">
+    Sin conexión. Puedes registrar avistamientos: se guardan en este dispositivo
+    @if (cola.pendientes().length > 0) { ({{ cola.pendientes().length }} pendientes) }.
+  </div>
+} @else if (cola.pendientes().length > 0) {
+  <div class="indicador indicador--pendiente" role="status">
+    {{ cola.pendientes().length }} avistamiento(s) por sincronizar.
+    <button type="button" (click)="cola.sincronizar()" [disabled]="cola.sincronizando()">
+      {{ cola.sincronizando() ? 'Sincronizando…' : 'Sincronizar ahora' }}
+    </button>
+  </div>
+}
+@if (cola.mensaje()) {
+  <div class="indicador indicador--exito" role="status">{{ cola.mensaje() }}</div>
+}

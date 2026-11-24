@@ -3,10 +3,11 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { Menu } from './components/menu/menu';
 import { PiePagina } from './components/pie-pagina/pie-pagina';
+import { IndicadorConexion } from './components/indicador-conexion/indicador-conexion';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Menu, PiePagina],
+  imports: [RouterOutlet, Menu, PiePagina, IndicadorConexion],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

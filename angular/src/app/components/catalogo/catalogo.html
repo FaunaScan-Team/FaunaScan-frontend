@@ -1,39 +1,39 @@
 <section class="pagina">
     <header>
-        <p class="eyebrow">BIODIVERSIDAD DEL PERÚ</p>
-        <h1>Catálogo de especies</h1>
-        <p>Conoce nuestra fauna y selecciona una especie para ver su información.</p>
+        <p class="eyebrow">{{ idioma.t('catalogo.eyebrow') }}</p>
+        <h1>{{ idioma.t('catalogo.titulo') }}</h1>
+        <p>{{ idioma.t('catalogo.subtitulo') }}</p>
     </header>
 
     <form [formGroup]="filtrosForm" class="toolbar">
         <mat-form-field appearance="fill" class="toolbar__buscar">
-            <mat-label>Buscar especie</mat-label>
-            <input matInput formControlName="texto" placeholder="Nombre común o científico" />
+            <mat-label>{{ idioma.t('catalogo.buscar') }}</mat-label>
+            <input matInput formControlName="texto" [placeholder]="idioma.t('catalogo.placeholder')" />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Estado de conservación</mat-label>
+            <mat-label>{{ idioma.t('catalogo.estado') }}</mat-label>
             <mat-select formControlName="categoria">
-                <mat-option value="">Todos los estados</mat-option>
+                <mat-option value="">{{ idioma.t('catalogo.todos') }}</mat-option>
                 @for (categoria of categorias; track categoria) {
                     <mat-option [value]="categoria">{{ categoria }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
 
-        <button type="button" mat-stroked-button (click)="limpiar()">Limpiar filtros</button>
+        <button type="button" mat-stroked-button (click)="limpiar()">{{ idioma.t('catalogo.limpiar') }}</button>
     </form>
 
     @if (cargando) {
-        <p role="status">Cargando especies…</p>
+        <p role="status">{{ idioma.t('catalogo.cargando') }}</p>
     }
     @if (error) {
         <p class="error" role="alert">{{ error }}</p>
     }
 
-    <p class="count" aria-live="polite">{{ especiesFiltradas.length }} de {{ especies.length }} especies</p>
+    <p class="count" aria-live="polite">{{ especiesFiltradas.length }} {{ idioma.t('catalogo.de') }} {{ especies.length }} {{ idioma.t('catalogo.especies') }}</p>
 
-    <section class="grid" aria-label="Especies">
+    <section class="grid" [attr.aria-label]="idioma.t('catalogo.especies')">
         @for (especie of especiesFiltradas; track especie.idEspecie) {
             <article class="card">
                 <div class="image">
@@ -45,13 +45,13 @@
                     <span class="badge" [attr.data-estado]="claseEstado(especie.nombreCategoria)">{{ especie.nombreCategoria }}</span>
                 </div>
                 <a class="detail-link" [routerLink]="['/catalogo', especie.idEspecie]"
-                   [attr.aria-label]="'Ver detalle de ' + especie.nombreComun">Ver detalle →</a>
+                   [attr.aria-label]="idioma.t('catalogo.verDetalleDe') + ' ' + especie.nombreComun">{{ idioma.t('catalogo.verDetalle') }}</a>
             </article>
         } @empty {
             @if (!cargando && !error) {
                 <div class="empty">
-                    <h2>No se encontraron especies</h2>
-                    <p>Prueba otro nombre o cambia el estado de conservación.</p>
+                    <h2>{{ idioma.t('catalogo.vacioTitulo') }}</h2>
+                    <p>{{ idioma.t('catalogo.vacioTexto') }}</p>
                 </div>
             }
         }

@@ -1,0 +1,58 @@
+<main class="fs-reportes" aria-labelledby="reporte-titulo">
+  <div class="fs-reportes__encabezado">
+    <div>
+      <p class="fs-reportes__ceja">FaunaScan Perú · Reportes</p>
+      <h1 id="reporte-titulo">Reporte de biodiversidad</h1>
+      <p>Consulta especies registradas en un área y un período mediante datos reales de la API.</p>
+    </div>
+    <a class="fs-reportes__link" routerLink="/tendencias">Ver tendencias</a>
+  </div>
+
+  <section class="fs-reportes__panel" aria-label="Filtros de biodiversidad">
+    <div class="fs-reportes__filtros">
+      <mat-form-field appearance="outline">
+        <mat-label>Área</mat-label>
+        <mat-select [value]="area()" (selectionChange)="area.set($event.value)">
+          <mat-option value="">Todas las áreas</mat-option>
+          @for (zona of zonas(); track zona.direccion) {
+            <mat-option [value]="zona.direccion">{{ zona.direccion }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Desde</mat-label>
+        <input matInput [matDatepicker]="calDesde" [value]="inicio()" (dateChange)="inicio.set($event.value)" />
+        <mat-datepicker-toggle matIconSuffix [for]="calDesde" />
+        <mat-datepicker #calDesde />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Hasta</mat-label>
+        <input matInput [matDatepicker]="calHasta" [value]="fin()" (dateChange)="fin.set($event.value)" />
+        <mat-datepicker-toggle matIconSuffix [for]="calHasta" />
+        <mat-datepicker #calHasta />
+      </mat-form-field>
+      <button class="fs-reportes__boton" type="button" [disabled]="cargando()" (click)="generar()">
+        {{ cargando() ? 'Generando…' : 'Generar reporte' }}
+      </button>
+    </div>
+    <p class="fs-reportes__nota">Las áreas se obtienen de las direcciones con actividad registradas en el backend. Al generar, el reporte queda guardado en tu cuenta.</p>
+    @if (error()) { <p class="fs-reportes__error" role="alert">{{ error() }}</p> }
+  </section>
+
+  @if (reporte(); as resultado) {
+    <div class="fs-reportes__estadisticas">
+      <div><strong>{{ resultado.totalRegistros }}</strong><span>Avistamientos validados</span></div>
+      <div><strong>{{ resultado.totalEspecies }}</strong><span>Especies identificadas</span></div>
+      <div><strong>#{{ resultado.reporte.idReporte }}</strong><span>Reporte guardado</span></div>
+    </div>
+  }
+
+  <section class="fs-reportes__panel" aria-labelledby="especies-titulo">
+    <h2 id="especies-titulo">Especies por área y período</h2>
+    <p>Se muestran hasta 12 especies con mayor número de avistamientos.</p>
+    <div class="fs-reportes__grafico"><canvas #lienzoEspecies role="img" aria-label="Gráfico de barras con avistamientos validados por especie"></canvas></div>
+    @if (!reporte() && !cargando()) { <p class="fs-reportes__estado">Aplica los filtros y pulsa «Generar reporte».</p> }
+    @if (reporte()?.items?.length === 0) { <p class="fs-reportes__estado">No hay avistamientos validados con esos filtros.</p> }
+  </section>
+  <p class="fs-reportes__nota">El acceso a reportes requiere rol investigador o administrador.</p>
+</main>

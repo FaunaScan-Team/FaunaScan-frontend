@@ -101,6 +101,10 @@
           {{ guardando() ? 'Guardando…' : 'Guardar observaciones' }}
         </button>
       </div>
+      @if (idAvistamiento()) {
+        <!-- SA-03 (HU-10): fotos con Cloudinary -->
+        <app-adjuntar-foto [idAvistamiento]="idAvistamiento()" />
+      }
     </form>
 
     <aside class="card resumen" aria-label="Resumen del registro">

@@ -21,7 +21,7 @@
             "assets": [
               { "glob": "**/*", "input": "public" }
             ],
-            "styles": ["src/material-theme.scss", "src/styles.css"]
+            "styles": ["src/material-theme.scss", "src/styles.css", "node_modules/leaflet/dist/leaflet.css"]
           },
           "configurations": {
             "production": {
@@ -32,7 +32,8 @@
                 { "type": "initial", "maximumWarning": "1MB", "maximumError": "2MB" },
                 { "type": "anyComponentStyle", "maximumWarning": "8kB", "maximumError": "12kB" }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
             },
             "development": { "optimization": false, "extractLicenses": false, "sourceMap": true }
           },

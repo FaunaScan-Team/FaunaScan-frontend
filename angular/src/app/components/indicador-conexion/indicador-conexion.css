@@ -1,0 +1,8 @@
+.indicador { padding: var(--space-2) var(--space-4); font-size: var(--text-sm); text-align: center;
+  display: flex; justify-content: center; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.indicador--offline { background: #F59E0B; color: #002D1C; font-weight: var(--font-medium); }
+.indicador--pendiente { background: var(--color-navy-light); color: var(--color-navy); }
+.indicador--exito { background: var(--color-green-soft); color: var(--color-primary); }
+.indicador button { padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+  border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
+.indicador button:disabled { opacity: 0.6; cursor: not-allowed; }

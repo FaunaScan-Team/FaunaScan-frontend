@@ -13,6 +13,11 @@ import { EspecieService } from '../../servicios/especie.service';
 import { AvistamientoDTO } from '../../models/avistamiento-dto';
 import { Especie } from '../../models/especie';
 import { Ubicacion } from '../../models/ubicacion';
+import { ColaOfflineService } from '../../servicios/cola-offline.service';
+import { RegistroOffline } from '../../models/registro-offline';
+
+// Copia de las especies para poder registrar sin conexión (HU-35)
+const CLAVE_ESPECIES = 'faunascan-especies';
 
 /** Valida que la fecha elegida no sea posterior al momento actual. */
 function fechaNoFutura(control: AbstractControl<string>): ValidationErrors | null {
@@ -39,9 +44,11 @@ export class Registrar implements OnInit, OnDestroy {
   protected readonly ruta = inject(ActivatedRoute);
   private readonly avistamientoService = inject(AvistamientoService);
   private readonly especieService = inject(EspecieService);
+  protected readonly colaOffline = inject(ColaOfflineService);
 
   protected readonly especies = signal<Especie[]>([]);
   protected readonly guardado = signal(false);
+  protected readonly guardadoOffline = signal(false);
   protected readonly guardando = signal(false);
   protected readonly errorApi = signal('');
   protected readonly ubicando = signal(false);
@@ -65,8 +72,19 @@ export class Registrar implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.especieService.list().subscribe({
-      next: (data) => this.especies.set(data),
-      error: () => this.errorApi.set('No se pudo cargar la lista de especies.'),
+      next: (data) => {
+        this.especies.set(data);
+        localStorage.setItem(CLAVE_ESPECIES, JSON.stringify(data));
+      },
+      error: () => {
+        // Sin conexión se usa la última lista descargada
+        const copia = localStorage.getItem(CLAVE_ESPECIES);
+        if (copia) {
+          this.especies.set(JSON.parse(copia));
+        } else {
+          this.errorApi.set('No se pudo cargar la lista de especies.');
+        }
+      },
     });
 
     // Contrato con la selección de especie: /registrar?idEspecie=ID
@@ -148,10 +166,15 @@ export class Registrar implements OnInit, OnDestroy {
       this.formulario.markAllAsTouched();
       return;
     }
-    this.guardando.set(true);
     this.errorApi.set('');
-
     const valores = this.formulario.getRawValue();
+
+    // HU-35: sin conexión, un registro nuevo se guarda en la cola local y se sincroniza después
+    if (!navigator.onLine && !this.edicion()) {
+      this.guardarSinConexion();
+      return;
+    }
+    this.guardando.set(true);
 
     // 1) Ubicación (el backend guarda el avistamiento con idUbicacion)
     const ubicacion = new Ubicacion();
@@ -187,10 +210,36 @@ export class Registrar implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.guardando.set(false);
+        // status 0: no hubo respuesta (se cortó la red). Un registro nuevo pasa a la cola local.
+        if (err.status === 0 && !this.edicion()) {
+          this.guardarSinConexion();
+          return;
+        }
         this.errorApi.set(err.status === 400
           ? 'Revisa los datos: la API rechazó el registro.'
           : 'No se pudo guardar el avistamiento. Intenta de nuevo.');
       },
     });
+  }
+
+  private guardarSinConexion(): void {
+    const valores = this.formulario.getRawValue();
+    const registro = new RegistroOffline();
+    registro.latitud = valores.latitud!;
+    registro.longitud = valores.longitud!;
+    registro.direccion = valores.area.trim();
+    registro.idEspecie = valores.especieId!;
+    registro.fechaAvistamiento = valores.fecha + ':00';
+    registro.observaciones = valores.descripcion.trim();
+    this.colaOffline.agregar(registro);
+
+    this.guardado.set(true);
+    this.guardadoOffline.set(true);
+    // Sin conexión no se puede ir a observaciones (necesita el id que da la API): vuelve al formulario limpio
+    this.temporizador = setTimeout(() => {
+      this.guardado.set(false);
+      this.guardadoOffline.set(false);
+      this.formulario.reset({ especieId: null, fecha: ahoraLocal(), area: '', latitud: null, longitud: null, descripcion: '' });
+    }, 2500);
   }
 }

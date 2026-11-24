@@ -1,0 +1,52 @@
+<section class="mrs-pagina" aria-labelledby="compartido-titulo">
+  <header class="mrs-cabecera">
+    <div>
+      <p class="mrs-etiqueta">FAUNASCAN PERÚ · ENLACE COMPARTIDO</p>
+      <h1 id="compartido-titulo">Reporte compartido</h1>
+      <p>Información recuperada desde la API de FaunaScan.</p>
+    </div>
+    <a class="mrs-enlace" routerLink="/">Ir al inicio</a>
+  </header>
+
+  @if (cargando()) {
+    <p class="mrs-vacio" role="status">Cargando reporte compartido...</p>
+  } @else if (error()) {
+    <p class="mrs-error" role="alert">{{ error() }}</p>
+  } @else if (detalle(); as datos) {
+    <div class="mrs-resumen">
+      <h2>{{ nombreTipo(datos.reporte.tipo) }} #{{ datos.reporte.idReporte }}</h2>
+      <p>Área: {{ datos.reporte.area || 'Todas' }}</p>
+      <p>Generado: {{ datos.reporte.fechaGeneracion | date:'dd/MM/yyyy HH:mm' }}</p>
+      <p>Avistamientos validados: <strong>{{ datos.totalRegistros }}</strong> · Especies: <strong>{{ datos.totalEspecies }}</strong></p>
+    </div>
+
+    @if (datos.items) {
+      <div class="mrs-tabla-scroll" role="region" aria-label="Detalle de biodiversidad" tabindex="0">
+        <table class="mrs-tabla mrs-tabla--simple">
+          <thead><tr><th>Especie</th><th>Estado de conservación</th><th>Registros</th></tr></thead>
+          <tbody>
+            @for (item of datos.items; track $index) {
+              <tr><td>{{ item.nombreComun }}</td><td>{{ item.estadoConservacion || 'Sin categoría' }}</td><td>{{ item.totalRegistros }}</td></tr>
+            } @empty {
+              <tr><td colspan="3">No hay especies para el período seleccionado.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else if (datos.meses) {
+      <div class="mrs-tabla-scroll" role="region" aria-label="Detalle mensual" tabindex="0">
+        <table class="mrs-tabla mrs-tabla--simple">
+          <thead><tr><th>Año</th><th>Mes</th><th>Avistamientos</th><th>Especies</th></tr></thead>
+          <tbody>
+            @for (mes of datos.meses; track $index) {
+              <tr><td>{{ mes.anio }}</td><td>{{ mes.mes }}</td><td>{{ mes.totalAvistamientos }}</td><td>{{ mes.totalEspecies }}</td></tr>
+            } @empty {
+              <tr><td colspan="4">Sin registros mensuales.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+  <p class="mrs-ayuda">En esta versión se requiere una sesión iniciada para abrir enlaces compartidos.</p>
+</section>
