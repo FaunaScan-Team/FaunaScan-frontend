@@ -76,3 +76,39 @@ select {
     width: 100%;
     border-radius: 16px;
 }
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+}
+
+.boton-ubicacion {
+    padding: 10px 16px;
+    border: 1px solid #05366A;
+    border-radius: 8px;
+    background: white;
+    color: #05366A;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.boton-ubicacion:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+@media (max-width: 600px) {
+    .pagina {
+        padding: 16px;
+    }
+
+    #mapa {
+        height: 320px;
+    }
+
+    .toolbar mat-form-field,
+    .boton-ubicacion {
+        width: 100%;
+    }
+}
