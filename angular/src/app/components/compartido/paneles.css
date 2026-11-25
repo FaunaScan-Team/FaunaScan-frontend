@@ -56,7 +56,7 @@
 .fs-item small, .fs-card small { display: block; color: #53685e; font-size: 13px; line-height: 1.55; }
 
 .fs-banner { background: linear-gradient(135deg, #0a3d27 0%, #0f5a38 100%); color: #fff; border-radius: 20px; padding: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
-.fs-banner--info { background: linear-gradient(135deg, #05366a 0%, #0a4f93 100%); }
+.fs-banner--info { background: var(--color-primary, #002d1c); }
 .fs-banner h1, .fs-banner h2 { color: #fff; }
 .fs-banner p { color: #e4f1ea; line-height: 1.6; }
 .fs-banner__badge { display: inline-block; margin-top: 12px; background: #ffffff2e; border-radius: 99px; padding: 5px 12px; font-size: 13px; font-weight: 700; }
