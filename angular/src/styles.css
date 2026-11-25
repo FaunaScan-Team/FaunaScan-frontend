@@ -40,7 +40,7 @@
   --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
   --shadow-card: 0 2px 12px rgba(26,60,46,0.08);
-  --max-width: 1200px; --nav-height: 68px;
+  --max-width: 1200px; --nav-height: 68px; --sidebar-width: 260px;
   --transition-fast: 150ms ease; --transition-base: 250ms ease;
 
 }

@@ -1,0 +1,37 @@
+<aside class="sidebar" [class.open]="abierta()" aria-label="Menú principal de la aplicación">
+    <a routerLink="/" class="sidebar__header" (click)="cerrar.emit()">
+        <img src="assets/images/LogoFaunaScan.png" alt="" class="sidebar__logo-img" width="40" height="40">
+        <span class="sidebar__logo-text">FaunaScan</span>
+    </a>
+
+    <nav class="sidebar__nav">
+        @for (enlace of enlaces(); track enlace.ruta) {
+            <a [routerLink]="enlace.ruta" routerLinkActive="active" ariaCurrentWhenActive="page"
+               class="sidebar__link" (click)="cerrar.emit()">
+                <img [src]="'assets/icons/' + enlace.icono" alt="" class="sidebar__icon" width="20" height="20">
+                {{ enlace.texto }}
+            </a>
+        }
+    </nav>
+
+    <div class="sidebar__footer">
+        <div class="sidebar__idioma">
+            <button type="button" (click)="idioma.cambiar('es')" aria-label="Español">ES</button>
+            <span aria-hidden="true">|</span>
+            <button type="button" (click)="idioma.cambiar('en')" aria-label="English">EN</button>
+        </div>
+        <button type="button" class="sidebar__link sidebar__salir" (click)="cerrarSesion()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Cerrar sesión
+        </button>
+    </div>
+</aside>
+
+@if (abierta()) {
+    <div class="sidebar-overlay" (click)="cerrar.emit()" aria-hidden="true"></div>
+}

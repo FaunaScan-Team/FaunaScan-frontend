@@ -1,7 +1,34 @@
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
 <app-indicador-conexion />
-@if (!pantallaCompleta()) { <app-menu /> }
-<main id="contenido" tabindex="-1">
-  <router-outlet />
-</main>
-@if (!pantallaCompleta()) { <app-pie-pagina /> }
+
+@if (conBarraLateral()) {
+  <div class="app-shell">
+    <app-barra-lateral [abierta]="barraAbierta()" (cerrar)="barraAbierta.set(false)" />
+    <div class="app-shell__contenido">
+      <header class="app-topbar">
+        <button type="button" class="app-topbar__menu" (click)="barraAbierta.set(true)" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="app-topbar__acciones" aria-label="Accesos de la cuenta">
+          <a routerLink="/notificaciones" class="app-topbar__accion">
+            <img src="assets/icons/Notificaciones.png" alt="" width="20" height="20">
+            Notificaciones
+          </a>
+          <a routerLink="/perfil" class="app-topbar__accion">
+            <img src="assets/icons/Perfil.png" alt="" width="20" height="20">
+            Perfil
+          </a>
+        </nav>
+      </header>
+      <main id="contenido" tabindex="-1">
+        <router-outlet />
+      </main>
+    </div>
+  </div>
+} @else {
+  @if (!pantallaCompleta()) { <app-menu /> }
+  <main id="contenido" tabindex="-1">
+    <router-outlet />
+  </main>
+  @if (!pantallaCompleta()) { <app-pie-pagina /> }
+}
