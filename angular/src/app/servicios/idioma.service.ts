@@ -50,6 +50,11 @@ export class IdiomaService {
             'mapa.estado': 'Estado de conservación',
             'mapa.todos': 'Todos los estados',
             'mapa.vacio': 'No hay avistamientos con ese estado.',
+            'mapa.calor': 'Mapa de calor',
+            'mapa.ubicacion': 'Mi ubicación',
+            'mapa.tuUbicacion': 'Estás aquí',
+            'mapa.sinUbicacion': 'No se pudo obtener tu ubicación. Revisa el permiso de ubicación del navegador.',
+            'mapa.sinDensidad': 'No se pudo cargar el mapa de calor.',
 
             'ia.eyebrow': 'IDENTIFICACIÓN CON IA',
             'ia.titulo': 'Identificar especie con IA',
@@ -113,6 +118,11 @@ export class IdiomaService {
             'mapa.estado': 'Conservation status',
             'mapa.todos': 'All statuses',
             'mapa.vacio': 'There are no sightings with that status.',
+            'mapa.calor': 'Heat map',
+            'mapa.ubicacion': 'My location',
+            'mapa.tuUbicacion': 'You are here',
+            'mapa.sinUbicacion': 'Could not get your location. Check the browser location permission.',
+            'mapa.sinDensidad': 'Could not load the heat map.',
 
             'ia.eyebrow': 'AI IDENTIFICATION',
             'ia.titulo': 'Identify species with AI',
