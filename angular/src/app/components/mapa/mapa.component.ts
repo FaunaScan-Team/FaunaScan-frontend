@@ -58,7 +58,7 @@ export class MapaComponent {
     }
 
     ngOnDestroy() {
-        this.mapa.remove();
+        this.mapa?.remove();
     }
 
     // HU-16: centra el mapa en la ubicación actual del usuario
