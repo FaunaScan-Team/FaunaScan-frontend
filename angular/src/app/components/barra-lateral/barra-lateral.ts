@@ -42,6 +42,11 @@ export class BarraLateral {
         return lista;
     }
 
+    // Con sesión el logo lleva al panel del rol; sin sesión, a la página de inicio
+    inicio(): string {
+        return this.authService.estaLogueado() ? this.authService.panelSegunRol() : '/';
+    }
+
     // HU-08: borra el token y vuelve al inicio
     cerrarSesion() {
         this.authService.logout();

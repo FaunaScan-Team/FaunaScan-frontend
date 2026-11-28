@@ -1,5 +1,5 @@
 <aside class="sidebar" [class.open]="abierta()" aria-label="Menú principal de la aplicación">
-    <a routerLink="/" class="sidebar__header" (click)="cerrar.emit()">
+    <a [routerLink]="inicio()" class="sidebar__header" (click)="cerrar.emit()">
         <img src="assets/images/LogoFaunaScan.png" alt="" class="sidebar__logo-img" width="40" height="40">
         <span class="sidebar__logo-text">FaunaScan</span>
     </a>
