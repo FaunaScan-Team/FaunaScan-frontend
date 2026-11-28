@@ -1,6 +1,4 @@
 <section class="fs-page" aria-labelledby="fs-investigador-title">
-  <p class="fs-ruta"><span class="fs-ruta__chip">Ruta: /panel/investigador</span> {{ hoy | date:'dd/MM/yyyy' }}</p>
-
   <header class="fs-hero">
     <div>
       <div class="fs-hero__fila">
@@ -8,7 +6,7 @@
         <span class="fs-sello fs-sello--azul">{{ esAdmin() ? 'Administrador' : 'Investigador' }}</span>
       </div>
       <p class="fs-hero__sub">{{ saludo() }} {{ dashboard().apellido }}</p>
-      <p class="fs-hero__meta">Tu validación mantiene confiables los registros de la comunidad.</p>
+      <p class="fs-hero__meta"><span>📅 {{ hoy | date:'dd/MM/yyyy' }}</span><span>Tu validación mantiene confiables los registros de la comunidad.</span></p>
     </div>
     <div class="fs-hero__caja" aria-label="Mi progreso">
       <p>Mi progreso</p>
