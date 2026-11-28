@@ -1,65 +1,137 @@
 <section class="fs-page" aria-labelledby="fs-contrib-title">
-  <div class="fs-heading">
-    <div>
-      <p class="fs-eyebrow">Mi actividad</p>
-      <h1 id="fs-contrib-title">Mi contribución a la conservación</h1>
-      <p class="fs-subtitle">Lo que has aportado con tus registros y cómo van sus validaciones.</p>
-    </div>
-    <a class="fs-btn fs-btn--primary" routerLink="/registrar">Registrar avistamiento</a>
-  </div>
+  <p class="fs-ruta"><span class="fs-ruta__chip fs-ruta__chip--verde">Mi actividad</span> /mi-contribucion</p>
 
-  @if (error) {
-    <p class="fs-error" role="alert">{{ error }}</p>
+  <header class="fs-hero fs-hero--plano">
+    <div>
+      <h1 id="fs-contrib-title">Mi contribución y estado de monitoreo</h1>
+      <p class="fs-hero__texto">Lo que has aportado con tus registros y cómo van sus validaciones.</p>
+    </div>
+    <div class="fs-hero__botones">
+      <a class="fs-btn fs-btn--gris" routerLink="/historial">Ver mi historial detallado</a>
+      <a class="fs-btn fs-btn--primary" routerLink="/registrar">Registrar nuevo avistamiento</a>
+    </div>
+  </header>
+
+  @if (error()) {
+    <p class="fs-error" role="alert">{{ error() }}</p>
   }
 
-  @if (cargando) {
+  @if (cargando()) {
     <p class="fs-muted">Cargando tu contribución...</p>
   } @else {
-    <div class="fs-stats">
-      <div class="fs-stat"><strong>{{ contribucion.totalAvistamientos }}</strong><span>avistamientos registrados</span></div>
-      <div class="fs-stat"><strong>{{ progreso.especiesRegistradas }}</strong><span>especies distintas identificadas</span></div>
-      <div class="fs-stat"><strong>{{ progreso.zonasVisitadas }}</strong><span>zonas visitadas</span></div>
-      <div class="fs-stat"><strong>{{ contribucion.avistamientosValidados }}</strong><span>registros validados</span></div>
+    <div class="fs-kpis">
+      <article class="fs-kpi">
+        <span class="fs-kpi__titulo fs-kpi__titulo--mayus">Total enviados</span>
+        <div class="fs-kpi__valor"><strong>{{ contribucion().totalAvistamientos }}</strong><span>avistamientos</span></div>
+        <div class="fs-kpi__pie"><span>{{ progreso().especiesRegistradas }} especies · {{ progreso().zonasVisitadas }} zonas</span></div>
+      </article>
+      <article class="fs-kpi">
+        <div class="fs-kpi__cabecera">
+          <span class="fs-kpi__titulo fs-kpi__titulo--mayus">Validados por investigadores</span>
+          <span class="fs-sello fs-sello--verde">Aprobados</span>
+        </div>
+        <div class="fs-kpi__valor"><strong>{{ contribucion().avistamientosValidados }}</strong><span>de {{ contribucion().totalAvistamientos }} registros</span></div>
+        <div class="fs-kpi__pie"><span>✓ Aprobación del {{ porcentajeDe(contribucion().avistamientosValidados) }}%</span></div>
+      </article>
+      <article class="fs-kpi">
+        <div class="fs-kpi__cabecera">
+          <span class="fs-kpi__titulo fs-kpi__titulo--mayus">En revisión</span>
+          <span class="fs-sello fs-sello--naranja">Pendiente</span>
+        </div>
+        <div class="fs-kpi__valor"><strong>{{ contribucion().avistamientosPendientes }}</strong><span>en cola</span></div>
+      </article>
+      <article class="fs-kpi">
+        <div class="fs-kpi__cabecera">
+          <span class="fs-kpi__titulo fs-kpi__titulo--mayus">Rechazados</span>
+          <span class="fs-sello fs-sello--rojo">Rechazados</span>
+        </div>
+        <div class="fs-kpi__valor"><strong>{{ contribucion().avistamientosRechazados }}</strong><span>descartados</span></div>
+      </article>
     </div>
 
-    <div class="fs-card">
-      <h2 class="fs-card__title">Estado de mis registros</h2>
-      <div class="fs-metrics">
-        <div>Validados <strong>{{ contribucion.avistamientosValidados }}</strong></div>
-        <div>Pendientes <strong>{{ contribucion.avistamientosPendientes }}</strong></div>
-        <div>Rechazados <strong>{{ contribucion.avistamientosRechazados }}</strong></div>
+    <section class="fs-merito" aria-labelledby="fs-merito-title">
+      <div class="fs-merito__texto">
+        <span class="fs-merito__eyebrow">Mérito científico ciudadano</span>
+        <h2 id="fs-merito-title">{{ contribucion().avistamientosValidados > 0 ? '¡Excelente labor de campo!' : '¡Empieza tu labor de campo!' }}</h2>
+        <p>Tus {{ contribucion().avistamientosValidados }} avistamientos validados ya forman parte del registro de FaunaScan. {{ mensajeMeta() }}</p>
+        <div class="fs-merito__barra">
+          <span>Siguiente insignia</span>
+          <span>{{ porcentaje() }}% completado ({{ contribucion().totalAvistamientos }} / {{ meta() }})</span>
+        </div>
+        <div class="fs-progreso" role="img" [attr.aria-label]="'Progreso: ' + porcentaje() + '%'">
+          <div class="fs-progreso__relleno" [style.width.%]="porcentaje()"></div>
+        </div>
       </div>
+      <div class="fs-merito__nivel">
+        <span aria-hidden="true">🏅</span>
+        <strong>Nivel {{ alcanzados().length }}</strong>
+        <small>{{ alcanzados().length > 0 ? alcanzados()[alcanzados().length - 1].titulo : 'Sin insignias aún' }}</small>
+      </div>
+    </section>
+
+    <div class="fs-dos-col fs-dos-col--mitad">
+      <section class="fs-panel" aria-labelledby="fs-desglose-title">
+        <div class="fs-panel__cabecera">
+          <div>
+            <p class="fs-panel__eyebrow">Estado de validación</p>
+            <h2 id="fs-desglose-title">Desglose de mis registros</h2>
+          </div>
+        </div>
+        <div class="fs-panel__cuerpo fs-dona-bloque">
+          <div class="fs-dona" [style.background]="dona()" role="img"
+               [attr.aria-label]="contribucion().avistamientosValidados + ' validados, ' + contribucion().avistamientosPendientes + ' pendientes y ' + contribucion().avistamientosRechazados + ' rechazados'">
+            <div class="fs-dona__centro"><strong>{{ contribucion().totalAvistamientos }}</strong><span>Totales</span></div>
+          </div>
+          <div class="fs-leyenda">
+            <div><i style="background:#002d1c"></i>Validados <b>{{ contribucion().avistamientosValidados }}</b><small>({{ porcentajeDe(contribucion().avistamientosValidados) }}%)</small></div>
+            <div><i style="background:#c98a12"></i>Pendientes <b>{{ contribucion().avistamientosPendientes }}</b><small>({{ porcentajeDe(contribucion().avistamientosPendientes) }}%)</small></div>
+            <div><i style="background:#c62828"></i>Rechazados <b>{{ contribucion().avistamientosRechazados }}</b><small>({{ porcentajeDe(contribucion().avistamientosRechazados) }}%)</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fs-panel" aria-labelledby="fs-insignias-title">
+        <div class="fs-panel__cabecera">
+          <div>
+            <p class="fs-panel__eyebrow">Logros</p>
+            <h2 id="fs-insignias-title">Mis insignias</h2>
+            <p>{{ alcanzados().length }} de {{ logros().length }} obtenidas</p>
+          </div>
+        </div>
+        <div class="fs-panel__cuerpo fs-insignias">
+          @for (logro of logros(); track logro.titulo) {
+            <div class="fs-insignia" [class.fs-insignia--bloqueada]="!logro.alcanzado">
+              <span aria-hidden="true">{{ logro.icono }}</span>
+              <div><strong>{{ logro.titulo }}</strong><small>{{ logro.detalle }}</small></div>
+            </div>
+          }
+        </div>
+      </section>
     </div>
 
-    <div class="fs-card">
-      <h2 class="fs-card__title">Mis últimos avistamientos</h2>
-      @if (ultimos.length === 0) {
-        <p class="fs-empty">Aún no tienes avistamientos registrados. <a routerLink="/registrar">Registra el primero</a>.</p>
-      } @else {
-        @for (av of ultimos; track av.idAvistamiento) {
-          <div class="fs-item">
-            <span class="fs-avatar" aria-hidden="true">🐾</span>
-            <div class="fs-grow">
-              <strong>{{ av.nombreEspecie }}</strong>
-              <small>{{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}</small>
-              <span class="fs-badge" [class]="'fs-badge ' + claseEstado(av.estadoValidacion)">{{ etiquetaEstado(av.estadoValidacion) }}</span>
-            </div>
-            <a class="fs-link" [routerLink]="['/avistamientos', av.idAvistamiento]">Ver detalle</a>
+    <section class="fs-panel" aria-labelledby="fs-ultimos-title">
+      <div class="fs-panel__cabecera">
+        <div>
+          <p class="fs-panel__eyebrow">Evidencia en terreno</p>
+          <h2 id="fs-ultimos-title">Mis últimos avistamientos</h2>
+        </div>
+        <a class="fs-link" routerLink="/historial">Explorar todos →</a>
+      </div>
+      <div class="fs-panel__cuerpo">
+        @if (ultimos().length === 0) {
+          <p class="fs-empty">Aún no tienes avistamientos registrados. <a routerLink="/registrar">Registra el primero</a>.</p>
+        } @else {
+          <div class="fs-muestras">
+            @for (av of ultimos(); track av.idAvistamiento) {
+              <a class="fs-muestra-card" [routerLink]="['/avistamientos', av.idAvistamiento]">
+                <span [class]="'fs-badge ' + claseEstado(av.estadoValidacion)">{{ etiquetaEstado(av.estadoValidacion) }}</span>
+                <strong>{{ av.nombreEspecie }}</strong>
+                <small>{{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}</small>
+              </a>
+            }
           </div>
         }
-        <div class="fs-actions">
-          <a class="fs-link" routerLink="/historial">Ver todo el historial</a>
-        </div>
-      }
-    </div>
-
-    <div class="fs-card">
-      <h2 class="fs-card__title">🌱 Tu progreso</h2>
-      <p>{{ mensajeMeta() }}</p>
-      <div class="fs-progreso" role="img" [attr.aria-label]="'Progreso: ' + porcentaje() + '%'">
-        <div class="fs-progreso__relleno" [style.width.%]="porcentaje()"></div>
       </div>
-      <small>{{ contribucion.totalAvistamientos }} de {{ meta() }} avistamientos hacia la siguiente insignia.</small>
-    </div>
+    </section>
   }
 </section>

@@ -1,34 +1,47 @@
 import {DatePipe} from '@angular/common';
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {DashboardInvestigador} from '../../models/dashboard-investigador';
 import {ProgresoUsuario} from '../../models/progreso-usuario';
 import {PanelesService} from '../../servicios/paneles.service';
 import {PerfilService} from '../../servicios/perfil.service';
 import {AuthService} from '../../servicios/auth.service';
-import {ActividadesApiService, ActividadRecienteApi} from '../../servicios/actividades-api.service';
-import {PanelActividad} from './panel-actividad';
-import {PanelProgreso} from './panel-progreso';
+import {AvistamientoApi, ValidacionService} from '../../servicios/validacion.service';
 
 // HU-52: panel principal del investigador con los datos de GET /dashboard/investigador
 @Component({
   selector: 'app-panel-investigador',
-  imports: [DatePipe, RouterLink, PanelProgreso, PanelActividad],
+  imports: [DatePipe, RouterLink],
   templateUrl: './panel-investigador.html',
-  styleUrl: '../compartido/paneles.css',
+  styleUrl: './panel-investigador.css',
 })
 export class PanelInvestigador {
   hoy: Date = new Date();
-  dashboard: DashboardInvestigador = new DashboardInvestigador();
-  progreso: ProgresoUsuario = new ProgresoUsuario();
-  recientes: ActividadRecienteApi[] = [];
-  validados: number = 0;
-  cargando: boolean = true;
-  error: string = '';
+  dashboard = signal<DashboardInvestigador>(new DashboardInvestigador());
+  progreso = signal<ProgresoUsuario>(new ProgresoUsuario());
+  pendientes = signal<AvistamientoApi[]>([]);
+  validados = signal<number>(0);
+  cargando = signal<boolean>(true);
+  error = signal<string>('');
   panelesService: PanelesService = inject(PanelesService);
   perfilService: PerfilService = inject(PerfilService);
-  actividadesService: ActividadesApiService = inject(ActividadesApiService);
+  validacionService: ValidacionService = inject(ValidacionService);
   authService: AuthService = inject(AuthService);
+
+  // El administrador también entra a este panel; el rol viene en la respuesta del backend
+  esAdmin = computed(() => this.dashboard().rol === 'ROLE_ADMIN' || this.authService.rol() === 'ROLE_ADMIN');
+  saludo = computed(() => {
+    const nombre = this.dashboard().nombre;
+    if (nombre) {
+      return 'Hola, ' + nombre;
+    }
+    return this.esAdmin() ? 'Hola, administrador' : 'Hola, investigador';
+  });
+
+  // Últimos 5 registros pendientes, del más reciente al más antiguo
+  ultimosPendientes = computed(() => [...this.pendientes()]
+    .sort((a, b) => (b.fechaAvistamiento || '').localeCompare(a.fechaAvistamiento || ''))
+    .slice(0, 5));
 
   ngOnInit() {
     const idUsuario = this.authService.idUsuario();
@@ -36,32 +49,36 @@ export class PanelInvestigador {
     this.panelesService.dashboardInvestigador().subscribe({
       next: data => {
         console.log('Panel del investigador traído por API:', data);
-        this.dashboard = data;
-        this.cargando = false;
+        this.dashboard.set(data);
+        this.cargando.set(false);
       },
       error: err => {
         console.log('Error al cargar el panel:', err.status);
-        // El endpoint solo acepta ROLE_INVESTIGADOR; un admin recibe 403
-        this.error = err.status === 403
+        this.error.set(err.status === 403
           ? 'Este panel es solo para investigadores.'
-          : 'No se pudo cargar tu panel. Intenta de nuevo en unos segundos.';
-        this.cargando = false;
+          : 'No se pudo cargar tu panel. Intenta de nuevo en unos segundos.');
+        this.cargando.set(false);
       }
     });
 
     this.perfilService.progreso(idUsuario).subscribe({
-      next: data => this.progreso = data,
+      next: data => this.progreso.set(data),
       error: err => console.log('Error al cargar el progreso:', err.status)
     });
 
     this.panelesService.contribucion(idUsuario).subscribe({
-      next: data => this.validados = data.avistamientosValidados,
+      next: data => this.validados.set(data.avistamientosValidados),
       error: err => console.log('Error al cargar la contribución:', err.status)
     });
 
-    this.actividadesService.obtenerRecientes().subscribe({
-      next: data => this.recientes = data,
-      error: err => console.log('Error al cargar la actividad reciente:', err.status)
+    this.validacionService.obtenerPendientes().subscribe({
+      next: data => this.pendientes.set(data),
+      error: err => console.log('Error al cargar los pendientes:', err.status)
     });
+  }
+
+  iniciales(nombre: string | null): string {
+    if (!nombre) return '?';
+    return nombre.trim().split(/\s+/).slice(0, 2).map(parte => parte.charAt(0).toUpperCase()).join('');
   }
 }

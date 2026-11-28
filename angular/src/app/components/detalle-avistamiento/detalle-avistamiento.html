@@ -1,82 +1,154 @@
 <section class="pagina">
-  @if (avistamiento; as av) {
-    <div class="encabezado">
-      <div>
-        <p class="etiqueta">Historial</p>
-        <h1>{{ av.nombreEspecie }}</h1>
-        <p class="subtitulo">Registrado por {{ av.nombreUsuario || 'usuario no identificado' }}</p>
-      </div>
-      <a mat-stroked-button routerLink="/historial">Volver al historial</a>
+  @if (avistamiento(); as av) {
+    <div class="barra-superior">
+      <a routerLink="/historial" class="volver">← Volver al historial</a>
+      <span class="miga">Avistamientos / <b>#{{ av.idAvistamiento }}</b>
+        @if (av.sincronizadoLocal) { <span class="sello sello--verde">Registrado sin conexión</span> }
+      </span>
     </div>
+
+    <header class="tarjeta cabecera">
+      <div>
+        <p class="etiqueta">Detalle de avistamiento • <span class="mono">#{{ av.idAvistamiento }}</span></p>
+        <h1>{{ av.nombreEspecie }}</h1>
+        <div class="sellos">
+          <span class="sello" [attr.data-estado]="av.estadoValidacion">{{ etiquetaEstado(av.estadoValidacion) }}</span>
+        </div>
+        @if (av.fechaValidacion) {
+          <p class="chip-fecha">📅 Validación: {{ av.fechaValidacion | date:'dd/MM/yyyy HH:mm' }}</p>
+        }
+      </div>
+      <div class="botones">
+        <button type="button" class="boton boton--gris" (click)="alternarFavorito()" [attr.aria-pressed]="esFavorito()">
+          <span [style.color]="esFavorito() ? '#f5a524' : '#8a958f'" aria-hidden="true">★</span>
+          {{ esFavorito() ? 'Favorito' : 'Marcar favorito' }}
+        </button>
+        @if (esInvestigador()) {
+          <button type="button" class="boton boton--azul" (click)="mostrandoCompartir.set(!mostrandoCompartir())">Compartir con investigador</button>
+        }
+        @if (esDueno()) {
+          <button type="button" class="boton boton--gris" [disabled]="!puedeEditar()" (click)="editar()"
+                  [title]="puedeEditar() ? 'Editar el registro' : 'El registro ya fue revisado por un investigador'">✎ Editar</button>
+          <button type="button" class="boton boton--gris" (click)="confirmandoEliminar.set(true)">🗑 Eliminar</button>
+        }
+      </div>
+    </header>
 
     <div class="columnas">
-      <article class="tarjeta">
-        <h2>Foto y ubicación</h2>
-        <img class="foto" [src]="foto()" [alt]="'Foto de ' + av.nombreEspecie">
-        @if (ubicacion) {
-          <p><strong>Zona:</strong> {{ ubicacion.direccion || 'Sin dirección' }}</p>
-          <p class="apagado">{{ ubicacion.latitud }}, {{ ubicacion.longitud }}</p>
-          <a [href]="urlMapa()" target="_blank" rel="noopener noreferrer">Ver en OpenStreetMap</a>
-        }
-      </article>
-
-      <article class="tarjeta">
-        <h2>Datos del registro</h2>
-        <dl>
-          <dt>Fecha del avistamiento</dt><dd>{{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}</dd>
-          <dt>Estado</dt><dd><span class="estado" [attr.data-estado]="av.estadoValidacion">{{ av.estadoValidacion }}</span></dd>
-          @if (av.fechaValidacion) {
-            <dt>Fecha de validación</dt><dd>{{ av.fechaValidacion | date:'dd/MM/yyyy HH:mm' }}</dd>
-          }
-          <dt>Observaciones</dt><dd>{{ av.observaciones || 'Sin observaciones.' }}</dd>
-          <dt>Condiciones del entorno</dt><dd>{{ av.condicionesEntorno || 'Sin datos del entorno.' }}</dd>
-        </dl>
-      </article>
-    </div>
-
-    @if (esDueno()) {
-      <article class="tarjeta">
-        <h2>Acciones</h2>
-        <div class="acciones">
-          @if (puedeEditar()) {
-            <button type="button" mat-stroked-button (click)="editar()">Editar</button>
-          } @else {
-            <p class="apagado">El registro ya fue revisado por un investigador, así que no se puede editar.</p>
-          }
-          @if (!confirmandoEliminar) {
-            <button type="button" mat-stroked-button class="peligro" (click)="confirmandoEliminar = true">Eliminar</button>
-          }
-        </div>
-        @if (confirmandoEliminar) {
-          <div class="aviso" role="alert">
-            <p>¿Eliminar este avistamiento? No se podrá recuperar.</p>
-            <button type="button" mat-flat-button class="peligro" (click)="eliminar()">Sí, eliminar</button>
-            <button type="button" mat-stroked-button (click)="confirmandoEliminar = false">Cancelar</button>
+      <div class="columna">
+        <article class="tarjeta">
+          <div class="tarjeta__titulo">
+            <h2>📷 Evidencia fotográfica principal</h2>
+            <span class="mono pildora">{{ imagenes().length }} foto(s)</span>
           </div>
-        }
-      </article>
-    }
+          <div class="foto-principal">
+            <img [src]="foto()" [alt]="'Foto de ' + av.nombreEspecie">
+            <div class="foto-principal__texto">
+              <strong>{{ av.nombreEspecie }}</strong>
+              <span>{{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </div>
+          @if (imagenes().length > 1) {
+            <p class="miniaturas__titulo">Registros complementarios ({{ imagenes().length }} evidencias)</p>
+            <div class="miniaturas">
+              @for (imagen of imagenes(); track imagen.idImagen; let i = $index) {
+                <button type="button" class="miniatura" [class.miniatura--activa]="i === fotoElegida()" (click)="fotoElegida.set(i)"
+                        [attr.aria-label]="'Ver foto ' + (i + 1)">
+                  <img [src]="imagen.rutaImagen" alt="">
+                  <span>{{ i + 1 }}. Evidencia</span>
+                </button>
+              }
+            </div>
+          }
+        </article>
 
-    @if (esInvestigador()) {
-      <article class="tarjeta">
-        <h2>Compartir con un colega investigador</h2>
-        <form [formGroup]="compartirForm" class="compartir" (ngSubmit)="compartir()">
-          <mat-form-field appearance="fill">
-            <mat-label>ID del investigador</mat-label>
-            <input matInput type="number" formControlName="idInvestigadorDestino" />
-            <mat-error>Ingresa el id del investigador</mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="compartir__mensaje">
-            <mat-label>Mensaje</mat-label>
-            <input matInput formControlName="mensaje" maxlength="500" />
-          </mat-form-field>
-          <button type="submit" mat-flat-button>Compartir</button>
-        </form>
-      </article>
-    }
+        @if (confirmandoEliminar()) {
+          <article class="tarjeta peligro" role="alert">
+            <span class="peligro__icono" aria-hidden="true">⚠</span>
+            <div>
+              <h2>¿Estás seguro de eliminar este registro?</h2>
+              <p>Acción irreversible. El avistamiento y sus fotos se borrarán y no se podrán recuperar.</p>
+              <div class="botones botones--derecha">
+                <button type="button" class="boton boton--blanco" (click)="confirmandoEliminar.set(false)">Cancelar</button>
+                <button type="button" class="boton boton--rojo" (click)="eliminar()">Confirmar eliminación</button>
+              </div>
+            </div>
+          </article>
+        }
+
+        @if (esInvestigador() && mostrandoCompartir()) {
+          <article class="tarjeta">
+            <h2>Compartir con un colega investigador</h2>
+            <form [formGroup]="compartirForm" class="compartir" (ngSubmit)="compartir()">
+              <mat-form-field appearance="fill">
+                <mat-label>ID del investigador</mat-label>
+                <input matInput type="number" formControlName="idInvestigadorDestino" />
+                <mat-error>Ingresa el id del investigador</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="compartir__mensaje">
+                <mat-label>Mensaje</mat-label>
+                <input matInput formControlName="mensaje" maxlength="500" />
+              </mat-form-field>
+              <button type="submit" mat-flat-button>Compartir</button>
+            </form>
+          </article>
+        }
+      </div>
+
+      <div class="columna">
+        <article class="tarjeta">
+          <p class="etiqueta">Personal involucrado</p>
+          <div class="persona">
+            <span class="iniciales" aria-hidden="true">{{ iniciales(av.nombreUsuario) }}</span>
+            <div>
+              <small>Registrado en campo por</small>
+              <strong>{{ av.nombreUsuario || 'Usuario no identificado' }}</strong>
+              <small>{{ av.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}</small>
+            </div>
+          </div>
+          @if (av.fechaValidacion) {
+            <div class="persona">
+              <span class="iniciales iniciales--azul" aria-hidden="true">✓</span>
+              <div>
+                <small>Revisado por un investigador</small>
+                <strong>{{ etiquetaEstado(av.estadoValidacion) }}</strong>
+                <small>{{ av.fechaValidacion | date:'dd/MM/yyyy HH:mm' }}</small>
+              </div>
+            </div>
+          }
+        </article>
+
+        <article class="tarjeta">
+          <h2>📍 Localidad y georreferencia</h2>
+          @if (ubicacion(); as ub) {
+            <p class="lugar">{{ ub.direccion || 'Sin dirección' }}</p>
+            <div class="datos">
+              <div><small>Coordenadas WGS84</small><strong>{{ ub.latitud }}, {{ ub.longitud }}</strong></div>
+            </div>
+            @if (mapaEmbebido(); as mapa) {
+              <iframe class="mapa" [src]="mapa" title="Mapa de la ubicación del avistamiento" loading="lazy"></iframe>
+            }
+            <a [href]="urlMapa()" target="_blank" rel="noopener noreferrer" class="enlace">Abrir en OpenStreetMap ↗</a>
+          } @else {
+            <p class="apagado">Sin ubicación registrada.</p>
+          }
+        </article>
+
+        <article class="tarjeta">
+          <h2>🌡 Entorno y microclima</h2>
+          <p class="caja">{{ av.condicionesEntorno || 'Sin datos del entorno.' }}</p>
+        </article>
+
+        <article class="tarjeta">
+          <h2>☰ Observaciones de campo</h2>
+          <blockquote class="caja cita">{{ av.observaciones || 'Sin observaciones.' }}</blockquote>
+          <p class="apagado pie">Fecha del avistamiento: {{ av.fechaAvistamiento | date:'dd/MM/yyyy HH:mm' }}</p>
+        </article>
+      </div>
+    </div>
   }
 
-  @if (noEncontrado) {
+  @if (noEncontrado()) {
     <h1>Avistamiento no encontrado</h1>
     <p class="apagado">No existe un registro con ese identificador. <a routerLink="/historial">Volver al historial</a>.</p>
   }

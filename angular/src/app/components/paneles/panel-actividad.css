@@ -1,0 +1,16 @@
+/* Estilos de la pantalla según el diseño del Figma */
+:host { display: block; color: var(--color-text-primary, #0f2318); }
+.fs-muted { color: var(--color-text-secondary); }
+.fs-grow { min-width: 0; flex: 1; }
+.fs-punto { width: 10px; height: 10px; border-radius: 50%; background: #f5a524; display: inline-block; }
+.fs-iniciales { width: 32px; height: 32px; flex: none; border-radius: 50%; display: inline-grid; place-items: center; background: #eef1f0; color: #33433b; font-size: 12px; font-weight: 700; }
+.fs-iniciales--grande { width: 46px; height: 46px; font-size: 16px; background: #002d1c; color: #fff; }
+.fs-comunidad { background: #fff; border: 1px solid #e6ecea; border-radius: 16px; padding: 20px; }
+.fs-comunidad h2 { font-family: var(--font-heading); font-size: 18px; display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.fs-comunidad h2 small { font-family: var(--font-body); font-size: 12px; font-weight: 400; color: #5b6b63; }
+.fs-comunidad__item { display: flex; gap: 12px; background: #f5f7f6; border-radius: 12px; padding: 12px; color: inherit; }
+.fs-comunidad__item + .fs-comunidad__item { margin-top: 10px; }
+.fs-comunidad__item strong { font-size: 14px; display: block; }
+.fs-comunidad__item p { font-size: 13px; color: #1f2d27; }
+.fs-comunidad__item small { font-size: 12px; color: #5b6b63; display: block; margin-top: 4px; }
+.fs-comunidad__mas { display: block; margin-top: 14px; background: #e3f5ea; color: #14532d; text-align: center; border-radius: 10px; padding: 12px; font-weight: 600; }

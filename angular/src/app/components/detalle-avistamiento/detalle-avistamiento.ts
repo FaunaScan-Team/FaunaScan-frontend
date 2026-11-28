@@ -1,9 +1,10 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {DatePipe} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatFormField, MatInput, MatLabel, MatError} from '@angular/material/input';
-import {MatAnchor, MatButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AvistamientoDTO} from '../../models/avistamiento-dto';
 import {AvistamientoCompartido} from '../../models/avistamiento-compartido';
@@ -14,16 +15,19 @@ import {AuthService} from '../../servicios/auth.service';
 
 @Component({
   selector: 'app-detalle-avistamiento',
-  imports: [DatePipe, ReactiveFormsModule, RouterLink, MatFormField, MatLabel, MatInput, MatError, MatButton, MatAnchor],
+  imports: [DatePipe, ReactiveFormsModule, RouterLink, MatFormField, MatLabel, MatInput, MatError, MatButton],
   templateUrl: './detalle-avistamiento.html',
   styleUrl: './detalle-avistamiento.css',
 })
 export class DetalleAvistamiento {
-  avistamiento: AvistamientoDTO | null = null;
-  ubicacion: Ubicacion | null = null;
-  imagenes: ImagenAvistamiento[] = [];
-  noEncontrado: boolean = false;
-  confirmandoEliminar: boolean = false;
+  avistamiento = signal<AvistamientoDTO | null>(null);
+  ubicacion = signal<Ubicacion | null>(null);
+  imagenes = signal<ImagenAvistamiento[]>([]);
+  noEncontrado = signal<boolean>(false);
+  confirmandoEliminar = signal<boolean>(false);
+  esFavorito = signal<boolean>(false);
+  mostrandoCompartir = signal<boolean>(false);
+  fotoElegida = signal<number>(0);
   id: number = 0;
   compartirForm: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
@@ -32,6 +36,18 @@ export class DetalleAvistamiento {
   historialService: HistorialService = inject(HistorialService);
   authService: AuthService = inject(AuthService);
   snackBar: MatSnackBar = inject(MatSnackBar);
+  sanitizer: DomSanitizer = inject(DomSanitizer);
+
+  // Mapa de OpenStreetMap centrado en el punto del avistamiento
+  mapaEmbebido = computed<SafeResourceUrl | null>(() => {
+    const ubicacion = this.ubicacion();
+    if (!ubicacion) return null;
+    const lat = ubicacion.latitud;
+    const lon = ubicacion.longitud;
+    const url = 'https://www.openstreetmap.org/export/embed.html?bbox=' + (lon - 0.05) + ',' + (lat - 0.03) + ',' + (lon + 0.05) + ',' + (lat + 0.03)
+      + '&layer=mapnik&marker=' + lat + ',' + lon;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  });
 
   constructor() {
     this.compartirForm = this.fb.group({
@@ -52,45 +68,80 @@ export class DetalleAvistamiento {
     this.historialService.listId(this.id).subscribe({
       next: data => {
         console.log('Avistamiento traído por API:', data);
-        this.avistamiento = data;
-        this.noEncontrado = false;
+        this.avistamiento.set(data);
+        this.noEncontrado.set(false);
         this.cargarUbicacion(data.idUbicacion);
         this.cargarImagenes();
+        this.cargarFavorito();
       },
       error: err => {
         console.log('Avistamiento no encontrado:', err.status);
-        this.avistamiento = null;
-        this.noEncontrado = true;
+        this.avistamiento.set(null);
+        this.noEncontrado.set(true);
       }
     });
   }
 
   private cargarUbicacion(idUbicacion: number) {
     this.historialService.ubicacion(idUbicacion).subscribe({
-      next: data => this.ubicacion = data,
-      error: () => this.ubicacion = null
+      next: data => this.ubicacion.set(data),
+      error: () => this.ubicacion.set(null)
     });
   }
 
   private cargarImagenes() {
     this.historialService.imagenes(this.id).subscribe({
-      next: data => this.imagenes = data,
-      error: () => this.imagenes = []
+      next: data => this.imagenes.set(data),
+      error: () => this.imagenes.set([])
     });
   }
 
   foto(): string {
-    return this.imagenes.length > 0 ? this.imagenes[0].rutaImagen : 'assets/images/LogoFaunaScan.png';
+    const imagenes = this.imagenes();
+    if (imagenes.length === 0) return 'assets/images/LogoFaunaScan.png';
+    return (imagenes[this.fotoElegida()] ?? imagenes[0]).rutaImagen;
+  }
+
+  private cargarFavorito() {
+    this.historialService.favoritos(this.authService.idUsuario()).subscribe({
+      next: data => this.esFavorito.set(data.some(favorito => favorito.idAvistamiento === this.id)),
+      error: () => this.esFavorito.set(false)
+    });
+  }
+
+  // HU-26
+  alternarFavorito() {
+    const peticion = this.esFavorito()
+      ? this.historialService.quitarFavorito(this.id)
+      : this.historialService.marcarFavorito(this.id);
+    peticion.subscribe({
+      next: () => this.esFavorito.set(!this.esFavorito()),
+      error: err => {
+        console.log('Error al cambiar el favorito:', err.status);
+        this.snackBar.open('No se pudo actualizar el favorito', 'Cerrar', {duration: 3000});
+      }
+    });
+  }
+
+  iniciales(nombre: string): string {
+    if (!nombre) return '?';
+    return nombre.trim().split(/\s+/).slice(0, 2).map(parte => parte.charAt(0).toUpperCase()).join('');
+  }
+
+  etiquetaEstado(estado: string): string {
+    return estado ? estado.charAt(0).toUpperCase() + estado.slice(1) : 'Pendiente';
   }
 
   urlMapa(): string {
-    if (!this.ubicacion) return '';
-    return 'https://www.openstreetmap.org/?mlat=' + this.ubicacion.latitud + '&mlon=' + this.ubicacion.longitud + '#map=13/'
-      + this.ubicacion.latitud + '/' + this.ubicacion.longitud;
+    const ubicacion = this.ubicacion();
+    if (!ubicacion) return '';
+    return 'https://www.openstreetmap.org/?mlat=' + ubicacion.latitud + '&mlon=' + ubicacion.longitud + '#map=13/'
+      + ubicacion.latitud + '/' + ubicacion.longitud;
   }
 
   esDueno(): boolean {
-    return this.avistamiento != null && this.avistamiento.idUsuario === this.authService.idUsuario();
+    const avistamiento = this.avistamiento();
+    return avistamiento != null && avistamiento.idUsuario === this.authService.idUsuario();
   }
 
   esInvestigador(): boolean {
@@ -100,7 +151,7 @@ export class DetalleAvistamiento {
 
   // HU-48: solo se edita mientras está pendiente de validación
   puedeEditar(): boolean {
-    return this.esDueno() && this.avistamiento?.estadoValidacion === 'pendiente';
+    return this.esDueno() && this.avistamiento()?.estadoValidacion === 'pendiente';
   }
 
   editar() {
@@ -116,7 +167,7 @@ export class DetalleAvistamiento {
       },
       error: err => {
         console.log('Error al eliminar:', err.status);
-        this.confirmandoEliminar = false;
+        this.confirmandoEliminar.set(false);
         this.snackBar.open('No se pudo eliminar el avistamiento', 'Cerrar', {duration: 4000});
       }
     });

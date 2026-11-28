@@ -8,11 +8,15 @@ import {ActividadRecienteApi} from '../../servicios/actividades-api.service';
   selector: 'app-panel-actividad',
   imports: [DatePipe, RouterLink],
   templateUrl: './panel-actividad.html',
-  styleUrl: '../compartido/paneles.css',
+  styleUrl: './panel-actividad.css',
 })
 export class PanelActividad {
   readonly recientes = input.required<ActividadRecienteApi[]>();
-  readonly cantidad = input(6);
+  readonly cantidad = input(3);
 
   protected readonly visibles = computed(() => this.recientes().slice(0, this.cantidad()));
+
+  protected iniciales(nombre: string, apellido: string): string {
+    return ((nombre || '').charAt(0) + (apellido || '').charAt(0)).toUpperCase() || '?';
+  }
 }

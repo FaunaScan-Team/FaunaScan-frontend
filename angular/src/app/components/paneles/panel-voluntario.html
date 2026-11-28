@@ -1,56 +1,123 @@
 <section class="fs-page" aria-labelledby="fs-voluntario-title">
-  <div class="fs-banner">
-    <div>
-      <p class="fs-eyebrow fs-eyebrow--banner">Panel del voluntario</p>
-      <h1 id="fs-voluntario-title">Hola, {{ dashboard.nombre || 'voluntario' }}</h1>
-      <p>Tu monitoreo contribuye a la preservación de la fauna peruana.</p>
-    </div>
-    <div class="fs-banner__dato">
-      <p>{{ hoy | date:'dd/MM/yyyy' }}</p>
-      <strong>{{ dashboard.progreso.totalAvistamientos }}</strong>
-      <p>avistamientos registrados</p>
-    </div>
-  </div>
+  <p class="fs-ruta">/panel/voluntario · <b>Panel del voluntario</b></p>
 
-  @if (error) {
-    <p class="fs-error" role="alert">{{ error }}</p>
+  <header class="fs-hero fs-hero--plano">
+    <div>
+      <h1 id="fs-voluntario-title">¡Hola de nuevo, {{ dashboard().nombre || 'voluntario' }}!</h1>
+      <p class="fs-hero__meta">
+        <span class="fs-sello fs-sello--naranja">Voluntario activo</span>
+        <span>📅 {{ hoy | date:'dd/MM/yyyy' }}</span>
+      </p>
+    </div>
+  </header>
+
+  @if (error()) {
+    <p class="fs-error" role="alert">{{ error() }}</p>
   }
 
-  <nav class="fs-acciones-rapidas" aria-label="Acciones rápidas">
-    <a class="fs-accion fs-accion--principal" routerLink="/registrar"><span aria-hidden="true">➕</span> Nuevo registro</a>
-    <a class="fs-accion" routerLink="/catalogo"><span aria-hidden="true">📘</span> Catálogo</a>
-    <a class="fs-accion" routerLink="/mapa"><span aria-hidden="true">🗺️</span> Mapa</a>
-    <a class="fs-accion" routerLink="/historial"><span aria-hidden="true">🕑</span> Historial</a>
-    <a class="fs-accion" routerLink="/mi-contribucion"><span aria-hidden="true">🌱</span> Mi contribución</a>
+  <div class="fs-kpis">
+    <article class="fs-kpi">
+      <div class="fs-kpi__cabecera">
+        <span class="fs-kpi__titulo">Avistamientos registrados</span>
+        <span class="fs-kpi__icono fs-kpi__icono--verde" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+      </div>
+      <div class="fs-kpi__valor"><strong>{{ dashboard().progreso.totalAvistamientos }}</strong></div>
+      <div class="fs-kpi__pie"><span>✓ {{ validados() }} validados por un investigador</span></div>
+    </article>
+    <article class="fs-kpi">
+      <div class="fs-kpi__cabecera">
+        <span class="fs-kpi__titulo">Especies identificadas</span>
+        <span class="fs-kpi__icono fs-kpi__icono--naranja" aria-hidden="true">🐾</span>
+      </div>
+      <div class="fs-kpi__valor"><strong>{{ dashboard().progreso.especiesRegistradas }}</strong><span class="fs-sello fs-sello--naranja fs-sello--sin-punto">Especies únicas</span></div>
+    </article>
+    <article class="fs-kpi">
+      <div class="fs-kpi__cabecera">
+        <span class="fs-kpi__titulo">Zonas exploradas</span>
+        <span class="fs-kpi__icono fs-kpi__icono--azul" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>
+        </span>
+      </div>
+      <div class="fs-kpi__valor"><strong>{{ dashboard().progreso.zonasVisitadas }}</strong><span>zonas con registros</span></div>
+    </article>
+  </div>
+
+  <div class="fs-seccion">
+    <h2>Atajos rápidos de campo <small>| Acciones inmediatas</small></h2>
+  </div>
+  <nav class="fs-atajos" aria-label="Atajos rápidos">
+    <a class="fs-atajo fs-atajo--verde" routerLink="/registrar">
+      <span class="fs-atajo__flecha" aria-hidden="true">→</span>
+      <span class="fs-atajo__icono" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+      </span>
+      <strong>Registrar avistamiento</strong>
+      <small>Cargar foto, ubicación y notas de campo</small>
+    </a>
+    <a class="fs-atajo" routerLink="/identificar-ia">
+      <span class="fs-atajo__flecha" aria-hidden="true">→</span>
+      <span class="fs-atajo__icono fs-atajo__icono--naranja" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+      </span>
+      <strong>Identificar con IA</strong>
+      <small>Sube una foto y recibe la especie sugerida</small>
+    </a>
+    <a class="fs-atajo" routerLink="/mapa">
+      <span class="fs-atajo__flecha" aria-hidden="true">→</span>
+      <span class="fs-atajo__icono fs-atajo__icono--azul" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3z"/><path d="M9 3v15M15 6v15"/></svg>
+      </span>
+      <strong>Ver mapa territorial</strong>
+      <small>Marcadores y densidad de avistamientos</small>
+    </a>
+    <a class="fs-atajo" routerLink="/catalogo">
+      <span class="fs-atajo__flecha" aria-hidden="true">→</span>
+      <span class="fs-atajo__icono" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg>
+      </span>
+      <strong>Explorar catálogo</strong>
+      <small>Fichas de las especies registradas</small>
+    </a>
+  </nav>
+  <nav class="fs-mas-accesos" aria-label="Más accesos">
+    <a routerLink="/historial">Historial</a>
+    <a routerLink="/mi-contribucion">Mi contribución</a>
   </nav>
 
-  @if (cargando) {
+  @if (cargando()) {
     <p class="fs-muted">Cargando tu panel...</p>
   } @else {
-    <div class="fs-columns fs-columns--iguales">
-      <div class="fs-stack">
-        <app-panel-progreso [progreso]="dashboard.progreso" [validados]="validados" />
-      </div>
-      <app-panel-actividad [recientes]="recientes" />
-    </div>
-
-    <section class="fs-card fs-guias" aria-labelledby="fs-guias-title">
-      <h2 class="fs-card__title" id="fs-guias-title">Guías de identificación</h2>
-      @if (dashboard.guias.length === 0) {
-        <p class="fs-muted">Todavía no hay especies con pistas de identificación en el catálogo.</p>
-      } @else {
-        @for (guia of dashboard.guias; track guia.idEspecie) {
-          <div class="fs-item">
-            <span class="fs-avatar" aria-hidden="true">📘</span>
-            <div class="fs-grow">
-              <strong>{{ guia.nombreComun }}</strong>
-              <small><em>{{ guia.nombreCientifico }}</em> · {{ guia.familia }} · {{ guia.estadoConservacion }}</small>
-              <small>{{ guia.pistasIdentificacion }}</small>
-            </div>
-            <a class="fs-link" [routerLink]="['/catalogo', guia.idEspecie]">Ver especie</a>
+    <div class="fs-dos-col">
+      <section aria-labelledby="fs-guias-title">
+        <div class="fs-seccion">
+          <h2 id="fs-guias-title">Guías rápidas de identificación en campo</h2>
+          <span class="fs-pildora">{{ dashboard().guias.length }} especies con pistas</span>
+        </div>
+        @if (guias().length === 0) {
+          <p class="fs-muted">Todavía no hay especies con pistas de identificación en el catálogo.</p>
+        } @else {
+          <div class="fs-guias-grid">
+            @for (guia of guias(); track guia.idEspecie) {
+              <article class="fs-guia">
+                <div class="fs-guia__foto">
+                  <img [src]="guia.imagenReferencia || 'assets/images/LogoFaunaScan.png'" [alt]="'Foto de ' + guia.nombreComun" loading="lazy">
+                  <span class="fs-sello fs-sello--sin-punto" [class]="'fs-sello fs-sello--sin-punto ' + claseConservacion(guia.estadoConservacion)">{{ guia.estadoConservacion }}</span>
+                  <span class="fs-guia__familia">{{ guia.familia }}</span>
+                </div>
+                <div class="fs-guia__cuerpo">
+                  <h3>{{ guia.nombreComun }}</h3>
+                  <em>{{ guia.nombreCientifico }}</em>
+                  <p class="fs-pista"><b>Pista de campo</b>{{ guia.pistasIdentificacion }}</p>
+                  <a class="fs-guia__boton" [routerLink]="['/catalogo', guia.idEspecie]">Ver ficha ›</a>
+                </div>
+              </article>
+            }
           </div>
         }
-      }
-    </section>
+      </section>
+      <app-panel-actividad [recientes]="recientes()" />
+    </div>
   }
 </section>

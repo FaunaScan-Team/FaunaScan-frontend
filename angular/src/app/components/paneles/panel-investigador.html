@@ -1,48 +1,144 @@
 <section class="fs-page" aria-labelledby="fs-investigador-title">
-  <div class="fs-banner fs-banner--info">
+  <p class="fs-ruta"><span class="fs-ruta__chip">Ruta: /panel/investigador</span> {{ hoy | date:'dd/MM/yyyy' }}</p>
+
+  <header class="fs-hero">
     <div>
-      <p class="fs-eyebrow fs-eyebrow--banner-info">Panel del investigador</p>
-      <h1 id="fs-investigador-title">Hola, {{ dashboard.nombre || 'investigador' }}</h1>
-      <p>Tu validación mantiene confiables los registros de la comunidad.</p>
-      <span class="fs-banner__badge">✓ Investigador verificado</span>
+      <div class="fs-hero__fila">
+        <h1 id="fs-investigador-title">{{ esAdmin() ? 'Panel del administrador' : 'Panel del investigador' }}</h1>
+        <span class="fs-sello fs-sello--azul">{{ esAdmin() ? 'Administrador' : 'Investigador' }}</span>
+      </div>
+      <p class="fs-hero__sub">{{ saludo() }} {{ dashboard().apellido }}</p>
+      <p class="fs-hero__meta">Tu validación mantiene confiables los registros de la comunidad.</p>
     </div>
-    <div class="fs-banner__dato">
-      <p>{{ hoy | date:'dd/MM/yyyy' }}</p>
-      <strong>{{ dashboard.pendientesValidacion }}</strong>
-      <p>pendientes de verificar</p>
+    <div class="fs-hero__caja" aria-label="Mi progreso">
+      <p>Mi progreso</p>
+      <div>
+        <span><strong>{{ progreso().totalAvistamientos }}</strong>avistamientos</span>
+        <span><strong>{{ progreso().especiesRegistradas }}</strong>especies</span>
+        <span><strong>{{ progreso().zonasVisitadas }}</strong>zonas</span>
+      </div>
     </div>
+  </header>
+
+  @if (error()) {
+    <p class="fs-error" role="alert">{{ error() }}</p>
+  }
+
+  <div class="fs-kpis">
+    <article class="fs-kpi fs-kpi--naranja">
+      <div class="fs-kpi__cabecera">
+        <span class="fs-kpi__titulo">Avistamientos pendientes de validar</span>
+        <span class="fs-sello fs-sello--naranja fs-sello--sin-punto">Cola activa</span>
+      </div>
+      <div class="fs-kpi__valor"><strong>{{ dashboard().pendientesValidacion }}</strong><span>solicitudes</span></div>
+      <div class="fs-kpi__pie"><span></span><a routerLink="/verificar">Atender ahora ↓</a></div>
+    </article>
+    <article class="fs-kpi fs-kpi--azul">
+      <div class="fs-kpi__cabecera">
+        <span class="fs-kpi__titulo">Validados por mí</span>
+        <span class="fs-kpi__icono fs-kpi__icono--azul" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+        </span>
+      </div>
+      <div class="fs-kpi__valor fs-kpi__valor--azul"><strong>{{ dashboard().validadosPorMi }}</strong><span>avistamientos</span></div>
+    </article>
+    <article class="fs-kpi fs-kpi--verde">
+      <div class="fs-kpi__cabecera">
+        <span class="fs-kpi__titulo">Reportes generados</span>
+        <span class="fs-kpi__icono" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2"/><path d="M8 7h6"/></svg>
+        </span>
+      </div>
+      <div class="fs-kpi__valor"><strong>{{ dashboard().reportesGenerados }}</strong><span>reportes</span></div>
+      <div class="fs-kpi__pie"><span></span><a routerLink="/mis-reportes">Ver mis reportes</a></div>
+    </article>
   </div>
 
-  @if (error) {
-    <p class="fs-error" role="alert">{{ error }}</p>
-  }
-
-    <nav class="fs-acciones-rapidas" aria-label="Acciones rápidas">
-    <a class="fs-accion fs-accion--principal" routerLink="/registrar"><span aria-hidden="true">➕</span> Nuevo registro</a>
-    <a class="fs-accion" routerLink="/verificar"><span aria-hidden="true">✅</span> Verificar</a>
-    <a class="fs-accion" routerLink="/resumen"><span aria-hidden="true">📊</span> Resumen mensual</a>
-    <a class="fs-accion" routerLink="/reportes"><span aria-hidden="true">📈</span> Reportes de biodiversidad</a>
-    <a class="fs-accion" routerLink="/tendencias"><span aria-hidden="true">📉</span> Tendencias de biodiversidad</a>
-    <a class="fs-accion" routerLink="/mis-reportes"><span aria-hidden="true">📄</span> Mis reportes</a>
-    <a class="fs-accion" routerLink="/catalogo"><span aria-hidden="true">📘</span> Catálogo</a>
-    <a class="fs-accion" routerLink="/historial"><span aria-hidden="true">🕑</span> Historial</a>
+  <div class="fs-seccion">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b5e99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>
+      Accesos directos de investigación
+    </h2>
+  </div>
+  <nav class="fs-atajos" aria-label="Accesos directos">
+    <a class="fs-atajo fs-atajo--azul" routerLink="/verificar">
+      @if (dashboard().pendientesValidacion > 0) {
+        <span class="fs-atajo__contador">{{ dashboard().pendientesValidacion }}</span>
+      }
+      <span class="fs-atajo__icono" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 12 2 2 4-4M15 13h3"/></svg>
+      </span>
+      <strong>Validar avistamientos</strong>
+      <small>Revisa la cola de registros de campo</small>
+    </a>
+    <a class="fs-atajo" routerLink="/reportes">
+      <span class="fs-atajo__flecha" aria-hidden="true">↗</span>
+      <span class="fs-atajo__icono" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+      </span>
+      <strong>Generar reporte de biodiversidad</strong>
+      <small>Especies por área y período, exportable a PDF</small>
+    </a>
+    <a class="fs-atajo" routerLink="/tendencias">
+      <span class="fs-atajo__flecha" aria-hidden="true">↗</span>
+      <span class="fs-atajo__icono" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+      </span>
+      <strong>Tendencias poblacionales</strong>
+      <small>Aumento o disminución de avistamientos por especie</small>
+    </a>
+    <a class="fs-atajo" routerLink="/mapa">
+      <span class="fs-atajo__flecha" aria-hidden="true">↗</span>
+      <span class="fs-atajo__icono" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3z"/><path d="M9 3v15M15 6v15"/></svg>
+      </span>
+      <strong>Explorar mapa territorial</strong>
+      <small>Marcadores y mapa de calor de avistamientos</small>
+    </a>
+  </nav>
+  <nav class="fs-mas-accesos" aria-label="Más accesos">
+    <a routerLink="/registrar">Nuevo registro</a>
+    <a routerLink="/resumen">Resumen mensual</a>
+    <a routerLink="/mis-reportes">Mis reportes</a>
+    <a routerLink="/catalogo">Catálogo</a>
+    <a routerLink="/historial">Historial</a>
   </nav>
 
-  @if (cargando) {
-    <p class="fs-muted">Cargando tu panel...</p>
-  } @else {
-    <div class="fs-stats">
-      <div class="fs-stat"><strong>{{ dashboard.pendientesValidacion }}</strong><span>pendientes de validación</span></div>
-      <div class="fs-stat"><strong>{{ dashboard.validadosPorMi }}</strong><span>validados por mí</span></div>
-      <div class="fs-stat"><strong>{{ dashboard.reportesGenerados }}</strong><span>reportes generados</span></div>
-      <div class="fs-stat"><strong>{{ progreso.totalAvistamientos }}</strong><span>avistamientos propios</span></div>
+  <section class="fs-panel" aria-labelledby="fs-pendientes-title">
+    <div class="fs-panel__cabecera">
+      <h2 id="fs-pendientes-title"><span class="fs-punto" aria-hidden="true"></span> Últimos 5 registros pendientes de revisión</h2>
+      <span class="fs-pildora">Ordenados por fecha, del más reciente</span>
     </div>
-
-    <div class="fs-columns fs-columns--iguales">
-      <div class="fs-stack">
-        <app-panel-progreso [progreso]="progreso" [validados]="validados" />
+    @if (cargando()) {
+      <p class="fs-panel__cuerpo fs-muted">Cargando tu panel...</p>
+    } @else if (ultimosPendientes().length === 0) {
+      <p class="fs-panel__cuerpo fs-muted">No hay avistamientos pendientes de validación.</p>
+    } @else {
+      <div class="fs-tabla__scroll">
+        <table class="fs-tabla fs-tabla--figma">
+          <thead>
+            <tr><th scope="col">Muestra</th><th scope="col">Especie</th><th scope="col">Registrado por</th><th scope="col">Fecha de captura</th><th scope="col"><span class="fs-oculto">Acción</span></th></tr>
+          </thead>
+          <tbody>
+            @for (av of ultimosPendientes(); track av.idAvistamiento) {
+              <tr>
+                <td>
+                  <span class="fs-muestra" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="9" r="2.2"/><circle cx="9.5" cy="5" r="2.2"/><circle cx="14.5" cy="5" r="2.2"/><circle cx="19" cy="9" r="2.2"/><path d="M12 11c-3 0-6.5 4-6.5 7 0 2 1.5 3 3.2 3 1.4 0 2.2-.8 3.3-.8s1.9.8 3.3.8c1.7 0 3.2-1 3.2-3 0-3-3.5-7-6.5-7z"/></svg>
+                  </span>
+                </td>
+                <td class="fs-especie"><strong>{{ av.nombreEspecie || 'Especie sin nombre' }}</strong><em>#{{ av.idAvistamiento }}</em></td>
+                <td><span class="fs-persona"><span class="fs-iniciales" aria-hidden="true">{{ iniciales(av.nombreUsuario) }}</span>{{ av.nombreUsuario || 'Sin nombre' }}</span></td>
+                <td>{{ av.fechaAvistamiento | date:'dd/MM/yyyy • HH:mm' }}</td>
+                <td><a class="fs-btn-mini" [routerLink]="['/verificar', av.idAvistamiento]">Revisar</a></td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
-      <app-panel-actividad [recientes]="recientes" />
-    </div>
-  }
+      <div class="fs-panel__pie">
+        <a class="fs-btn-ancho" routerLink="/verificar">Ver todos los registros pendientes ({{ pendientes().length }}) →</a>
+      </div>
+    }
+  </section>
 </section>

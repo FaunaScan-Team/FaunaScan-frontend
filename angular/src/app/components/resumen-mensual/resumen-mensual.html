@@ -1,66 +1,140 @@
 <section class="fs-page" aria-labelledby="fs-resumen-title">
-  <div class="fs-heading">
-    <div>
-      <p class="fs-eyebrow">Reportes</p>
-      <h1 id="fs-resumen-title">Resumen mensual</h1>
-      <p class="fs-subtitle">Avistamientos validados de la comunidad, agrupados por mes.</p>
-    </div>
-    <a class="fs-btn fs-btn--outline" routerLink="/historial">Ir al historial</a>
-  </div>
+  <p class="fs-ruta"><span class="fs-ruta__chip">/resumen</span> Consolidado de avistamientos validados por mes</p>
 
-  @if (error) {
-    <p class="fs-error" role="alert">{{ error }}</p>
+  <header class="fs-hero">
+    <div>
+      <p class="fs-panel__eyebrow" style="color:#3b5e99">Reportes</p>
+      <h1 id="fs-resumen-title">Resumen mensual de biodiversidad</h1>
+      <p class="fs-hero__texto">Avistamientos validados de la comunidad, agrupados por mes. Solo se incluyen avistamientos validados.</p>
+    </div>
+    @if (!cargando() && reporte().meses.length > 0) {
+      <label class="fs-filtro">Mes a revisar
+        <select [value]="indiceElegido()" (change)="elegir(+$any($event.target).value)">
+          @for (mes of reporte().meses; track mes.anio + '-' + mes.mes; let i = $index) {
+            <option [value]="i">{{ etiqueta(mes) }}</option>
+          }
+        </select>
+      </label>
+    }
+  </header>
+
+  @if (error()) {
+    <p class="fs-error" role="alert">{{ error() }}</p>
   }
 
-  @if (cargando) {
+  @if (cargando()) {
     <p class="fs-muted">Cargando el resumen...</p>
-  } @else if (reporte.meses.length === 0) {
+  } @else if (reporte().meses.length === 0) {
     <p class="fs-empty">Todavía no hay avistamientos validados. <a routerLink="/verificar">Ir a verificar</a>.</p>
   } @else {
-    <div class="fs-stats">
-      <div class="fs-stat"><strong>{{ reporte.totalRegistros }}</strong><span>registros validados en total</span></div>
-      <div class="fs-stat"><strong>{{ reporte.totalEspecies }}</strong><span>especies validadas</span></div>
-      <div class="fs-stat"><strong>{{ reporte.meses.length }}</strong><span>meses con registros</span></div>
+    <div class="fs-kpis">
+      <article class="fs-kpi">
+        <div class="fs-kpi__cabecera">
+          <div>
+            <p class="fs-panel__eyebrow">Esfuerzo de detección</p>
+            <span class="fs-hero__sub">Total de avistamientos validados</span>
+          </div>
+          <span class="fs-kpi__icono fs-kpi__icono--azul" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </span>
+        </div>
+        <div class="fs-kpi__valor fs-kpi__valor--azul"><strong>{{ reporte().totalRegistros }}</strong></div>
+        <div class="fs-kpi__pie fs-pildora"><span>Promedio mensual: <b>{{ promedioMensual() }}</b></span><span>Meses con registros: <b>{{ reporte().meses.length }}</b></span></div>
+      </article>
+      <article class="fs-kpi">
+        <div class="fs-kpi__cabecera">
+          <div>
+            <p class="fs-panel__eyebrow">Biodiversidad documentada</p>
+            <span class="fs-hero__sub">Riqueza específica acumulada</span>
+          </div>
+          <span class="fs-kpi__icono" style="background:#c8f0d7" aria-hidden="true">🐾</span>
+        </div>
+        <div class="fs-kpi__valor"><strong>{{ reporte().totalEspecies }}</strong><span>especies validadas</span></div>
+      </article>
     </div>
 
-    <div class="fs-columns">
-      <aside class="fs-card">
-        <h2 class="fs-card__title">Meses</h2>
-        <div class="fs-meses">
-          @for (mes of reporte.meses; track mes.anio + '-' + mes.mes; let i = $index) {
-            <button type="button" class="fs-mes" [class.fs-mes--activo]="i === indiceElegido"
-              [attr.aria-current]="i === indiceElegido ? 'true' : null" (click)="elegir(i)">
-              {{ etiqueta(mes) }} <small>· {{ mes.totalAvistamientos }}</small>
-            </button>
-          }
+    <section class="fs-panel" aria-labelledby="fs-evolucion-title">
+      <div class="fs-panel__cabecera">
+        <div>
+          <h2 id="fs-evolucion-title">Evolución mensual</h2>
+          <p>Avistamientos validados y especies distintas en cada mes.</p>
         </div>
-      </aside>
-
-      <div>
-        <div class="fs-banner">
-          <div>
-            <h2>{{ etiqueta(mesActual()) }}</h2>
-            <p>{{ mesActual().totalAvistamientos }} registro(s) validados en este período.</p>
-          </div>
-        </div>
-
-        <div class="fs-stats">
-          <div class="fs-stat"><strong>{{ mesActual().totalAvistamientos }}</strong><span>Registros</span></div>
-          <div class="fs-stat"><strong>{{ mesActual().totalEspecies }}</strong><span>Especies</span></div>
-          <div class="fs-stat"><strong>{{ avisos().length }}</strong><span>Avisos</span></div>
-        </div>
-
-        <div class="fs-card">
-          <h2 class="fs-card__title">Avisos del mes</h2>
-          @if (avisos().length === 0) {
-            <p class="fs-muted">Sin avisos: no hubo variaciones relevantes respecto al mes anterior.</p>
-          } @else {
-            @for (aviso of avisos(); track aviso) {
-              <p class="fs-aviso">{{ aviso }}</p>
-            }
-          }
+        <div class="fs-grafico__leyenda">
+          <span><i style="background:#3b5e99"></i>Avistamientos</span>
+          <span><i style="background:#002d1c"></i>Especies</span>
         </div>
       </div>
-    </div>
+      <div class="fs-panel__cuerpo">
+        <div class="fs-grafico">
+          <div class="fs-grafico__barras" role="img" aria-label="Gráfico de avistamientos y especies por mes">
+            @for (barra of grafico(); track barra.mes.anio + '-' + barra.mes.mes) {
+              <button type="button" class="fs-grafico__mes" [class.fs-grafico__mes--activo]="barra.indice === indiceElegido()" (click)="elegir(barra.indice)"
+                      [attr.aria-label]="etiqueta(barra.mes) + ': ' + barra.mes.totalAvistamientos + ' avistamientos, ' + barra.mes.totalEspecies + ' especies'">
+                <span class="fs-grafico__par">
+                  <span class="fs-grafico__barra fs-grafico__barra--azul" [style.height.%]="barra.alturaAvistamientos"><span>{{ barra.mes.totalAvistamientos }}</span></span>
+                  <span class="fs-grafico__barra fs-grafico__barra--verde" [style.height.%]="barra.alturaEspecies"><span>{{ barra.mes.totalEspecies }}</span></span>
+                </span>
+                <span class="fs-grafico__etiqueta">{{ etiquetaCorta(barra.mes) }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fs-panel" aria-labelledby="fs-mes-title">
+      <div class="fs-panel__cabecera">
+        <div>
+          <h2 id="fs-mes-title">{{ etiqueta(mesActual()) }}</h2>
+          <p>{{ mesActual().totalAvistamientos }} registro(s) validados y {{ mesActual().totalEspecies }} especie(s) en este período.</p>
+        </div>
+      </div>
+      <div class="fs-panel__cuerpo">
+        @if (avisos().length === 0) {
+          <p class="fs-muted">Sin avisos: no hubo variaciones relevantes respecto al mes anterior.</p>
+        } @else {
+          @for (aviso of avisos(); track aviso) {
+            <p class="fs-aviso">{{ aviso }}</p>
+          }
+        }
+      </div>
+    </section>
+
+    <section class="fs-panel" aria-labelledby="fs-matriz-title">
+      <div class="fs-panel__cabecera">
+        <div>
+          <h2 id="fs-matriz-title">Matriz histórica de muestreo</h2>
+          <p>Desglose por mes de los avistamientos validados. Haz clic en una fila para ver sus avisos.</p>
+        </div>
+      </div>
+      <div class="fs-tabla__scroll">
+        <table class="fs-tabla fs-tabla--figma">
+          <thead>
+            <tr><th scope="col">Año</th><th scope="col">Mes</th><th scope="col">Total avistamientos</th><th scope="col">Especies registradas</th><th scope="col">Participación en el total</th></tr>
+          </thead>
+          <tbody>
+            @for (mes of reporte().meses; track mes.anio + '-' + mes.mes; let i = $index) {
+              <tr [class.fs-fila--activa]="i === indiceElegido()" (click)="elegir(i)">
+                <td style="color:#3b5e99;font-weight:600">{{ mes.anio }}</td>
+                <td>{{ nombreMes(mes) }}</td>
+                <td>{{ mes.totalAvistamientos }}</td>
+                <td>{{ mes.totalEspecies }}</td>
+                <td>
+                  <span class="fs-tasa">
+                    {{ reporte().totalRegistros === 0 ? 0 : (mes.totalAvistamientos * 100 / reporte().totalRegistros).toFixed(1) }}%
+                    <span class="fs-tasa__barra"><i [style.width.%]="reporte().totalRegistros === 0 ? 0 : mes.totalAvistamientos * 100 / reporte().totalRegistros"></i></span>
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="fs-subtotales">
+        <div><small>Registros validados</small><strong>{{ reporte().totalRegistros }} avistamientos</strong></div>
+        <div><small>Especies validadas</small><strong>{{ reporte().totalEspecies }} especies</strong></div>
+        <a class="fs-btn fs-btn--primary" style="margin-left:auto" routerLink="/reportes">Generar reporte en PDF</a>
+      </div>
+    </section>
   }
 </section>
